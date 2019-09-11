@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import "antd/dist/antd.css";
 import { Login as LoginPage } from './components/pages/Login';
 import { Main } from './components/layout/Main';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
