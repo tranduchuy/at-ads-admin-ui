@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button, Checkbox, Col, Row } from 'antd';
 import { withCookies } from 'react-cookie';
+import { API } from '../../constants/api';
 
 class Login extends Component {
 
@@ -26,7 +27,7 @@ class Login extends Component {
 			}
 
 			// TODO: call api login
-			fetch('http://localhost:3000/api/admin/users/login', {
+			fetch(API.login, {
 				method: 'POST',
 				body: JSON.stringify({
 					email: 'admin@gmail.com',
