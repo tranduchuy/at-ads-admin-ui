@@ -7,6 +7,9 @@ const { Header, Footer, Sider, Content } = Layout;
 
 class DemoPage extends Component {
 	render() {
+
+		console.log('Demo page');
+
 		return (
 			<h1>Hello world</h1>
 		)
@@ -61,7 +64,7 @@ class Main extends Component {
 		const renderContents = () => {
 			return (
 				links.map((c, index) => {
-					return <PrivateRoute key={index} component={c.component} path={c.path}/>
+					return <PrivateRoute key={index} component={c.component} path={`/dashboard/${c.path}`}/>
 				})
 			)
 		};
