@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Route, Redirect, Link } from "react-router-dom";
+import { Route, Redirect, Link, withRouter } from "react-router-dom";
 import { Layout, Menu, Icon } from 'antd';
 import { withCookies } from 'react-cookie';
+import { Dashboard } from "../pages/Dashboard";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -17,6 +18,12 @@ class DemoPage extends Component {
 }
 
 const links = [
+	{
+		title    : 'Dashboard',
+		path     : '',
+		icon     : 'home',
+		component: Dashboard
+	},
 	{
 		title    : 'Demo page',
 		path     : 'demo',
@@ -63,9 +70,17 @@ class Main extends Component {
 
 		const renderContents = () => {
 			return (
-				links.map((c, index) => {
-					return <PrivateRoute key={index} component={c.component} path={`/dashboard/${c.path}`}/>
-				})
+				<div>
+					{
+						links.map((c, index) => {
+							if (c.path === '') {
+								return <PrivateRoute key={index} component={c.component} exact path={`${this.props.match.path}/${c.path}`}/>
+							}
+
+							return <PrivateRoute key={index} component={c.component} path={`${this.props.match.path}/${c.path}`}/>
+						})
+					}
+				</div>
 			)
 		};
 
@@ -87,7 +102,7 @@ class Main extends Component {
 									<Menu.Item key={index}>
 										<Icon type={link.icon}/>
 										<span className="nav-text">{link.title}</span>
-										<Link to={`/dashboard/${link.path}`}/>
+										<Link to={`${this.props.match.path}/${link.path}`}/>
 									</Menu.Item>
 								)
 							})
@@ -108,4 +123,4 @@ class Main extends Component {
 	}
 }
 
-export default withCookies(Main);
+export default withCookies(withRouter(Main));
