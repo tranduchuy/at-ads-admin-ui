@@ -1,17 +1,17 @@
 import { Dashboard } from "../components/pages/Dashboard";
-import { DemoPage } from "../components/pages/Demo";
+import { ExpirationUpdating } from "../components/pages/Expiration-updating";
 
 export default [
 	{
-		title    : 'Dashboard',
-		path     : '',
-		icon     : 'home',
+		title: 'Dashboard',
+		path: '',
+		icon: 'home',
 		component: Dashboard
 	},
 	{
-		title    : 'Demo page',
-		path     : 'demo',
-		icon     : 'user',
-		component: DemoPage
+		title: 'Cập nhật thời hạn sử dụng',
+		path: 'update-expiration',
+		icon: 'sync',
+		component: ExpirationUpdating
 	}
 ];
