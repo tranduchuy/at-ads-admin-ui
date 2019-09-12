@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import "antd/dist/antd.css";
 import LoginPage from './components/pages/Login';
 import Main from './components/layout/Main';
