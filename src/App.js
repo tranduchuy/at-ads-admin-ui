@@ -2,14 +2,14 @@ import React from 'react';
 import './App.css';
 import "antd/dist/antd.css";
 import LoginPage from './components/pages/Login';
-import Main  from './components/layout/Main';
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Main from './components/layout/Main';
+import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { CookiesProvider } from 'react-cookie';
 
 function Root() {
 
 	const renderDashboard = () => {
-		return <Main />;
+		return <Main/>;
 	};
 
 	return (
@@ -19,6 +19,13 @@ function Root() {
 					<Route path="/login" component={LoginPage}/>
 					<Route path="/dashboard"
 								 render={renderDashboard}/>
+					<Route path="/**" render={() => {
+						return (
+							<Redirect to={{
+								pathname: "/dashboard"
+							}}/>
+						)
+					}}/>
 				</Switch>
 			</BrowserRouter>
 		</CookiesProvider>
