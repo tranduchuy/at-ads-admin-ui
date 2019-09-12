@@ -26,12 +26,25 @@ class Login extends Component {
 			}
 
 			// TODO: call api login
-			const { cookies } = this.props;
-			cookies.set('token', '!@#$%^&*()');
+			fetch('http://localhost:3000/api/admin/users/login', {
+				method: 'POST',
+				body: JSON.stringify({
+					email: 'admin@gmail.com',
+					password: '!master2019'
+				}),
+				headers: {
+					"Content-type": "application/json; charset=UTF-8"
+				}
+			}).then(response => {
+				return response.json()
+			}).then(json => {
+				const { cookies } = this.props;
+				cookies.set('token', json.data.meta.token);
 
-			setTimeout(() => {
-				this.props.history.push("/dashboard");
-			}, 1000);
+				setTimeout(() => {
+					this.props.history.push("/dashboard");
+				}, 1000);
+			});
 		});
 	};
 
@@ -39,7 +52,7 @@ class Login extends Component {
 		const { getFieldDecorator } = this.props.form;
 		const headerTitleStyle = {
 			'textAlign': 'center',
-			'padding'  : '20px 0'
+			'padding': '20px 0'
 		};
 
 		return (
@@ -55,13 +68,13 @@ class Login extends Component {
 					<Col span={9}></Col>
 					<Col span={6}>
 						<Form onSubmit={this.handleSubmit}
-									className="login-form">
+							className="login-form">
 							<Form.Item>
 								{getFieldDecorator('username', {
 									rules: [{ required: true, message: 'Please input your username!' }],
 								})(
 									<Input
-										prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+										prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 										placeholder="Username"
 									/>,
 								)}
@@ -71,7 +84,7 @@ class Login extends Component {
 									rules: [{ required: true, message: 'Please input your Password!' }],
 								})(
 									<Input
-										prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+										prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 										type="password"
 										placeholder="Password"
 									/>,
@@ -80,8 +93,8 @@ class Login extends Component {
 							<Form.Item>
 								<div style={{ textAlign: 'center' }}>
 									<Button type="primary"
-													htmlType="submit"
-													className="login-form-button">
+										htmlType="submit"
+										className="login-form-button">
 										Log in
 									</Button>
 								</div>
