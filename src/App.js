@@ -9,7 +9,7 @@ import { CookiesProvider } from 'react-cookie';
 function Root() {
 
 	const renderDashboard = () => {
-		return <Main/>;
+		return <Main />;
 	};
 
 	return (
