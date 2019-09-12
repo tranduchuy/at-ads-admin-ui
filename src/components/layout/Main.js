@@ -2,35 +2,8 @@ import React, { Component } from 'react';
 import { Route, Redirect, Link, withRouter } from "react-router-dom";
 import { Layout, Menu, Icon } from 'antd';
 import { withCookies } from 'react-cookie';
-import { Dashboard } from "../pages/Dashboard";
-
+import links from '../../constants/aside.constant';
 const { Header, Footer, Sider, Content } = Layout;
-
-class DemoPage extends Component {
-	render() {
-
-		console.log('Demo page');
-
-		return (
-			<h1>Hello world</h1>
-		)
-	}
-}
-
-const links = [
-	{
-		title    : 'Dashboard',
-		path     : '',
-		icon     : 'home',
-		component: Dashboard
-	},
-	{
-		title    : 'Demo page',
-		path     : 'demo',
-		icon     : 'user',
-		component: DemoPage
-	}
-];
 
 class Main extends Component {
 
