@@ -1,3 +1,3 @@
 export const API = {
-	login: '/api/users/login'
+	login: process.env.REACT_APP_API_URL + '/api/admin/users/login'
 };
