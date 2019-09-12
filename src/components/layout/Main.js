@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Link, withRouter } from "react-router-dom";
-import { Layout, Menu, Icon } from 'antd';
+import { Layout, Menu, Icon, Button } from 'antd';
 import { withCookies } from 'react-cookie';
 import links from '../../constants/aside.constant';
 const { Header, Footer, Sider, Content } = Layout;
@@ -11,6 +11,8 @@ class Main extends Component {
 
 	constructor(props) {
 		super(props);
+
+		this.logout = this.logout.bind(this);
 	}
 
 	UNSAFE_componentWillMount() {
@@ -18,6 +20,14 @@ class Main extends Component {
 		const token = cookies.get('token');
 		console.log('token', token);
 		this.isAuthenticated = !!token;
+	}
+
+	logout(e) {
+		if (confirm('Thoát khỏi hệ thống?')) {
+			const { cookies } = this.props;
+			cookies.remove('token');
+			this.props.history.push('/login');
+		}
 	}
 
 	render() {
@@ -29,13 +39,13 @@ class Main extends Component {
 						this.isAuthenticated ? (
 							<Component {...props} />
 						) : (
-							<Redirect
-								to={{
-									pathname: "/login",
-									state   : { from: props.location }
-								}}
-							/>
-						)
+								<Redirect
+									to={{
+										pathname: "/login",
+										state: { from: props.location }
+									}}
+								/>
+							)
 					}
 				/>
 			);
@@ -47,10 +57,10 @@ class Main extends Component {
 					{
 						links.map((c, index) => {
 							if (c.path === '') {
-								return <PrivateRoute key={index} component={c.component} exact path={`${this.props.match.path}/${c.path}`}/>
+								return <PrivateRoute key={index} component={c.component} exact path={`${this.props.match.path}/${c.path}`} />
 							}
 
-							return <PrivateRoute key={index} component={c.component} path={`${this.props.match.path}/${c.path}`}/>
+							return <PrivateRoute key={index} component={c.component} path={`${this.props.match.path}/${c.path}`} />
 						})
 					}
 				</div>
@@ -62,28 +72,32 @@ class Main extends Component {
 				<Sider
 					style={{
 						overflow: 'auto',
-						height  : '100vh',
+						height: '100vh',
 						position: 'fixed',
-						left    : 0,
+						left: 0,
 					}}
 				>
-					<div className="logo"/>
+					<div className="logo" />
 					<Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
 						{
 							links.map((link, index) => {
 								return (
 									<Menu.Item key={index}>
-										<Icon type={link.icon}/>
+										<Icon type={link.icon} />
 										<span className="nav-text">{link.title}</span>
-										<Link to={`${this.props.match.path}/${link.path}`}/>
+										<Link to={`${this.props.match.path}/${link.path}`} />
 									</Menu.Item>
 								)
 							})
 						}
 					</Menu>
+					<Button type="link" style={{ color: 'silver', marginLeft: '8.5px', marginTop: '80vh' }} onClick={this.logout}>
+						<Icon type="logout" />
+						<span style={{ marginLeft: '8.5px' }}>Đăng xuất</span>
+					</Button>
 				</Sider>
 				<Layout style={{ marginLeft: 200 }}>
-					<Header style={{ background: '#fff', padding: 0 }}/>
+					<Header style={{ background: '#fff', padding: 0 }} />
 					<Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
 						<div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
 							{renderContents()}

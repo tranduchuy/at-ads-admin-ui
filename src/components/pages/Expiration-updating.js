@@ -189,10 +189,10 @@ class ExpirationUpdating extends Component {
 
 							<Form.Item>
 								{getFieldDecorator('code', {
-									rules: [{ required: true, message: 'Vui lòng nhập mã website!' }],
+									rules: [{ required: true, message: 'Vui lòng nhập mã website' }],
 								})(
 									<Input
-										prefix={<Icon type="barcode" style={{ color: 'rgba(0,0,0,.25)' }} />}
+										prefix={<Icon type="qrcode" style={{ color: 'rgba(0,0,0,.25)' }} />}
 										placeholder="Mã website"
 									/>,
 								)}
