@@ -1,5 +1,5 @@
 import { Dashboard } from "../components/pages/Dashboard";
-import { ExpirationUpdating } from "../components/pages/Expiration-updating";
+import ExpirationUpdating from "../components/pages/Expiration-updating";
 
 export default [
 	{

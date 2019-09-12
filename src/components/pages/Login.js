@@ -7,6 +7,10 @@ class Login extends Component {
 
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			loginMessage: ''
+		};
 	}
 
 	componentWillMount() {
@@ -23,29 +27,41 @@ class Login extends Component {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
-				console.log('Received values of form: ', values);
-			}
-
-			// TODO: call api login
-			fetch(API.login, {
-				method: 'POST',
-				body: JSON.stringify({
-					email: 'admin@gmail.com',
-					password: '!master2019'
-				}),
-				headers: {
-					"Content-type": "application/json; charset=UTF-8"
+				//console.log('Received values of form: ', values);
+				const params = {
+					email: values.email,
+					password: values.password
 				}
-			}).then(response => {
-				return response.json()
-			}).then(json => {
-				const { cookies } = this.props;
-				cookies.set('token', json.data.meta.token);
 
-				setTimeout(() => {
-					this.props.history.push("/dashboard");
-				}, 1000);
-			});
+				fetch(API.login, {
+					method: 'POST',
+					body: JSON.stringify(params),
+					headers: {
+						"Content-type": "application/json; charset=UTF-8"
+					}
+				})
+					.then(res => {
+						if (res.status === 200)
+							return Promise.resolve(res.json());
+						return Promise.reject(res.json());
+					})
+					.then(
+						resolve => {
+							const { cookies } = this.props;
+							cookies.set('token', resolve.data.meta.token);
+
+							setTimeout(() => {
+								this.props.history.push("/dashboard");
+							}, 1000);
+						},
+						reject => reject.then(
+							res => {
+								this.setState({
+									loginMessage: res.messages[0]
+								});
+							})
+					)
+			}
 		});
 	};
 
@@ -70,36 +86,42 @@ class Login extends Component {
 					<Col span={6}>
 						<Form onSubmit={this.handleSubmit}
 							className="login-form">
+
 							<Form.Item>
-								{getFieldDecorator('username', {
-									rules: [{ required: true, message: 'Please input your username!' }],
+								{getFieldDecorator('email', {
+									rules: [{ required: true, message: 'Vui lòng nhập email' }],
 								})(
 									<Input
 										prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-										placeholder="Username"
+										placeholder="Email"
 									/>,
 								)}
 							</Form.Item>
+
 							<Form.Item>
 								{getFieldDecorator('password', {
-									rules: [{ required: true, message: 'Please input your Password!' }],
+									rules: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
 								})(
 									<Input
 										prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
 										type="password"
-										placeholder="Password"
+										placeholder="Mật khẩu"
 									/>,
 								)}
 							</Form.Item>
+
+							<p style={{ color: 'red', textAlign: 'center' }}>{this.state.loginMessage}</p>
+
 							<Form.Item>
 								<div style={{ textAlign: 'center' }}>
 									<Button type="primary"
 										htmlType="submit"
 										className="login-form-button">
-										Log in
+										Đăng nhập
 									</Button>
 								</div>
 							</Form.Item>
+
 						</Form>
 					</Col>
 					<Col span={9}></Col>
