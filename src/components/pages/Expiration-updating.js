@@ -4,7 +4,6 @@ import { Select } from 'antd';
 import { API } from "../../constants/api";
 import { withCookies } from 'react-cookie';
 import { Form, Icon, Input, Button, Col, Row } from 'antd';
-import { reject } from "q";
 
 const { Option } = Select;
 
@@ -29,6 +28,8 @@ class ExpirationUpdating extends Component {
 				isSucceed: true
 			}
 		}
+
+		this.handleChangePackage = this.handleChangePackage.bind(this);
 	}
 
 	componentDidMount() {
@@ -46,7 +47,10 @@ class ExpirationUpdating extends Component {
 		}).then(res => {
 			return res.json();
 		}).then(json => {
-			const packages = json.data.packages;
+			const packages = json.data.packages.sort((a, b) => {
+				return a.numOfDays - b.numOfDays;
+			});
+
 			this.setState({
 				packages,
 				selectedPackage: {
@@ -61,7 +65,7 @@ class ExpirationUpdating extends Component {
 			selectedPackage: {
 				_id: value
 			}
-		})
+		});
 	}
 
 	handleSubmit = e => {
@@ -95,6 +99,9 @@ class ExpirationUpdating extends Component {
 			})
 			.then(
 				resolve => {
+					this.setState({
+						domain: resolve.data.domain
+					});
 					this.updateVipDomain(params);
 				},
 				reject => reject.then(
@@ -156,7 +163,7 @@ class ExpirationUpdating extends Component {
 			'borderRadius': '5px',
 			'textAlign': 'left',
 		}
-		const selectedPackage = this.state.packages.length > 0 ? this.state.packages[0]._id : '';
+		const selectedPackage = this.state.selectedPackage._id || (this.state.packages.length > 0 ? this.state.packages[0]._id : '');
 		const updatingMessageColor = this.state.updatingMessage.isSucceed ? '#44b543' : 'red';
 
 		return (
@@ -177,10 +184,10 @@ class ExpirationUpdating extends Component {
 										value={selectedPackage}
 										style={{ width: '100%' }}
 										placeholder="Chọn gói"
-										onChangePackage={this.handleChangePackage}>
+										onChange={this.handleChangePackage}>
 										{
 											this.state.packages.map((item, index) => {
-												return <Option value={item._id} key={index}>{item.name}</Option>
+												return <Option value={item._id} key={index}>{item.name} - {item.numOfDays} ngày</Option>
 											})
 										}
 									</Select>
@@ -199,6 +206,7 @@ class ExpirationUpdating extends Component {
 							</Form.Item>
 
 							<p style={{ color: updatingMessageColor, textAlign: 'center' }}>{this.state.updatingMessage.message}</p>
+							<p>{this.state.domain ? `Domain: ${this.state.domain.domain}` : ''}</p>
 
 							<Form.Item>
 								<div style={{ textAlign: 'center' }}>

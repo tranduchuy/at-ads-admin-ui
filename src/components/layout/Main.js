@@ -23,7 +23,7 @@ class Main extends Component {
 	}
 
 	logout(e) {
-		if (confirm('Thoát khỏi hệ thống?')) {
+		if (window.confirm('Thoát khỏi hệ thống?')) {
 			const { cookies } = this.props;
 			cookies.remove('token');
 			this.props.history.push('/login');
