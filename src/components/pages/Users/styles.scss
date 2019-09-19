@@ -21,6 +21,7 @@
         color: white;
         padding-top: 15px;
         padding-bottom: 15px;
+        border-radius: 0;
       }
 
       th:nth-child(6) {
@@ -29,6 +30,11 @@
     }
 
     tr[class*="ant-table-row"] {
+
+      &:nth-child(odd) {
+        background: rgba(125,125,125,0.04);
+      }
+
       td {
         padding-top: 7px;
         padding-bottom: 7px;
