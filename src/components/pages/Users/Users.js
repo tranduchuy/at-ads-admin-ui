@@ -87,13 +87,19 @@ export class Users extends Component {
 
 	onChangePage(currentPage) {
 
-		if ((this.state.totalItems > this.state.limit)
-			|| (this.state.totalItems <= this.state.limit && !this.state.searchText)
-		) {
-			this.getUsers({
-				page: currentPage,
-				limit: this.state.limit
-			});
+		if (this.state.totalItems > this.state.limit) {
+			if (!this.state.searchText)
+				this.getUsers({
+					page: currentPage,
+					limit: this.state.limit
+				});
+		}
+		else {
+			if (!this.state.searchText)
+				this.getUsers({
+					page: currentPage,
+					limit: this.state.limit
+				});
 		}
 
 		this.setState({ page: currentPage });
