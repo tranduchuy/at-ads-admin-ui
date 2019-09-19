@@ -1,5 +1,6 @@
 import { Dashboard } from "../components/pages/Dashboard";
 import ExpirationUpdating from "../components/pages/Expiration-updating";
+import { Users } from "../components/pages/Users";
 
 export default [
 	{
@@ -13,5 +14,11 @@ export default [
 		path: 'update-expiration',
 		icon: 'sync',
 		component: ExpirationUpdating
+	},
+	{
+		title: 'Users',
+		path: 'users',
+		icon: 'user',
+		component: Users
 	}
 ];
