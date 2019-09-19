@@ -1,0 +1,38 @@
+.container {
+  .user-avatar {
+    height: 34px;
+    width: 34px;
+    border-radius: 50%;
+    display: table;
+    margin: 0 auto;
+  }
+
+  .user-name {
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: bold;
+  }
+
+  .ant-table {
+    border: 0.5px solid #eee;
+
+    thead[class*="ant-table-thead"] {
+      th {
+        background: rgba(3, 155, 229, 1);
+        color: white;
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+
+      th:nth-child(6) {
+        text-align: center;
+      }
+    }
+
+    tr[class*="ant-table-row"] {
+      td {
+        padding-top: 7px;
+        padding-bottom: 7px;
+      }
+    }
+  }
+}

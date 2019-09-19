@@ -58,14 +58,14 @@ class Main extends Component {
 						links.map((c, index) => {
 							if (c.path === '') {
 								return <PrivateRoute key={index}
-																		 component={c.component}
-																		 exact
-																		 path={`${this.props.match.path}/${c.path}`}/>
+									component={c.component}
+									exact
+									path={`${this.props.match.path}/${c.path}`} />
 							}
 
 							return <PrivateRoute key={index}
-																	 component={c.component}
-																	 path={`${this.props.match.path}/${c.path}`}/>
+								component={c.component}
+								path={`${this.props.match.path}/${c.path}`} />
 						})
 					}
 				</div>
