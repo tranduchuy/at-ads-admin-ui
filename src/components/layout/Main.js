@@ -96,7 +96,7 @@ class Main extends Component {
 							})
 						}
 					</Menu>
-					<Button type="link" style={{ color: 'silver', marginLeft: '8.5px', marginTop: '80vh' }} onClick={this.logout}>
+					<Button type="link" style={{ color: 'silver', marginLeft: '8.5px', marginTop: '70vh' }} onClick={this.logout}>
 						<Icon type="logout" />
 						<span style={{ marginLeft: '8.5px' }}>Đăng xuất</span>
 					</Button>

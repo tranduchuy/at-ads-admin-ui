@@ -12,10 +12,9 @@
     font-weight: bold;
   }
 
-  .ant-table {
-    border: 0.5px solid #eee;
+  .users-table {
 
-    thead[class*="ant-table-thead"] {
+    .ant-table-thead {
       th {
         background: rgba(3, 155, 229, 1);
         color: white;
@@ -29,10 +28,9 @@
       }
     }
 
-    tr[class*="ant-table-row"] {
-
+    .ant-table-row {
       &:nth-child(odd) {
-        background: rgba(125,125,125,0.04);
+        background: rgba(125, 125, 125, 0.04);
       }
 
       td {

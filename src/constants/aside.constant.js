@@ -1,6 +1,7 @@
 import { Dashboard } from "../components/pages/Dashboard";
 import ExpirationUpdating from "../components/pages/Expiration-updating";
 import Users from "../components/pages/Users/Users";
+import AdwordsAccounts from "../components/pages/Adwords-accounts/Adwords-accounts";
 
 export default [
 	{
@@ -12,7 +13,7 @@ export default [
 	{
 		title: 'Cập nhật thời hạn sử dụng',
 		path: 'update-expiration',
-		icon: 'sync',
+		icon: 'history',
 		component: ExpirationUpdating
 	},
 	{
@@ -20,5 +21,11 @@ export default [
 		path: 'users',
 		icon: 'user',
 		component: Users
+	},
+	{
+		title: 'Tài khoản Google Ads',
+		path: 'accounts',
+		icon: 'appstore',
+		component: AdwordsAccounts
 	}
 ];

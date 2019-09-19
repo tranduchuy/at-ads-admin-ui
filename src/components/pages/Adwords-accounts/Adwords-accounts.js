@@ -3,9 +3,9 @@ import { Row, Col, Table, Input, Button, Icon } from 'antd';
 import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
-import './Users-style.scss';
+import './Adwords-accounts-style.scss';
 
-export class Users extends Component {
+export class AdwordAccounts extends Component {
 
 	cookies;
 	token;
@@ -18,7 +18,7 @@ export class Users extends Component {
 
 		this.state = {
 			searchText: '',
-			users: [],
+			accounts: [],
 			totalItems: 0,
 			page: 1,
 			limit: 10
@@ -26,7 +26,7 @@ export class Users extends Component {
 	}
 
 	componentDidMount() {
-		this.getUsers({
+		this.getAccounts({
 			page: this.state.page,
 			limit: this.state.limit
 		});
@@ -68,7 +68,7 @@ export class Users extends Component {
 		confirm(); // hide panel search
 
 		if (selectedKeys[0])
-			this.getUsers({ [dataIndex]: selectedKeys[0] });
+			this.getAccounts({ [dataIndex]: selectedKeys[0] });
 
 		this.setState({ searchText: selectedKeys[0] });
 	};
@@ -81,14 +81,14 @@ export class Users extends Component {
 	onChangePage(currentPage) {
 
 		if (this.state.totalItems > this.state.limit) {
-			this.getUsers({
+			this.getAccounts({
 				page: currentPage,
 				limit: this.state.limit
 			});
 		}
 		else {
 			if (!this.state.searchText)
-				this.getUsers({
+				this.getAccounts({
 					page: currentPage,
 					limit: this.state.limit
 				});
@@ -99,8 +99,8 @@ export class Users extends Component {
 
 	isEmptyObj = obj => Object.keys(obj).length === 0;
 
-	getUsers(param) {
-		let url = API.getUsers;
+	getAccounts(param) {
+		let url = API.getAccounts;
 
 		if (!this.isEmptyObj(param)) {
 			url += '?';
@@ -119,61 +119,76 @@ export class Users extends Component {
 		}).then(res => {
 			return res.json();
 		}).then(json => {
-			let users = (json.data.entries || [])
+			let accounts = (json.data.entries || [])
 				.map(item => {
 					return {
-						id: item._id,
-						name: item.name,
-						email: item.email,
-						phone: item.phone,
-						googleId: item.googleId,
+						adsId: this.formatAdsId(item.adsId),
+						isConnected: item.isConnected,
+						userId: item.user,
 						createdAt: item.createdAt,
-						avatar: item.avatar
 					}
 				});
 
-			if (users.length === 0)
+			if (accounts.length === 0)
 				this.setState({ totalItems: 0 });
 
 			this.setState({
-				users,
+				accounts,
 				totalItems: json.data.totalItems
 			});
 		})
 	}
 
+	formatAdsId(adsId) {
+		let arr = adsId.split('');
+		return arr.splice(0, 3).join('') + '-'
+			+ arr.splice(0, 3).join('') + '-'
+			+ arr.splice(0, 4).join('');
+	}
+
 	render() {
 
-		const userColumns = [
+		const accountColumns = [
 			{
-				title: 'Họ và Tên',
-				dataIndex: 'name',
-				key: 'name',
-				...this.getColumnSearchProps('name'),
-				render: text => {
+				title: 'Google Ads ID',
+				dataIndex: 'adsId',
+				key: 'adsId',
+				render: (text, record) => {
+					if (record.isConnected === true)
+						return (
+							<span style={{ color: '#44b543', fontWeight: 'bold' }}>{text}</span>
+						)
 					return (
-						<span className="user-name">{text}</span>
+						<span style={{ color: 'crimson', fontWeight: 'bold' }}>{text}</span>
 					)
+				},
+			},
+			{
+				title: 'Quyền quản lý',
+				dataIndex: 'isConnected',
+				key: 'isConnected',
+				render: text => {
+					if (text === true)
+						return (
+							<span style={{ color: '#44b543' }}>
+								<Icon type="check-circle" theme="filled" /> Đã chấp nhận
+							</span>
+						);
+					return (
+						<span style={{ color: 'crimson' }}>
+							<Icon type="close-circle" theme="filled" /> Chưa chấp nhận
+						</span>
+					);
 				}
 			},
 			{
-				title: 'Email',
-				dataIndex: 'email',
-				key: 'email',
-				...this.getColumnSearchProps('email')
+				title: 'Người dùng (uid)',
+				dataIndex: 'userId',
+				key: 'userId',
+				...this.getColumnSearchProps('userId'),
 			},
 			{
-				title: 'Số điện thoại',
-				dataIndex: 'phone',
-				key: 'phone',
-			},
-			{
-				title: 'Google ID',
-				dataIndex: 'googleId',
-				key: 'googleId',
-			},
-			{
-				title: 'Ngày tham gia',
+				title: 'Ngày thêm',
 				dataIndex: 'createdAt',
 				key: 'createdAt',
 				render: text => {
@@ -182,17 +197,6 @@ export class Users extends Component {
 					)
 				}
 			},
-			{
-				title: 'Ảnh đại diện',
-				dataIndex: 'avatar',
-				key: 'avatar',
-				render: text => {
-					return (
-						<img className="user-avatar" alt=""
-							src={text || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} />
-					)
-				}
-			}
 		];
 
 		return (
@@ -206,14 +210,19 @@ export class Users extends Component {
 							current: this.state.page,
 							onChange: (currentPage) => this.onChangePage(currentPage)
 						}}
-							dataSource={this.state.users}
-							columns={userColumns}
-							rowKey={record => record.id}
-							className="users-table" />
+							dataSource={this.state.accounts}
+							columns={accountColumns}
+							rowKey={record => record.adsId}
+							className="accounts-table"
+							rowClassName={(record) => {
+								if (record.isConnected === true)
+									return 'isConnected';
+								return 'isNotConnected';
+							}} />
 					</Col>
 				</Row>
 			</div>
 		)
 	}
 }
-export default withCookies(Users);
+export default withCookies(AdwordAccounts);
