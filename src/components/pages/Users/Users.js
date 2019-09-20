@@ -132,12 +132,9 @@ export class Users extends Component {
 					}
 				});
 
-			if (users.length === 0)
-				this.setState({ totalItems: 0 });
-
 			this.setState({
 				users,
-				totalItems: json.data.totalItems
+				totalItems: users.length > 0 ? json.data.totalItems : 0 
 			});
 		})
 	}

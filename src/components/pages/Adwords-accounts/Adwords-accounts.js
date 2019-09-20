@@ -129,12 +129,9 @@ export class AdwordAccounts extends Component {
 					}
 				});
 
-			if (accounts.length === 0)
-				this.setState({ totalItems: 0 });
-
 			this.setState({
 				accounts,
-				totalItems: json.data.totalItems
+				totalItems: accounts.length > 0 ? json.data.totalItems : 0
 			});
 		})
 	}
