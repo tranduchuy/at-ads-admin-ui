@@ -150,9 +150,13 @@ export class Users extends Component {
 				dataIndex: 'name',
 				key: 'name',
 				...this.getColumnSearchProps('name'),
-				render: text => {
+				render: (text, record) => {
 					return (
-						<span className="user-name">{text}</span>
+						<div>
+							<img className="user-avatar" alt=""
+								src={record.avatar || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} />
+							<span className="user-name">{text}</span>
+						</div>
 					)
 				}
 			},
@@ -182,17 +186,6 @@ export class Users extends Component {
 					)
 				}
 			},
-			{
-				title: 'Ảnh đại diện',
-				dataIndex: 'avatar',
-				key: 'avatar',
-				render: text => {
-					return (
-						<img className="user-avatar" alt=""
-							src={text || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} />
-					)
-				}
-			}
 		];
 
 		return (

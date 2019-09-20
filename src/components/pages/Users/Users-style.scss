@@ -3,8 +3,7 @@
     height: 34px;
     width: 34px;
     border-radius: 50%;
-    display: table;
-    margin: 0 auto;
+    margin-right: 15px;
   }
 
   .user-name {
@@ -21,10 +20,6 @@
         padding-top: 15px;
         padding-bottom: 15px;
         border-radius: 0;
-      }
-
-      th:nth-child(6) {
-        text-align: center;
       }
     }
 
