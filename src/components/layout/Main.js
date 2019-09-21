@@ -18,13 +18,12 @@ class Main extends Component {
 	UNSAFE_componentWillMount() {
 		const { cookies } = this.props;
 		const token = cookies.get('token');
-		console.log('token', token);
+		//console.log('token', token);
 		this.isAuthenticated = !!token;
 	}
 
 	logout() {
 		const { cookies } = this.props;
-		//cookies.remove("token", {path: '/'});
 		cookies.remove('token', { path: '/' });
 		this.props.history.push('/login');
 	}

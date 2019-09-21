@@ -49,7 +49,7 @@ class Login extends Component {
 					.then(
 						resolve => {
 							const { cookies } = this.props;
-							cookies.set('token', resolve.data.meta.token);
+							cookies.set('token', resolve.data.meta.token, { path: '/' });
 
 							setTimeout(() => {
 								this.props.history.push("/dashboard");
