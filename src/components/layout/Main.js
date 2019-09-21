@@ -24,6 +24,7 @@ class Main extends Component {
 
 	logout() {
 		const { cookies } = this.props;
+		//cookies.remove("token", {path: '/'});
 		cookies.remove('token', { path: '/' });
 		this.props.history.push('/login');
 	}
