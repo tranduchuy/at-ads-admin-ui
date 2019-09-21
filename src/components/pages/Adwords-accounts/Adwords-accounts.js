@@ -147,7 +147,14 @@ export class AdwordAccounts extends Component {
 
 		const accountColumns = [
 			{
-				title: 'Google Ads ID',
+				title: (filter, sortOrder) => {
+					return (
+						<div>
+							<img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/logo_Google_Ads_192px.max-200x200.png" alt="" className="ggAds-icon" />
+							<span>Google Ads ID</span>
+						</div>
+					)
+				},
 				dataIndex: 'adsId',
 				key: 'adsId',
 				render: (text, record) => {

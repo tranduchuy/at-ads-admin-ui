@@ -1,8 +1,8 @@
-import { Dashboard } from "../components/pages/Dashboard";
-import ExpirationUpdating from "../components/pages/Expiration-updating";
 import Users from "../components/pages/Users/Users";
 import AdwordsAccounts from "../components/pages/Adwords-accounts/Adwords-accounts";
 import GoogleAdsErrors from "../components/pages/Google-ads-errors/Google-ads-errors";
+import Dashboard  from "../components/pages/Dashboard/Dashboard";
+import ExpirationUpdating from "../components/pages/Expiration-updating/Expiration-updating";
 
 export default [
 	{

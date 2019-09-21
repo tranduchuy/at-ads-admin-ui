@@ -15,7 +15,7 @@
 
     .ant-table-thead {
       th {
-        background: rgba(3, 155, 229, 1);
+        background: rgba(3, 155, 229, 0.9);
         color: white;
         padding-top: 15px;
         padding-bottom: 15px;
@@ -29,8 +29,8 @@
       }
 
       td {
-        padding-top: 7px;
-        padding-bottom: 7px;
+        padding-top: 9px;
+        padding-bottom: 9px;
       }
     }
   }
