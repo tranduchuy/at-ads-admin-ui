@@ -18,7 +18,7 @@ export default [
 		component: ExpirationUpdating
 	},
 	{
-		title: 'Người dùng',
+		title: 'Quản lý người dùng',
 		path: 'users',
 		icon: 'user',
 		component: Users

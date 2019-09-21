@@ -23,6 +23,12 @@
   color: #61dafb;
 }
 
+.ant-layout-sider {
+  width: 250px !important;
+  min-width: 250px !important;
+  max-width: 250px !important;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

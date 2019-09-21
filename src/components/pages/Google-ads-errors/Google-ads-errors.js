@@ -83,7 +83,7 @@ export class GoogleAdsErrors extends Component {
 
         for (const key in errorTemplate) {
 
-            if (key !== 'authConfig' && key != 'error' && key !== 'params') {
+            if (key !== 'authConfig' && key !== 'error' && key !== 'params') {
                 ggAdsErrorColumns.push({
                     title: key,
                     dataIndex: key,

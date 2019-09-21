@@ -153,10 +153,10 @@ export class AdwordAccounts extends Component {
 				render: (text, record) => {
 					if (record.isConnected === true)
 						return (
-							<span style={{ color: '#44b543', fontWeight: 'bold' }}>{text}</span>
+							<span style={{ color: '#44b543', fontFamily: 'tahoma' }}>{text}</span>
 						)
 					return (
-						<span style={{ color: 'crimson', fontWeight: 'bold' }}>{text}</span>
+						<span style={{ color: 'crimson', fontFamily: 'tahoma' }}>{text}</span>
 					)
 				},
 			},

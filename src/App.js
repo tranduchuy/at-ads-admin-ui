@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.scss';
 import "antd/dist/antd.css";
-import LoginPage from './components/pages/Login';
 import Main from './components/layout/Main';
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { CookiesProvider } from 'react-cookie';
+import Login from './components/pages/Login/Login';
 
 function Root() {
 
@@ -16,7 +16,7 @@ function Root() {
 		<CookiesProvider>
 			<BrowserRouter>
 				<Switch>
-					<Route path="/login" component={LoginPage}/>
+					<Route path="/login" component={Login}/>
 					<Route path="/dashboard"
 								 render={renderDashboard}/>
 					<Route path="/**" render={() => {

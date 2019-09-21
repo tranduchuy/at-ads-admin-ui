@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Link, withRouter } from "react-router-dom";
-import { Layout, Menu, Icon, Button } from 'antd';
+import { Layout, Menu, Icon, Button, Popconfirm } from 'antd';
 import { withCookies } from 'react-cookie';
 import links from '../../constants/aside.constant';
 const { Header, Footer, Sider, Content } = Layout;
@@ -22,12 +22,10 @@ class Main extends Component {
 		this.isAuthenticated = !!token;
 	}
 
-	logout(e) {
-		if (window.confirm('Thoát khỏi hệ thống?')) {
-			const { cookies } = this.props;
-			cookies.remove('token');
-			this.props.history.push('/login');
-		}
+	logout() {
+		const { cookies } = this.props;
+		cookies.remove('token', { path: '/' });
+		this.props.history.push('/login');
 	}
 
 	render() {
@@ -83,7 +81,7 @@ class Main extends Component {
 					}}
 				>
 					<div className="logo" />
-					<Menu theme="dark" mode="inline" defaultSelectedKeys={['4']}>
+					<Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
 						{
 							links.map((link, index) => {
 								return (
@@ -96,12 +94,21 @@ class Main extends Component {
 							})
 						}
 					</Menu>
-					<Button type="link" style={{ color: 'silver', marginLeft: '8.5px', marginTop: '70vh' }} onClick={this.logout}>
-						<Icon type="logout" />
-						<span style={{ marginLeft: '8.5px' }}>Đăng xuất</span>
-					</Button>
+
+					<Popconfirm
+						placement="rightBottom"
+						title="Thoát khỏi hệ thống?"
+						onConfirm={this.logout}
+						okText="Đồng ý"
+						cancelText="Hủy"
+					>
+						<Button type="link" style={{ color: 'silver', marginLeft: '8.5px', marginTop: '60vh' }}>
+							<Icon type="logout" />
+							<span style={{ marginLeft: '8.5px' }}>Đăng xuất</span>
+						</Button>
+					</Popconfirm>
 				</Sider>
-				<Layout style={{ marginLeft: 200 }}>
+				<Layout style={{ marginLeft: 250 }}>
 					<Header style={{ background: '#fff', padding: 0 }} />
 					<Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
 						<div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>

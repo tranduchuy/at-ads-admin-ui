@@ -1,0 +1,64 @@
+body {
+  background: url("../../../assets/images/dark-material-bg.jpg");
+  background-size: 100% 100%;
+  background-attachment: fixed;
+
+  .login-form {
+    background: white;
+    filter: drop-shadow(0px 1px 4px black);
+    padding: 80px 60px 0 60px;
+    min-width: 30vw;
+    height: 100vh;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    -webkit-animation: formAnimation 0.4s linear;
+
+    .form-title {
+      font-size: 26px;
+      text-align: center;
+    }
+
+    @keyframes formAnimation {
+      from {
+        top: 0;
+      }
+      to {
+        top: 50%;
+      }
+    }
+
+    .logo {
+      padding: 20px;
+      padding-bottom: 30px;
+      img {
+        width: 120px;
+        display: table;
+        margin: 0 auto;
+        filter: drop-shadow(0px 1px 1px black);
+        transition: 0.2s;
+
+        &:hover {
+          transform: scale(1.05, 1.05);
+        }
+      }
+    }
+
+    .ant-input {
+      min-height: 50px;
+    }
+
+    .login-form-button {
+      background: #039be5;
+      color: white;
+      border-radius: 0;
+      border: 0;
+      min-height: 38px;
+      margin-top: 10px;
+      box-shadow: 1px 1px 2px silver;
+    }
+  }
+}

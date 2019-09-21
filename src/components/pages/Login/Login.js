@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox, Col, Row } from 'antd';
+import { Form, Icon, Input, Button, Col, Row } from 'antd';
 import { withCookies } from 'react-cookie';
-import { API } from '../../constants/api';
+import { API } from '../../../constants/api';
+import './Login-style.scss';
 
 class Login extends Component {
 
@@ -67,32 +68,27 @@ class Login extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const headerTitleStyle = {
-			'textAlign': 'center',
-			'padding': '20px 0'
-		};
 
 		return (
 			<div>
 				<Row>
 					<Col span={9}></Col>
 					<Col span={6}>
-						<h2 style={headerTitleStyle}>Click CPanel</h2>
-					</Col>
-					<Col span={9}></Col>
-				</Row>
-				<Row>
-					<Col span={9}></Col>
-					<Col span={6}>
 						<Form onSubmit={this.handleSubmit}
 							className="login-form">
+
+							<div className="form-title">Click CPanel</div>
+
+							<div className="logo">
+								<img src={require('../../../assets/images/app-logo.png')} alt="..." />
+							</div>
 
 							<Form.Item>
 								{getFieldDecorator('email', {
 									rules: [{ required: true, message: 'Vui lòng nhập email' }],
 								})(
 									<Input
-										prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+										prefix={<Icon type="user" />}
 										placeholder="Email"
 									/>,
 								)}
@@ -103,7 +99,7 @@ class Login extends Component {
 									rules: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
 								})(
 									<Input
-										prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+										prefix={<Icon type="lock" />}
 										type="password"
 										placeholder="Mật khẩu"
 									/>,
@@ -114,10 +110,10 @@ class Login extends Component {
 
 							<Form.Item>
 								<div style={{ textAlign: 'center' }}>
-									<Button type="primary"
+									<Button
 										htmlType="submit"
 										className="login-form-button">
-										Đăng nhập
+										ĐĂNG NHẬP
 									</Button>
 								</div>
 							</Form.Item>
