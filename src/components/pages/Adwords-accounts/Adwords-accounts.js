@@ -175,12 +175,12 @@ export class AdwordAccounts extends Component {
 					if (text === true)
 						return (
 							<span style={{ color: '#44b543' }}>
-								<Icon type="check-circle" theme="filled" /> Đã chấp nhận
+								<Icon type="check" /> Đã chấp nhận
 							</span>
 						);
 					return (
 						<span style={{ color: 'crimson' }}>
-							<Icon type="close-circle" theme="filled" /> Chưa chấp nhận
+							<Icon type="close" /> Chưa chấp nhận
 						</span>
 					);
 				}

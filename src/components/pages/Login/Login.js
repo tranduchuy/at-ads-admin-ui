@@ -111,6 +111,7 @@ class Login extends Component {
 							<Form.Item>
 								<div style={{ textAlign: 'center' }}>
 									<Button
+										type="danger"
 										htmlType="submit"
 										className="login-form-button">
 										ĐĂNG NHẬP

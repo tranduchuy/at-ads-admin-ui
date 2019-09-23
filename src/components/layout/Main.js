@@ -115,7 +115,7 @@ class Main extends Component {
 							{renderContents()}
 						</div>
 					</Content>
-					<Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+					<Footer style={{ textAlign: 'center' }}>Click CPanel ©2019 Created by Appnet Technology</Footer>
 				</Layout>
 			</Layout>
 		);

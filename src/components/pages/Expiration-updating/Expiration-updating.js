@@ -4,6 +4,7 @@ import { Select } from 'antd';
 import { API } from "../../../constants/api";
 import { withCookies } from 'react-cookie';
 import { Form, Icon, Input, Button, Col, Row } from 'antd';
+import './Expiration-updating-style.scss';
 
 const { Option } = Select;
 
@@ -153,33 +154,22 @@ class ExpirationUpdating extends Component {
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
-		const headerTitleStyle = {
-			'textAlign': 'center',
-			'padding': '20px 0'
-		};
-		const formStyle = {
-			'border': '1px solid #E0E0E1',
-			'padding': '20px',
-			'borderRadius': '5px',
-			'textAlign': 'left',
-		}
 		const selectedPackage = this.state.selectedPackage._id || (this.state.packages.length > 0 ? this.state.packages[0]._id : '');
 		const updatingMessageColor = this.state.updatingMessage.isSucceed ? '#44b543' : 'red';
 
 		return (
-			<div>
-				<Row><h2 style={headerTitleStyle}>CẬP NHẬT THỜI HẠN SỬ DỤNG</h2></Row>
+			<div className="container">
 				<Row>
+					<p className="main-title">CẬP NHẬT THỜI HẠN SỬ DỤNG</p>
 					<Col span={9}></Col>
 					<Col span={6}>
 						<Form
 							onSubmit={this.handleSubmit}
-							style={formStyle}
 							className="update-expiration-form">
 
 							<Form.Item>
 								<label>
-									Gói:
+									Chọn gói:
 									<Select
 										value={selectedPackage}
 										style={{ width: '100%' }}
