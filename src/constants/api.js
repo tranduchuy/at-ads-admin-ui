@@ -1,9 +1,12 @@
+const host = process.env.REACT_APP_API_URL;
+
 export const API = {
-	login: process.env.REACT_APP_API_URL + '/api/admin/users/login',
-	getPackages: process.env.REACT_APP_API_URL + '/api/packages',
-	checkWebsiteCode: process.env.REACT_APP_API_URL + '/api/websites/{code}',
-	updateVipDomain: process.env.REACT_APP_API_URL + '/api/users/website',
-	getUsers: process.env.REACT_APP_API_URL + '/api/admin/users',
-	getAccounts: process.env.REACT_APP_API_URL + '/api/admin/users/accounts',
-	getGoogleAdsErrors: process.env.REACT_APP_API_URL + '/api/admin/users/error-google-ads',
-}
+	login                     : `${host}/api/admin/users/login`,
+	getPackages               : `${host}/api/packages`,
+	checkWebsiteCode          : `${host}/api/websites/{code}`,
+	updateVipDomain           : `${host}/api/users/website`,
+	getUsers                  : `${host}/api/admin/users`,
+	getAccounts               : `${host}/api/admin/users/accounts`,
+	getGoogleAdsErrors        : `${host}/api/admin/users/error-google-ads`,
+	statisticGoogleApiAndError: `${host}/api/admin/users/report/google-statistic`,
+};

@@ -3,6 +3,14 @@ import { Route, Redirect, Link, withRouter } from "react-router-dom";
 import { Layout, Menu, Icon, Button, Popconfirm } from 'antd';
 import { withCookies } from 'react-cookie';
 import links from '../../constants/aside.constant';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
+import { AsideBtnLogout } from "./AsideBtnLogout";
+import AsideUserInfo  from "./AsideUserInfo";
+import CustomHeader from './CustomHeader';
+import logoImg from '../../assets/images/app-logo.png';
+import './Main.scss';
+
 const { Header, Footer, Sider, Content } = Layout;
 
 class Main extends Component {
@@ -18,8 +26,13 @@ class Main extends Component {
 	UNSAFE_componentWillMount() {
 		const { cookies } = this.props;
 		const token = cookies.get('token');
+		const user = cookies.get('user');
 		//console.log('token', token);
-		this.isAuthenticated = !!token;
+		this.isAuthenticated = !!token && !!user;
+
+		if (this.isAuthenticated) {
+			this.props.login(user, token);
+		}
 	}
 
 	logout() {
@@ -37,13 +50,13 @@ class Main extends Component {
 						this.isAuthenticated ? (
 							<Component {...props} />
 						) : (
-								<Redirect
-									to={{
-										pathname: "/login",
-										state: { from: props.location }
-									}}
-								/>
-							)
+							<Redirect
+								to={{
+									pathname: "/login",
+									state   : { from: props.location }
+								}}
+							/>
+						)
 					}
 				/>
 			);
@@ -56,14 +69,14 @@ class Main extends Component {
 						links.map((c, index) => {
 							if (c.path === '') {
 								return <PrivateRoute key={index}
-									component={c.component}
-									exact
-									path={`${this.props.match.path}/${c.path}`} />
+																		 component={c.component}
+																		 exact
+																		 path={`${this.props.match.path}/${c.path}`}/>
 							}
 
 							return <PrivateRoute key={index}
-								component={c.component}
-								path={`${this.props.match.path}/${c.path}`} />
+																	 component={c.component}
+																	 path={`${this.props.match.path}/${c.path}`}/>
 						})
 					}
 				</div>
@@ -75,41 +88,35 @@ class Main extends Component {
 				<Sider
 					style={{
 						overflow: 'auto',
-						height: '100vh',
+						height  : '100vh',
 						position: 'fixed',
-						left: 0,
+						left    : 0,
 					}}
 				>
-					<div className="logo" />
+					<div className="logo">
+						<img src={logoImg}/>
+					</div>
+
+					<AsideUserInfo/>
+
 					<Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
 						{
 							links.map((link, index) => {
 								return (
 									<Menu.Item key={index}>
-										<Icon type={link.icon} />
+										<Icon type={link.icon}/>
 										<span className="nav-text">{link.title}</span>
-										<Link to={`${this.props.match.path}/${link.path}`} />
+										<Link to={`${this.props.match.path}/${link.path}`}/>
 									</Menu.Item>
 								)
 							})
 						}
 					</Menu>
 
-					<Popconfirm
-						placement="rightBottom"
-						title="Thoát khỏi hệ thống?"
-						onConfirm={this.logout}
-						okText="Đồng ý"
-						cancelText="Hủy"
-					>
-						<Button type="link" style={{ color: 'silver', marginLeft: '8.5px', marginTop: '60vh' }}>
-							<Icon type="logout" />
-							<span style={{ marginLeft: '8.5px' }}>Đăng xuất</span>
-						</Button>
-					</Popconfirm>
+					<AsideBtnLogout/>
 				</Sider>
 				<Layout style={{ marginLeft: 250 }}>
-					<Header style={{ background: '#fff', padding: 0 }} />
+					<CustomHeader/>
 					<Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
 						<div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
 							{renderContents()}
@@ -122,4 +129,8 @@ class Main extends Component {
 	}
 }
 
-export default withCookies(withRouter(Main));
+const mapStateToProps = state => ({
+	user: state.user
+});
+
+export default connect(mapStateToProps, actions)(withCookies(withRouter(Main)));

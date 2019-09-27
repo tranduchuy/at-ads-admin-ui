@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button, Col, Row } from 'antd';
 import { withCookies } from 'react-cookie';
+import { connect } from "react-redux";
 import { API } from '../../../constants/api';
 import './Login-style.scss';
+import * as actions from '../../../actions';
 
 class Login extends Component {
 
@@ -32,7 +34,7 @@ class Login extends Component {
 				const params = {
 					email: values.email,
 					password: values.password
-				}
+				};
 
 				fetch(API.login, {
 					method: 'POST',
@@ -49,7 +51,11 @@ class Login extends Component {
 					.then(
 						resolve => {
 							const { cookies } = this.props;
-							cookies.set('token', resolve.data.meta.token, { path: '/' });
+							const token = resolve.data.meta.token;
+							const user = resolve.data.user;
+							this.props.login(user, token);
+							cookies.set('token', token, { path: '/' });
+							cookies.set('user', user, { path: '/' });
 
 							setTimeout(() => {
 								this.props.history.push("/dashboard");
@@ -129,12 +135,9 @@ class Login extends Component {
 }
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(Login);
-export default withCookies(WrappedNormalLoginForm);
+const mapStateToProps = state => ({
+	user: state.user
+});
 
-const mapStateToProps = state => {
-	return {
-		user: user
-	}
-}
-
+export default withCookies(connect(mapStateToProps, actions)(WrappedNormalLoginForm));
 
