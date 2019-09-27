@@ -5,7 +5,7 @@ import { withCookies } from 'react-cookie';
 import links from '../../constants/aside.constant';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import { AsideBtnLogout } from "./AsideBtnLogout";
+import AsideBtnLogout  from "./AsideBtnLogout";
 import AsideUserInfo  from "./AsideUserInfo";
 import CustomHeader from './CustomHeader';
 import logoImg from '../../assets/images/app-logo.png';
@@ -19,8 +19,6 @@ class Main extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.logout = this.logout.bind(this);
 	}
 
 	UNSAFE_componentWillMount() {
@@ -33,12 +31,6 @@ class Main extends Component {
 		if (this.isAuthenticated) {
 			this.props.login(user, token);
 		}
-	}
-
-	logout() {
-		const { cookies } = this.props;
-		cookies.remove('token', { path: '/' });
-		this.props.history.push('/login');
 	}
 
 	render() {

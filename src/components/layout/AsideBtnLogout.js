@@ -1,9 +1,19 @@
 import { Button, Icon, Popconfirm } from "antd";
 import React from 'react';
+import { withCookies } from "react-cookie";
+import { withRouter } from 'react-router-dom';
 
-export class AsideBtnLogout extends React.Component {
+class AsideBtnLogout extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props);
+
+		this.logout = this.logout.bind(this);
+	}
+
+	logout() {
+		const { cookies } = this.props;
+		cookies.remove('token', { path: '/' });
+		this.props.history.push('/login');
 	}
 
 	render() {
@@ -21,3 +31,5 @@ export class AsideBtnLogout extends React.Component {
 		)
 	}
 }
+
+export default withCookies(withRouter(AsideBtnLogout));
