@@ -130,3 +130,11 @@ class Login extends Component {
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(Login);
 export default withCookies(WrappedNormalLoginForm);
+
+const mapStateToProps = state => {
+	return {
+		user: user
+	}
+}
+
+
