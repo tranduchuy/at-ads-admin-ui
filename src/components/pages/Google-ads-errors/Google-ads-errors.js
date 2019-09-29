@@ -84,7 +84,7 @@ export class GoogleAdsErrors extends Component {
                     key,
                     render: text => {
                         if (key === 'createdAt')
-                            return moment(text).format('HH:mm DD/MM/YYY');
+                            return moment(text).format('HH:mm DD/MM/YYYY');
                         return text;
                     }
                 });
