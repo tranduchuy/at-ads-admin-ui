@@ -7,14 +7,8 @@ import './Users-style.scss';
 
 export class Users extends Component {
 
-	cookies;
-	token;
-
 	constructor(props) {
 		super(props);
-
-		this.cookies = this.props.cookies;
-		this.token = this.cookies.get('token');
 
 		this.state = {
 			searchText: '',
@@ -114,7 +108,7 @@ export class Users extends Component {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'accessToken': this.token
+				'accessToken': this.props.allCookies.token
 			}
 		}).then(res => {
 			return res.json();
@@ -134,7 +128,7 @@ export class Users extends Component {
 
 			this.setState({
 				users,
-				totalItems: users.length > 0 ? json.data.totalItems : 0 
+				totalItems: users.length > 0 ? json.data.totalItems : 0
 			});
 		})
 	}

@@ -3,6 +3,8 @@ import { Form, Icon, Input, Button, Col, Row } from 'antd';
 import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import './Login-style.scss';
+import store from '../../../store';
+import { LOGIN_SUCCESS } from '../../../actions/types';
 
 class Login extends Component {
 
@@ -50,6 +52,14 @@ class Login extends Component {
 						resolve => {
 							const { cookies } = this.props;
 							cookies.set('token', resolve.data.meta.token, { path: '/' });
+
+							store.dispatch({
+								type: LOGIN_SUCCESS,
+								user: {
+									loggedInUser: resolve.data.user,
+									token: resolve.data.meta.token
+								}
+							});
 
 							setTimeout(() => {
 								this.props.history.push("/dashboard");
@@ -131,10 +141,6 @@ class Login extends Component {
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(Login);
 export default withCookies(WrappedNormalLoginForm);
 
-const mapStateToProps = state => {
-	return {
-		user: user
-	}
-}
+
 
 

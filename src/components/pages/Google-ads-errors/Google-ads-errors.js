@@ -8,14 +8,8 @@ import JSONPretty from 'react-json-pretty';
 
 export class GoogleAdsErrors extends Component {
 
-    cookies;
-    token;
-
     constructor(props) {
         super(props);
-
-        this.cookies = this.props.cookies;
-        this.token = this.cookies.get('token');
 
         this.state = {
             ggAdsErrors: [],
@@ -46,7 +40,7 @@ export class GoogleAdsErrors extends Component {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                'accessToken': this.token
+                'accessToken': this.props.allCookies.token
             }
         }).then(res => {
             return res.json();

@@ -10,14 +10,8 @@ const { Option } = Select;
 
 class ExpirationUpdating extends Component {
 
-	cookies;
-	token;
-
 	constructor(props) {
 		super(props);
-
-		this.cookies = this.props.cookies;
-		this.token = this.cookies.get('token');
 
 		this.state = {
 			packages: [],
@@ -43,7 +37,7 @@ class ExpirationUpdating extends Component {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'accessToken': this.token
+				'accessToken': this.props.allCookies.token
 			}
 		}).then(res => {
 			return res.json();
@@ -90,7 +84,7 @@ class ExpirationUpdating extends Component {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'accessToken': this.token
+				'accessToken': this.props.allCookies.token
 			}
 		})
 			.then(res => {
@@ -123,7 +117,7 @@ class ExpirationUpdating extends Component {
 			body: JSON.stringify(params),
 			headers: {
 				"Content-type": "application/json; charset=UTF-8",
-				"accessToken": this.token
+				"accessToken": this.props.allCookies.token
 			}
 		})
 			.then(res => {

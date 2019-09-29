@@ -7,14 +7,8 @@ import './Adwords-accounts-style.scss';
 
 export class AdwordAccounts extends Component {
 
-	cookies;
-	token;
-
 	constructor(props) {
 		super(props);
-
-		this.cookies = this.props.cookies;
-		this.token = this.cookies.get('token');
 
 		this.state = {
 			searchText: '',
@@ -114,7 +108,7 @@ export class AdwordAccounts extends Component {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'accessToken': this.token
+				'accessToken': this.props.allCookies.token
 			}
 		}).then(res => {
 			return res.json();

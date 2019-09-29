@@ -3,6 +3,7 @@ import { Route, Redirect, Link, withRouter } from "react-router-dom";
 import { Layout, Menu, Icon, Button, Popconfirm } from 'antd';
 import { withCookies } from 'react-cookie';
 import links from '../../constants/aside.constant';
+
 const { Header, Footer, Sider, Content } = Layout;
 
 class Main extends Component {
@@ -18,7 +19,6 @@ class Main extends Component {
 	UNSAFE_componentWillMount() {
 		const { cookies } = this.props;
 		const token = cookies.get('token');
-		//console.log('token', token);
 		this.isAuthenticated = !!token;
 	}
 
@@ -123,3 +123,4 @@ class Main extends Component {
 }
 
 export default withCookies(withRouter(Main));
+
