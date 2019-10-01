@@ -11,7 +11,7 @@ class AsideUserInfo extends React.Component {
 	render() {
 		return (
 			<div className={'email'}>
-				{this.props.users.user.email}
+				{this.props.users.user ? this.props.users.user.email : ''}
 			</div>
 		)
 	}

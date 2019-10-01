@@ -24,7 +24,7 @@ class CustomHeader extends Component {
 				</Menu>
 
 				<div className="logo">
-					{this.props.users.user.email}
+					{this.props.users.user ? this.props.users.user.email : ''}
 				</div>
 			</Header>
 		)
