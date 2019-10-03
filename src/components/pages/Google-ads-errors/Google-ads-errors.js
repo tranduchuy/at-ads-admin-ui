@@ -119,7 +119,8 @@ export class GoogleAdsErrors extends Component {
 		const ggAdsErrorColumns = [];
 		const errorTemplate = {
 			createdAt: '',
-			reason: '',
+			reason: {
+			},
 			authConfig: {},
 			params: {},
 			error: {},
