@@ -1,0 +1,34 @@
+.container {
+  
+  .ggAds-icon {
+    width: 20px;
+    margin-right: 5px;
+  }
+
+  .accounts-table {
+
+    .ant-table-thead {
+      th {
+        background: #44b543;
+        color: white;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-radius: 0;
+      }
+    }
+
+    .ant-table-row {
+      td {
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }
+
+      &:hover {
+        td {
+          background:rgba(3, 155, 229, 0.1) !important;
+        }
+      }
+    }
+
+  }
+}

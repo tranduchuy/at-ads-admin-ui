@@ -3,7 +3,7 @@ import { Component } from "react";
 import { Select } from 'antd';
 import { API } from "../../../constants/api";
 import { withCookies } from 'react-cookie';
-import { Form, Icon, Input, Button, Col, Row } from 'antd';
+import { Form, Icon, Input, Button, Col, Row, Menu } from 'antd';
 import './Expiration-updating-style.scss';
 
 const { Option } = Select;
@@ -156,6 +156,7 @@ class ExpirationUpdating extends Component {
 		const { getFieldDecorator } = this.props.form;
 		const selectedPackage = this.state.selectedPackage._id || (this.state.packages.length > 0 ? this.state.packages[0]._id : '');
 		const updatingMessageColor = this.state.updatingMessage.isSucceed ? '#44b543' : 'red';
+		const param = this.props.location.search ? this.props.location.search.split('=')[1] : "";
 
 		return (
 			<div className="container">
@@ -187,6 +188,7 @@ class ExpirationUpdating extends Component {
 							<Form.Item>
 								{getFieldDecorator('code', {
 									rules: [{ required: true, message: 'Vui lòng nhập mã website' }],
+									initialValue: param
 								})(
 									<Input
 										prefix={<Icon type="qrcode" style={{ color: 'rgba(0,0,0,.25)' }} />}

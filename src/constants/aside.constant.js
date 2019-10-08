@@ -3,6 +3,7 @@ import AdwordsAccounts from "../components/pages/Adwords-accounts/Adwords-accoun
 import GoogleAdsErrors from "../components/pages/Google-ads-errors/Google-ads-errors";
 import Dashboard  from "../components/pages/Dashboard/Dashboard";
 import ExpirationUpdating from "../components/pages/Expiration-updating/Expiration-updating";
+import Websites from "../components/pages/Websites/websites";
 
 export default [
 	{
@@ -30,9 +31,15 @@ export default [
 		component: AdwordsAccounts
 	},
 	{
+		title: 'Quản lý websites',
+		path: 'websites',
+		icon: 'chrome',
+		component: Websites
+	},
+	{
 		title: 'Lỗi Google Ads',
 		path: 'google-ads-errors',
 		icon: 'bug',
 		component: GoogleAdsErrors
-	},
+	}
 ];
