@@ -122,10 +122,11 @@ export class AdwordAccounts extends Component {
 			let accounts = (json.data.entries || [])
 				.map(item => {
 					return {
-						adsId: this.formatAdsId(item.adsId),
+						adsId      : this.formatAdsId(item.adsId),
 						isConnected: item.isConnected,
-						userId: item.user,
-						createdAt: item.createdAt,
+						email      : item.userInfo.email,
+						domain     : item.websiteInfo ? item.websiteInfo.map(website => website.domain) : [],
+						createdAt  : item.createdAt,
 					}
 				});
 
@@ -186,10 +187,19 @@ export class AdwordAccounts extends Component {
 				}
 			},
 			{
-				title: 'Người dùng (uid)',
-				dataIndex: 'userId',
-				key: 'userId',
-				...this.getColumnSearchProps('userId'),
+				title: 'Email',
+				dataIndex: 'email',
+				key: 'email',
+				...this.getColumnSearchProps('email'),
+			},
+			{
+				title: 'Tên miền',
+				dataIndex: 'domain',
+				key: 'domain',
+				render: text => {
+					const domains = text.map((item, index) => <div key={index}><a href={item} target=" _blank">{item}</a></div>);
+					return domains;
+				}
 			},
 			{
 				title: 'Ngày thêm',
