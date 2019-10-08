@@ -10,4 +10,5 @@ export const API = {
 	getGoogleAdsErrors: `${host}/api/google-ad-errors`,
 	getGoogleAdsErrorsStatistic: `${host}/api/google-ad-errors/statistic`,
 	statisticGoogleApiAndError: `${host}/api/admin/users/report/google-statistic`,
+	getWebsites: `${host}/api/admin/users/websites`,
 };

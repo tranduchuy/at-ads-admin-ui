@@ -75,6 +75,31 @@ class Main extends Component {
 			)
 		};
 
+		const href            = window.location.href.split('?')[0];
+		const position        = href.split("/");
+		const currentPosition = position[position.length - 1];
+		let page = '0';
+		
+		switch (currentPosition) {
+			case 'update-expiration':
+				page = '1'
+				break;
+			case 'users':
+				page = '2'
+				break;	
+			case 'accounts':
+				page = '3'
+				break;
+			case 'websites':
+				page = '4'
+				break;
+			case 'google-ads-errors':
+				page = '5'
+				break;
+			default:
+				break;
+		}
+
 		return (
 			<Layout>
 				<Sider
@@ -91,7 +116,7 @@ class Main extends Component {
 
 					<AsideUserInfo/>
 
-					<Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
+					<Menu theme="dark" mode="inline" defaultSelectedKeys={[page]}>
 						{
 							links.map((link, index) => {
 								return (
