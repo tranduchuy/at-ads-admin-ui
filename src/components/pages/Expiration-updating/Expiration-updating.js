@@ -3,7 +3,7 @@ import { Component } from "react";
 import { Select } from 'antd';
 import { API } from "../../../constants/api";
 import { withCookies } from 'react-cookie';
-import { Form, Icon, Input, Button, Col, Row, Menu } from 'antd';
+import { Form, Icon, Input, Button, Col, Row } from 'antd';
 import './Expiration-updating-style.scss';
 
 const { Option } = Select;

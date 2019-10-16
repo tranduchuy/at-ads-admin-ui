@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Link, withRouter } from "react-router-dom";
-import { Layout, Menu, Icon, Button, Popconfirm } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import { withCookies } from 'react-cookie';
 import links from '../../constants/aside.constant';
 import { connect } from 'react-redux';
@@ -11,15 +11,11 @@ import CustomHeader from './CustomHeader';
 import logoImg from '../../assets/images/app-logo.png';
 import './Main.scss';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Footer, Sider, Content } = Layout;
 
 class Main extends Component {
 
 	isAuthenticated = false;
-
-	constructor(props) {
-		super(props);
-	}
 
 	UNSAFE_componentWillMount() {
 		const { cookies } = this.props;
@@ -82,19 +78,19 @@ class Main extends Component {
 		
 		switch (currentPosition) {
 			case 'update-expiration':
-				page = '1'
+				page = '1';
 				break;
 			case 'users':
-				page = '2'
+				page = '2';
 				break;	
 			case 'accounts':
-				page = '3'
+				page = '3';
 				break;
 			case 'websites':
-				page = '4'
+				page = '4';
 				break;
 			case 'google-ads-errors':
-				page = '5'
+				page = '5';
 				break;
 			default:
 				break;
@@ -111,7 +107,7 @@ class Main extends Component {
 					}}
 				>
 					<div className="logo">
-						<img src={logoImg}/>
+						<img alt="" src={logoImg}/>
 					</div>
 
 					<AsideUserInfo/>

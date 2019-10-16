@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Col, Table, Input, Button, Icon } from 'antd';
-import { BrowserRouter as Route, Link } from "react-router-dom";
+import { Row, Col, Table, Input, Button, Icon, Tooltip } from 'antd';
+import { Link } from "react-router-dom";
 import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
@@ -105,8 +105,11 @@ export class AdwordAccounts extends Component {
 		if (!this.isEmptyObj(param)) {
 			url += '?';
 
-			for (const key in param)
-				url += `&${key}=${param[key]}`;
+			for (const key in param) {
+				if (param.hasOwnProperty(key)) {
+					url += `&${key}=${param[key]}`;
+				}
+			}
 		}
 
 		fetch(url, {
@@ -140,6 +143,10 @@ export class AdwordAccounts extends Component {
 		})
 	}
 
+	onClickRecheckWebsite(record) {
+		console.log(record);
+	}
+
 	render() {
 
 		const accountColumns = [
@@ -155,12 +162,23 @@ export class AdwordAccounts extends Component {
 				dataIndex: 'domain',
 				key: 'domain',
 				render: (text, record) => {
-					if (record.isTracking === true)
-						return (
-							<a href={text} target=" _blank" style={{ color: '#44b543', fontFamily: 'tahoma' }}>{text}</a>
-						)
 					return (
-						<a href={text} target=" _blank" style={{ color: 'crimson', fontFamily: 'tahoma' }}>{text}</a>
+						<div>
+							<Tooltip placement="topLeft" title="Kiểm tra gắn mã">
+								<span className="recheck-website-tracking"
+									onClick={() => this.onClickRecheckWebsite(record)}
+								>
+									<Icon type="reload" />
+								</span>
+							</Tooltip>
+							
+
+							<a href={text} 
+								target=" _blank" 
+								style={{ color: record.isTracking ? '#44b543' : 'crimson', fontFamily: 'tahoma' }}>
+								{text}
+								</a>
+						</div>
 					)
 				},
 			},

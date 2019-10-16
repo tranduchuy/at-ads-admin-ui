@@ -105,8 +105,12 @@ export class Users extends Component {
 		if (!this.isEmptyObj(param)) {
 			url += '?';
 
-			for (const key in param)
-				url += `&${key}=${param[key]}`;
+			for (const key in param) {
+				if (param.hasOwnProperty(key)) {
+					url += `&${key}=${param[key]}`
+				}
+			}
+
 		}
 
 		fetch(url, {

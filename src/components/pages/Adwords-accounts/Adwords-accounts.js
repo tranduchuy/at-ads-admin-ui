@@ -105,8 +105,11 @@ export class AdwordAccounts extends Component {
 		if (!this.isEmptyObj(param)) {
 			url += '?';
 
-			for (const key in param)
-				url += `&${key}=${param[key]}`;
+			for (const key in param) {
+				if (param.hasOwnProperty(key)) {
+					url += `&${key}=${param[key]}`;
+				}
+			}
 		}
 
 		fetch(url, {
@@ -145,13 +148,13 @@ export class AdwordAccounts extends Component {
 	}
 
 	render() {
-
+		const googleAdLogoUrl = 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/logo_Google_Ads_192px.max-200x200.png';
 		const accountColumns = [
 			{
 				title: (filter, sortOrder) => {
 					return (
 						<div>
-							<img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/logo_Google_Ads_192px.max-200x200.png" alt="" className="ggAds-icon" />
+							<img src={googleAdLogoUrl} alt="" className="ggAds-icon" />
 							<span>Google Ads ID</span>
 						</div>
 					)
@@ -159,12 +162,8 @@ export class AdwordAccounts extends Component {
 				dataIndex: 'adsId',
 				key: 'adsId',
 				render: (text, record) => {
-					if (record.isConnected === true)
-						return (
-							<span style={{ color: '#44b543', fontFamily: 'tahoma' }}>{text}</span>
-						)
 					return (
-						<span style={{ color: 'crimson', fontFamily: 'tahoma' }}>{text}</span>
+						<span style={{ color: record.isConnected ? '#44b543' : 'crimson', fontFamily: 'tahoma', fontWeight: 'bold' }}>{text}</span>
 					)
 				},
 			},
@@ -173,16 +172,18 @@ export class AdwordAccounts extends Component {
 				dataIndex: 'isConnected',
 				key: 'isConnected',
 				render: text => {
-					if (text === true)
+					if (text === true) {
 						return (
-							<span style={{ color: '#44b543' }}>
-								<Icon type="check" /> Đã chấp nhận
-							</span>
+							<div style={{ color: '#44b543' }}>
+								<Icon type="check" />
+							</div>
 						);
+					}
+					
 					return (
-						<span style={{ color: 'crimson' }}>
-							<Icon type="close" /> Chưa chấp nhận
-						</span>
+						<div style={{ color: 'crimson' }}>
+							<Icon type="close" />
+						</div>
 					);
 				}
 			},
@@ -197,12 +198,11 @@ export class AdwordAccounts extends Component {
 				dataIndex: 'domain',
 				key: 'domain',
 				render: text => {
-					const domains = text.map((item, index) => <div key={index}><a href={item} target=" _blank">{item}</a></div>);
-					return domains;
+					return text.map((item, index) => <div key={index}><a href={item} target=" _blank">{item}</a></div>);
 				}
 			},
 			{
-				title: 'Ngày thêm',
+				title: 'Ngày tạo',
 				dataIndex: 'createdAt',
 				key: 'createdAt',
 				render: text => {
