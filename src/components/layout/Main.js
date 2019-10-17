@@ -15,6 +15,10 @@ const { Footer, Sider, Content } = Layout;
 
 class Main extends Component {
 
+	constructor(props) {
+		super(props);
+	}
+
 	isAuthenticated = false;
 
 	UNSAFE_componentWillMount() {
@@ -143,7 +147,7 @@ class Main extends Component {
 }
 
 const mapStateToProps = state => ({
-	user: state.user
+	users: state.users
 });
 
 export default connect(mapStateToProps, actions)(withCookies(withRouter(Main)));
