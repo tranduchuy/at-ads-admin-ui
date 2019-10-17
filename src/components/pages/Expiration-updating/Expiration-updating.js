@@ -5,6 +5,7 @@ import { API } from "../../../constants/api";
 import { withCookies } from 'react-cookie';
 import { Form, Icon, Input, Button, Col, Row } from 'antd';
 import './Expiration-updating-style.scss';
+import { COOKIE_NAMES } from "../../../constants/cookie-names";
 import { BasePage } from "../base-page";
 
 const { Option } = Select;
@@ -18,7 +19,7 @@ class ExpirationUpdating extends BasePage {
 		super(props);
 
 		this.cookies = this.props.cookies;
-		this.token = this.cookies.get('token');
+		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		this.state = {
 			packages: [],

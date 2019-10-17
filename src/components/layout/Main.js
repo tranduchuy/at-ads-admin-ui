@@ -5,6 +5,7 @@ import { withCookies } from 'react-cookie';
 import links from '../../constants/aside.constant';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
+import { COOKIE_NAMES } from "../../constants/cookie-names";
 import AppLoading from "../app-loading/app-loading";
 import AsideBtnLogout  from "./AsideBtnLogout";
 import AsideUserInfo  from "./AsideUserInfo";
@@ -24,8 +25,8 @@ class Main extends Component {
 
 	UNSAFE_componentWillMount() {
 		const { cookies } = this.props;
-		const token = cookies.get('token');
-		const user = cookies.get('user');
+		const token = cookies.get(COOKIE_NAMES.token);
+		const user = cookies.get(COOKIE_NAMES.user);
 		//console.log('token', token);
 		this.isAuthenticated = !!token && !!user;
 

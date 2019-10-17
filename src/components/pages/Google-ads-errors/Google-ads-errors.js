@@ -7,6 +7,7 @@ import './Google-ads-errors-style.scss';
 import JSONPretty from 'react-json-pretty';
 import axios from 'axios';
 import ReactHighChart from 'react-highcharts';
+import { COOKIE_NAMES } from "../../../constants/cookie-names";
 import { BasePage } from "../base-page";
 
 const pieChartConfig = {
@@ -48,7 +49,7 @@ export class GoogleAdsErrors extends BasePage {
 		super(props);
 
 		this.cookies = this.props.cookies;
-		this.token = this.cookies.get('token');
+		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		this.state = {
 			ggAdsErrors: [],

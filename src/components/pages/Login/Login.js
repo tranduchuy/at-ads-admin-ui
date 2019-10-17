@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { API } from '../../../constants/api';
 import './Login-style.scss';
 import * as actions from '../../../actions';
+import { COOKIE_NAMES } from "../../../constants/cookie-names";
 import { BasePage } from "../base-page";
 
 class Login extends BasePage {
@@ -19,7 +20,7 @@ class Login extends BasePage {
 
 	componentWillMount() {
 		const { cookies } = this.props;
-		const token = cookies.get('token');
+		const token = cookies.get(COOKIE_NAMES.token);
 		if (token) {
 			setTimeout(() => {
 				this.props.history.push("/dashboard");
@@ -56,8 +57,9 @@ class Login extends BasePage {
 							const token = resolve.data.meta.token;
 							const user = resolve.data.user;
 							this.props.login(user, token);
-							cookies.set('token', token, { path: '/' });
-							cookies.set('user', user, { path: '/' });
+
+							cookies.set(COOKIE_NAMES.token, token, { path: '/' });
+							cookies.set(COOKIE_NAMES.user, user, { path: '/' });
 
 							setTimeout(() => {
 								this.props.history.push("/dashboard");
