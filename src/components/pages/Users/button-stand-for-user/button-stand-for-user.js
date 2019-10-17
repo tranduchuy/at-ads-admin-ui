@@ -18,14 +18,14 @@ class ButtonStandForUser extends React.Component {
 	}
 
 	onClick() {
-		console.log(this.props.users);
 		this.props.setAppLoading(true);
 		const { cookies } = this.props;
 		const targetUser = JSON.parse(JSON.stringify(this.props.user));
 		targetUser._id = targetUser.id;
-		cookies.set(COOKIE_NAMES.FRONT_END.user, targetUser, {path: '/'}); // target user info
-		cookies.set(COOKIE_NAMES.FRONT_END.standBy, this.props.users.user, {path: '/'}); // Admin info
-		cookies.set(COOKIE_NAMES.FRONT_END.token, this.props.users.token, {path: '/'}); // admin token
+		console.log(secret);
+		cookies.set(COOKIE_NAMES.FRONT_END.user, targetUser, {path: '/', domain: secret.MAIN_DOMAIN}); // target user info
+		cookies.set(COOKIE_NAMES.FRONT_END.standBy, this.props.users.user, {path: '/', domain: secret.MAIN_DOMAIN}); // Admin info
+		cookies.set(COOKIE_NAMES.FRONT_END.token, this.props.users.token, {path: '/', domain: secret.MAIN_DOMAIN}); // admin token
 
 		// console.log('value: ', this.secret);
 		setTimeout(() => {
