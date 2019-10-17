@@ -5,6 +5,7 @@ import { withCookies } from 'react-cookie';
 import links from '../../constants/aside.constant';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
+import AppLoading from "../app-loading/app-loading";
 import AsideBtnLogout  from "./AsideBtnLogout";
 import AsideUserInfo  from "./AsideUserInfo";
 import CustomHeader from './CustomHeader';
@@ -141,6 +142,7 @@ class Main extends Component {
 					</Content>
 					<Footer style={{ textAlign: 'center' }}>Click CPanel ©2019 Created by Appnet Technology</Footer>
 				</Layout>
+				<AppLoading/>
 			</Layout>
 		);
 	}

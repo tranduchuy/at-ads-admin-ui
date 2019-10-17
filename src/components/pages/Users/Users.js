@@ -4,8 +4,9 @@ import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
 import './Users-style.scss';
+import { BasePage } from "../base-page";
 
-export class Users extends Component {
+export class Users extends BasePage {
 
 	cookies;
 	token;
@@ -119,7 +120,8 @@ export class Users extends Component {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 				'accessToken': this.token
-			}
+			},
+			signal: this.abortController.signal
 		}).then(res => {
 			return res.json();
 		}).then(json => {

@@ -5,13 +5,15 @@ import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
 import './websites-style.scss';
+import { BasePage } from "../base-page";
 import ButtonCheckTrackingScript from './button-check-tracking-script';
+import { connect } from 'react-redux';
+import * as actions from '../../../actions';
 
-export class WebsitePages extends Component {
+export class WebsitePages extends BasePage {
 	cookies;
 	token;
 	paginationConfig = {};
-	abortController = new AbortController();
 
 	constructor(props) {
 		super(props);
@@ -123,6 +125,8 @@ export class WebsitePages extends Component {
 			}
 		}
 
+		this.props.setAppLoading(true);
+
 		fetch(url, {
 			method: 'GET',
 			headers: {
@@ -152,15 +156,15 @@ export class WebsitePages extends Component {
 				websites,
 				totalItems: websites.length > 0 ? json.data.totalItems : 0
 			});
+
+			setTimeout(() => {
+				this.props.setAppLoading(false);
+			}, 500);
 		})
 	}
 
 	onClickRecheckWebsite(record) {
 
-	}
-
-	componentWillUnmount() {
-		this.abortController.abort();
 	}
 
 	render() {
@@ -279,4 +283,4 @@ export class WebsitePages extends Component {
 	}
 }
 
-export default withCookies(WebsitePages);
+export default connect(null, actions)(withCookies(WebsitePages))

@@ -7,6 +7,7 @@ import './Google-ads-errors-style.scss';
 import JSONPretty from 'react-json-pretty';
 import axios from 'axios';
 import ReactHighChart from 'react-highcharts';
+import { BasePage } from "../base-page";
 
 const pieChartConfig = {
 	chart: {
@@ -38,7 +39,7 @@ const pieChartConfig = {
 	}]
 };
 
-export class GoogleAdsErrors extends Component {
+export class GoogleAdsErrors extends BasePage {
 
 	cookies;
 	token;
@@ -71,7 +72,8 @@ export class GoogleAdsErrors extends Component {
 		axios.get(API.getGoogleAdsErrorsStatistic, {
 			headers: {
 				accessToken: this.token
-			}
+			},
+			signal: this.abortController.signal
 		})
 			.then((res) => {
 				this.setState({

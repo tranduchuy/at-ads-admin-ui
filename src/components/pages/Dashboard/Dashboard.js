@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React  from 'react';
 import './Dashboard-style.scss';
 import * as actions from '../../../actions';
 import { connect } from 'react-redux';
@@ -8,8 +8,9 @@ import moment from 'moment';
 import {
 	LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
+import { BasePage } from "../base-page";
 
-class Dashboard extends Component {
+class Dashboard extends BasePage {
 	constructor(props) {
 		super(props);
 
@@ -25,6 +26,8 @@ class Dashboard extends Component {
 	}
 
 	fetchData() {
+		this.props.setAppLoading(true);
+
 		axios.get(API.statisticGoogleApiAndError, {
 			params : {
 				from: this.state.from,
@@ -32,9 +35,13 @@ class Dashboard extends Component {
 			},
 			headers: {
 				"accesstoken": this.props.users.token
-			}
+			},
+			signal: this.abortController.signal
 		}).then(res => {
 			this.mapResults(res.data.data.result);
+			setTimeout(() => {
+				this.props.setAppLoading(false);
+			}, 500);
 		});
 	}
 

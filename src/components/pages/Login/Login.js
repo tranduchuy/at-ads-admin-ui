@@ -5,8 +5,9 @@ import { connect } from "react-redux";
 import { API } from '../../../constants/api';
 import './Login-style.scss';
 import * as actions from '../../../actions';
+import { BasePage } from "../base-page";
 
-class Login extends Component {
+class Login extends BasePage {
 
 	constructor(props) {
 		super(props);
@@ -41,7 +42,8 @@ class Login extends Component {
 					body: JSON.stringify(params),
 					headers: {
 						"Content-type": "application/json; charset=UTF-8"
-					}
+					},
+					signal: this.abortController.signal
 				})
 					.then(res => {
 						if (res.status === 200)

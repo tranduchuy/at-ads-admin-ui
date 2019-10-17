@@ -4,8 +4,11 @@ import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
 import './Adwords-accounts-style.scss';
+import * as actions from '../../../actions';
+import { connect } from 'react-redux';
+import { BasePage } from "../base-page";
 
-export class AdwordAccounts extends Component {
+export class AdwordAccounts extends BasePage {
 
 	cookies;
 	token;
@@ -60,7 +63,7 @@ export class AdwordAccounts extends Component {
 			</div>
 		),
 		filterIcon: filtered => (
-			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }} />
+			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }}/>
 		)
 	});
 
@@ -85,8 +88,7 @@ export class AdwordAccounts extends Component {
 				page: currentPage,
 				limit: this.state.limit
 			});
-		}
-		else {
+		} else {
 			if (!this.state.searchText)
 				this.getAccounts({
 					page: currentPage,
@@ -112,24 +114,27 @@ export class AdwordAccounts extends Component {
 			}
 		}
 
+		this.props.setAppLoading(true);
+
 		fetch(url, {
 			method: 'GET',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 				'accessToken': this.token
-			}
+			},
+			signal: this.abortController.signal
 		}).then(res => {
 			return res.json();
 		}).then(json => {
 			let accounts = (json.data.entries || [])
 				.map(item => {
 					return {
-						adsId      : this.formatAdsId(item.adsId),
+						adsId: this.formatAdsId(item.adsId),
 						isConnected: item.isConnected,
-						email      : item.userInfo.email,
-						domain     : item.websiteInfo ? item.websiteInfo.map(website => website.domain) : [],
-						createdAt  : item.createdAt,
+						email: item.userInfo.email,
+						domain: item.websiteInfo ? item.websiteInfo.map(website => website.domain) : [],
+						createdAt: item.createdAt,
 					}
 				});
 
@@ -137,6 +142,10 @@ export class AdwordAccounts extends Component {
 				accounts,
 				totalItems: accounts.length > 0 ? json.data.totalItems : 0
 			});
+
+			setTimeout(() => {
+				this.props.setAppLoading(false);
+			}, 500);
 		})
 	}
 
@@ -154,7 +163,7 @@ export class AdwordAccounts extends Component {
 				title: (filter, sortOrder) => {
 					return (
 						<div>
-							<img src={googleAdLogoUrl} alt="" className="ggAds-icon" />
+							<img src={googleAdLogoUrl} alt="" className="ggAds-icon"/>
 							<span>Google Ads ID</span>
 						</div>
 					)
@@ -163,7 +172,11 @@ export class AdwordAccounts extends Component {
 				key: 'adsId',
 				render: (text, record) => {
 					return (
-						<span style={{ color: record.isConnected ? '#44b543' : 'crimson', fontFamily: 'tahoma', fontWeight: 'bold' }}>{text}</span>
+						<span style={{
+							color: record.isConnected ? '#44b543' : 'crimson',
+							fontFamily: 'tahoma',
+							fontWeight: 'bold'
+						}}>{text}</span>
 					)
 				},
 			},
@@ -175,14 +188,14 @@ export class AdwordAccounts extends Component {
 					if (text === true) {
 						return (
 							<div style={{ color: '#44b543' }}>
-								<Icon type="check" />
+								<Icon type="check"/>
 							</div>
 						);
 					}
-					
+
 					return (
 						<div style={{ color: 'crimson' }}>
-							<Icon type="close" />
+							<Icon type="close"/>
 						</div>
 					);
 				}
@@ -224,19 +237,20 @@ export class AdwordAccounts extends Component {
 							current: this.state.page,
 							onChange: (currentPage) => this.onChangePage(currentPage)
 						}}
-							dataSource={this.state.accounts}
-							columns={accountColumns}
-							rowKey={record => record.adsId}
-							className="accounts-table"
-							rowClassName={(record) => {
-								if (record.isConnected === true)
-									return 'isConnected';
-								return 'isNotConnected';
-							}} />
+									 dataSource={this.state.accounts}
+									 columns={accountColumns}
+									 rowKey={record => record.adsId}
+									 className="accounts-table"
+									 rowClassName={(record) => {
+										 if (record.isConnected === true)
+											 return 'isConnected';
+										 return 'isNotConnected';
+									 }}/>
 					</Col>
 				</Row>
 			</div>
 		)
 	}
 }
-export default withCookies(AdwordAccounts);
+
+export default connect(null, actions)(withCookies(AdwordAccounts));
