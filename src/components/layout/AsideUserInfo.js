@@ -4,10 +4,6 @@ import * as actions from '../../actions';
 import './AsideUserInfo.scss';
 
 class AsideUserInfo extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		return (
 			<div className={'email'}>

@@ -1,14 +1,15 @@
-const host = process.env.REACT_APP_API_URL;
+import secret from '../config/secret';
 
 export const API = {
-	login: `${host}/api/admin/users/login`,
-	getPackages: `${host}/api/packages`,
-	checkWebsiteCode: `${host}/api/websites/{code}`,
-	updateVipDomain: `${host}/api/users/website`,
-	getUsers: `${host}/api/admin/users`,
-	getAccounts: `${host}/api/admin/users/accounts`,
-	getGoogleAdsErrors: `${host}/api/google-ad-errors`,
-	getGoogleAdsErrorsStatistic: `${host}/api/google-ad-errors/statistic`,
-	statisticGoogleApiAndError: `${host}/api/admin/users/report/google-statistic`,
-	getWebsites: `${host}/api/admin/users/websites`,
+	login: `${secret.API}/api/admin/users/login`,
+	getPackages: `${secret.API}/api/packages`,
+	checkWebsiteCode: `${secret.API}/api/websites/{code}`,
+	updateVipDomain: `${secret.API}/api/users/website`,
+	getUsers: `${secret.API}/api/admin/users`,
+	getAccounts: `${secret.API}/api/admin/users/accounts`,
+	getGoogleAdsErrors: `${secret.API}/api/google-ad-errors`,
+	getGoogleAdsErrorsStatistic: `${secret.API}/api/google-ad-errors/statistic`,
+	statisticGoogleApiAndError: `${secret.API}/api/admin/users/report/google-statistic`,
+	getWebsites: `${secret.API}/api/admin/websites`,
+	checkScriptWebsite: `${secret.API}/api/admin/websites/{code}/recheck-tracking-code`
 };

@@ -32,3 +32,14 @@
 
   }
 }
+
+.recheck-website-tracking {
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 5px;
+
+  &:hover {
+    background-color: rgba(187, 187, 187, 0.749);
+  }
+}

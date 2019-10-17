@@ -7,6 +7,8 @@ import './Google-ads-errors-style.scss';
 import JSONPretty from 'react-json-pretty';
 import axios from 'axios';
 import ReactHighChart from 'react-highcharts';
+import { COOKIE_NAMES } from "../../../constants/cookie-names";
+import { BasePage } from "../base-page";
 
 const pieChartConfig = {
 	chart: {
@@ -38,7 +40,7 @@ const pieChartConfig = {
 	}]
 };
 
-export class GoogleAdsErrors extends Component {
+export class GoogleAdsErrors extends BasePage {
 
 	cookies;
 	token;
@@ -47,7 +49,7 @@ export class GoogleAdsErrors extends Component {
 		super(props);
 
 		this.cookies = this.props.cookies;
-		this.token = this.cookies.get('token');
+		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		this.state = {
 			ggAdsErrors: [],
@@ -71,7 +73,8 @@ export class GoogleAdsErrors extends Component {
 		axios.get(API.getGoogleAdsErrorsStatistic, {
 			headers: {
 				accessToken: this.token
-			}
+			},
+			signal: this.abortController.signal
 		})
 			.then((res) => {
 				this.setState({
@@ -118,7 +121,8 @@ export class GoogleAdsErrors extends Component {
 	render() {
 		const ggAdsErrorColumns = [];
 		const errorTemplate = {
-			createdAt: '',
+			createdAt: {
+			},
 			reason: {
 			},
 			authConfig: {},
@@ -128,10 +132,9 @@ export class GoogleAdsErrors extends Component {
 			serviceVersion: '',
 			serviceName: '',
 			moduleName: '',
-		}
+		};
 
 		for (const key in errorTemplate) {
-
 			if (key !== 'authConfig' && key !== 'error' && key !== 'params') {
 				ggAdsErrorColumns.push({
 					title: key,
@@ -176,28 +179,35 @@ export class GoogleAdsErrors extends Component {
 			})
 		});
 
+		const paginationConfig = {
+			position: 'bottom',
+			total: this.state.totalItems,
+			pageSize: this.state.limit,
+			current: this.state.page,
+			onChange: (currentPage) => this.onChangePage(currentPage)
+		};
+
 		return (
-			<div className="container">
-				<Row>
-					<Col span={24}>
-						<ReactHighChart config={pieChartConfig}/>
-					</Col>
-				</Row>
-				<Row>
-					<Col span={24}>
-						<Table pagination={{
-							position: 'bottom',
-							total: this.state.totalItems,
-							pageSize: this.state.limit,
-							current: this.state.page,
-							onChange: (currentPage) => this.onChangePage(currentPage)
-						}}
-									 dataSource={this.state.ggAdsErrors}
-									 columns={ggAdsErrorColumns}
-									 rowKey={record => record._id}
-									 className="gg-ads-errors-table"/>
-					</Col>
-				</Row>
+			<div>
+				<div className="container"
+						style={{overflow: 'auto'}}>
+					<Row>
+						<Col span={24}>
+							<ReactHighChart config={pieChartConfig}/>
+						</Col>
+					</Row>
+				</div>
+				<div className="container">
+					<Row>
+						<Col span={24}>
+							<Table pagination={paginationConfig}
+										dataSource={this.state.ggAdsErrors}
+										columns={ggAdsErrorColumns}
+										rowKey={record => record._id}
+										className="gg-ads-errors-table"/>
+						</Col>
+					</Row>
+				</div>
 			</div>
 		)
 	}

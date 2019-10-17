@@ -3,12 +3,14 @@ import { Component } from "react";
 import { Select } from 'antd';
 import { API } from "../../../constants/api";
 import { withCookies } from 'react-cookie';
-import { Form, Icon, Input, Button, Col, Row, Menu } from 'antd';
+import { Form, Icon, Input, Button, Col, Row } from 'antd';
 import './Expiration-updating-style.scss';
+import { COOKIE_NAMES } from "../../../constants/cookie-names";
+import { BasePage } from "../base-page";
 
 const { Option } = Select;
 
-class ExpirationUpdating extends Component {
+class ExpirationUpdating extends BasePage {
 
 	cookies;
 	token;
@@ -17,7 +19,7 @@ class ExpirationUpdating extends Component {
 		super(props);
 
 		this.cookies = this.props.cookies;
-		this.token = this.cookies.get('token');
+		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		this.state = {
 			packages: [],
@@ -28,7 +30,7 @@ class ExpirationUpdating extends Component {
 				message: '',
 				isSucceed: true
 			}
-		}
+		};
 
 		this.handleChangePackage = this.handleChangePackage.bind(this);
 	}
@@ -44,7 +46,8 @@ class ExpirationUpdating extends Component {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 				'accessToken': this.token
-			}
+			},
+			signal: this.abortController.signal
 		}).then(res => {
 			return res.json();
 		}).then(json => {

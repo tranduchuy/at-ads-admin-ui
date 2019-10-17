@@ -4,8 +4,12 @@ import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
 import './Adwords-accounts-style.scss';
+import * as actions from '../../../actions';
+import { connect } from 'react-redux';
+import { COOKIE_NAMES } from "../../../constants/cookie-names";
+import { BasePage } from "../base-page";
 
-export class AdwordAccounts extends Component {
+export class AdwordAccounts extends BasePage {
 
 	cookies;
 	token;
@@ -14,7 +18,7 @@ export class AdwordAccounts extends Component {
 		super(props);
 
 		this.cookies = this.props.cookies;
-		this.token = this.cookies.get('token');
+		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		this.state = {
 			searchText: '',
@@ -60,7 +64,7 @@ export class AdwordAccounts extends Component {
 			</div>
 		),
 		filterIcon: filtered => (
-			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }} />
+			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }}/>
 		)
 	});
 
@@ -85,8 +89,7 @@ export class AdwordAccounts extends Component {
 				page: currentPage,
 				limit: this.state.limit
 			});
-		}
-		else {
+		} else {
 			if (!this.state.searchText)
 				this.getAccounts({
 					page: currentPage,
@@ -105,9 +108,14 @@ export class AdwordAccounts extends Component {
 		if (!this.isEmptyObj(param)) {
 			url += '?';
 
-			for (const key in param)
-				url += `&${key}=${param[key]}`;
+			for (const key in param) {
+				if (param.hasOwnProperty(key)) {
+					url += `&${key}=${param[key]}`;
+				}
+			}
 		}
+
+		this.props.setAppLoading(true);
 
 		fetch(url, {
 			method: 'GET',
@@ -115,18 +123,19 @@ export class AdwordAccounts extends Component {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 				'accessToken': this.token
-			}
+			},
+			signal: this.abortController.signal
 		}).then(res => {
 			return res.json();
 		}).then(json => {
 			let accounts = (json.data.entries || [])
 				.map(item => {
 					return {
-						adsId      : this.formatAdsId(item.adsId),
+						adsId: this.formatAdsId(item.adsId),
 						isConnected: item.isConnected,
-						email      : item.userInfo.email,
-						domain     : item.websiteInfo ? item.websiteInfo.map(website => website.domain) : [],
-						createdAt  : item.createdAt,
+						email: item.userInfo.email,
+						domain: item.websiteInfo ? item.websiteInfo.map(website => website.domain) : [],
+						createdAt: item.createdAt,
 					}
 				});
 
@@ -134,6 +143,10 @@ export class AdwordAccounts extends Component {
 				accounts,
 				totalItems: accounts.length > 0 ? json.data.totalItems : 0
 			});
+
+			setTimeout(() => {
+				this.props.setAppLoading(false);
+			}, 500);
 		})
 	}
 
@@ -145,13 +158,13 @@ export class AdwordAccounts extends Component {
 	}
 
 	render() {
-
+		const googleAdLogoUrl = 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/logo_Google_Ads_192px.max-200x200.png';
 		const accountColumns = [
 			{
 				title: (filter, sortOrder) => {
 					return (
 						<div>
-							<img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/logo_Google_Ads_192px.max-200x200.png" alt="" className="ggAds-icon" />
+							<img src={googleAdLogoUrl} alt="" className="ggAds-icon"/>
 							<span>Google Ads ID</span>
 						</div>
 					)
@@ -159,12 +172,12 @@ export class AdwordAccounts extends Component {
 				dataIndex: 'adsId',
 				key: 'adsId',
 				render: (text, record) => {
-					if (record.isConnected === true)
-						return (
-							<span style={{ color: '#44b543', fontFamily: 'tahoma' }}>{text}</span>
-						)
 					return (
-						<span style={{ color: 'crimson', fontFamily: 'tahoma' }}>{text}</span>
+						<span style={{
+							color: record.isConnected ? '#44b543' : 'crimson',
+							fontFamily: 'tahoma',
+							fontWeight: 'bold'
+						}}>{text}</span>
 					)
 				},
 			},
@@ -173,16 +186,18 @@ export class AdwordAccounts extends Component {
 				dataIndex: 'isConnected',
 				key: 'isConnected',
 				render: text => {
-					if (text === true)
+					if (text === true) {
 						return (
-							<span style={{ color: '#44b543' }}>
-								<Icon type="check" /> Đã chấp nhận
-							</span>
+							<div style={{ color: '#44b543' }}>
+								<Icon type="check"/>
+							</div>
 						);
+					}
+
 					return (
-						<span style={{ color: 'crimson' }}>
-							<Icon type="close" /> Chưa chấp nhận
-						</span>
+						<div style={{ color: 'crimson' }}>
+							<Icon type="close"/>
+						</div>
 					);
 				}
 			},
@@ -197,12 +212,11 @@ export class AdwordAccounts extends Component {
 				dataIndex: 'domain',
 				key: 'domain',
 				render: text => {
-					const domains = text.map((item, index) => <div key={index}><a href={item} target=" _blank">{item}</a></div>);
-					return domains;
+					return text.map((item, index) => <div key={index}><a href={item} target=" _blank">{item}</a></div>);
 				}
 			},
 			{
-				title: 'Ngày thêm',
+				title: 'Ngày tạo',
 				dataIndex: 'createdAt',
 				key: 'createdAt',
 				render: text => {
@@ -224,19 +238,20 @@ export class AdwordAccounts extends Component {
 							current: this.state.page,
 							onChange: (currentPage) => this.onChangePage(currentPage)
 						}}
-							dataSource={this.state.accounts}
-							columns={accountColumns}
-							rowKey={record => record.adsId}
-							className="accounts-table"
-							rowClassName={(record) => {
-								if (record.isConnected === true)
-									return 'isConnected';
-								return 'isNotConnected';
-							}} />
+									 dataSource={this.state.accounts}
+									 columns={accountColumns}
+									 rowKey={record => record.adsId}
+									 className="accounts-table"
+									 rowClassName={(record) => {
+										 if (record.isConnected === true)
+											 return 'isConnected';
+										 return 'isNotConnected';
+									 }}/>
 					</Col>
 				</Row>
 			</div>
 		)
 	}
 }
-export default withCookies(AdwordAccounts);
+
+export default connect(null, actions)(withCookies(AdwordAccounts));

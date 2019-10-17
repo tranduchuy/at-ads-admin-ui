@@ -1,30 +1,32 @@
 import React, { Component } from 'react';
 import { Route, Redirect, Link, withRouter } from "react-router-dom";
-import { Layout, Menu, Icon, Button, Popconfirm } from 'antd';
+import { Layout, Menu, Icon } from 'antd';
 import { withCookies } from 'react-cookie';
 import links from '../../constants/aside.constant';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
+import { COOKIE_NAMES } from "../../constants/cookie-names";
+import AppLoading from "../app-loading/app-loading";
 import AsideBtnLogout  from "./AsideBtnLogout";
 import AsideUserInfo  from "./AsideUserInfo";
 import CustomHeader from './CustomHeader';
 import logoImg from '../../assets/images/app-logo.png';
 import './Main.scss';
 
-const { Header, Footer, Sider, Content } = Layout;
+const { Footer, Sider, Content } = Layout;
 
 class Main extends Component {
-
-	isAuthenticated = false;
 
 	constructor(props) {
 		super(props);
 	}
 
+	isAuthenticated = false;
+
 	UNSAFE_componentWillMount() {
 		const { cookies } = this.props;
-		const token = cookies.get('token');
-		const user = cookies.get('user');
+		const token = cookies.get(COOKIE_NAMES.token);
+		const user = cookies.get(COOKIE_NAMES.user);
 		//console.log('token', token);
 		this.isAuthenticated = !!token && !!user;
 
@@ -82,19 +84,19 @@ class Main extends Component {
 		
 		switch (currentPosition) {
 			case 'update-expiration':
-				page = '1'
+				page = '1';
 				break;
 			case 'users':
-				page = '2'
+				page = '2';
 				break;	
 			case 'accounts':
-				page = '3'
+				page = '3';
 				break;
 			case 'websites':
-				page = '4'
+				page = '4';
 				break;
 			case 'google-ads-errors':
-				page = '5'
+				page = '5';
 				break;
 			default:
 				break;
@@ -111,7 +113,7 @@ class Main extends Component {
 					}}
 				>
 					<div className="logo">
-						<img src={logoImg}/>
+						<img alt="" src={logoImg}/>
 					</div>
 
 					<AsideUserInfo/>
@@ -141,13 +143,14 @@ class Main extends Component {
 					</Content>
 					<Footer style={{ textAlign: 'center' }}>Click CPanel ©2019 Created by Appnet Technology</Footer>
 				</Layout>
+				<AppLoading/>
 			</Layout>
 		);
 	}
 }
 
 const mapStateToProps = state => ({
-	user: state.user
+	users: state.users
 });
 
 export default connect(mapStateToProps, actions)(withCookies(withRouter(Main)));

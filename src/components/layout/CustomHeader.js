@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import { Layout, Menu, Icon, Button, Popconfirm } from 'antd';
+import { Layout, Menu } from 'antd';
 
 const { Header } = Layout;
 
 class CustomHeader extends Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		return (
 			<Header style={{ background: '#fff', padding: 0 }}>

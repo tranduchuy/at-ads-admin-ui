@@ -4,8 +4,11 @@ import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
 import './Users-style.scss';
+import { COOKIE_NAMES } from "../../../constants/cookie-names";
+import { BasePage } from "../base-page";
+import ButtonStandForUser from "./button-stand-for-user/button-stand-for-user";
 
-export class Users extends Component {
+export class Users extends BasePage {
 
 	cookies;
 	token;
@@ -14,7 +17,7 @@ export class Users extends Component {
 		super(props);
 
 		this.cookies = this.props.cookies;
-		this.token = this.cookies.get('token');
+		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		this.state = {
 			searchText: '',
@@ -105,8 +108,12 @@ export class Users extends Component {
 		if (!this.isEmptyObj(param)) {
 			url += '?';
 
-			for (const key in param)
-				url += `&${key}=${param[key]}`;
+			for (const key in param) {
+				if (param.hasOwnProperty(key)) {
+					url += `&${key}=${param[key]}`
+				}
+			}
+
 		}
 
 		fetch(url, {
@@ -115,7 +122,8 @@ export class Users extends Component {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
 				'accessToken': this.token
-			}
+			},
+			signal: this.abortController.signal
 		}).then(res => {
 			return res.json();
 		}).then(json => {
@@ -142,6 +150,15 @@ export class Users extends Component {
 	render() {
 
 		const userColumns = [
+			{
+				title: 'Hành động',
+				key: 'id',
+				render: (text, record) => {
+					return (
+						<ButtonStandForUser user={record}/>
+					)
+				}
+			},
 			{
 				title: 'Họ và Tên',
 				dataIndex: 'name',
@@ -185,20 +202,22 @@ export class Users extends Component {
 			},
 		];
 
+		const paginationConfig = {
+			position: 'bottom',
+			total: this.state.totalItems,
+			pageSize: this.state.limit,
+			current: this.state.page,
+			onChange: (currentPage) => this.onChangePage(currentPage)
+		};
+
 		return (
 			<div className="container">
 				<Row>
 					<Col span={24}>
-						<Table pagination={{
-							position: 'bottom',
-							total: this.state.totalItems,
-							pageSize: this.state.limit,
-							current: this.state.page,
-							onChange: (currentPage) => this.onChangePage(currentPage)
-						}}
+						<Table pagination={paginationConfig}
 							dataSource={this.state.users}
 							columns={userColumns}
-							rowKey={record => record.id}
+							rowKey={(record) => record.id}
 							className="users-table" />
 					</Col>
 				</Row>
