@@ -30,7 +30,7 @@ class ButtonStandForUser extends React.Component {
 
 		// console.log('value: ', this.secret);
 		setTimeout(() => {
-			// window.open(this.secret.FRONT_END_DOMAIN, '_blank');
+			window.open(this.secret.FRONT_END_DOMAIN, '_blank');
 			this.props.setAppLoading(false);
 		}, 1000);
 	}
