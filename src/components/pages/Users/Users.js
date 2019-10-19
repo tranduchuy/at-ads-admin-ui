@@ -1,23 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Row, Col, Table, Input, Button, Icon } from 'antd';
-import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
 import './Users-style.scss';
-import { COOKIE_NAMES } from "../../../constants/cookie-names";
-import { BasePage } from "../base-page";
-import ButtonStandForUser from "./button-stand-for-user/button-stand-for-user";
+import { BasePage } from '../base-page';
+import ButtonStandForUser from './button-stand-for-user/button-stand-for-user';
+import * as actions from '../../../actions';
+import { connect } from 'react-redux';
 
 export class Users extends BasePage {
-
-	cookies;
-	token;
-
 	constructor(props) {
 		super(props);
-
-		this.cookies = this.props.cookies;
-		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		this.state = {
 			searchText: '',
@@ -25,7 +18,7 @@ export class Users extends BasePage {
 			totalItems: 0,
 			page: 1,
 			limit: 10
-		}
+		};
 	}
 
 	componentDidMount() {
@@ -63,7 +56,7 @@ export class Users extends BasePage {
 			</div>
 		),
 		filterIcon: filtered => (
-			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }} />
+			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }}/>
 		)
 	});
 
@@ -88,8 +81,7 @@ export class Users extends BasePage {
 				page: currentPage,
 				limit: this.state.limit
 			});
-		}
-		else {
+		} else {
 			if (!this.state.searchText)
 				this.getUsers({
 					page: currentPage,
@@ -103,6 +95,7 @@ export class Users extends BasePage {
 	isEmptyObj = obj => Object.keys(obj).length === 0;
 
 	getUsers(param) {
+		console.trace(param);
 		let url = API.getUsers;
 
 		if (!this.isEmptyObj(param)) {
@@ -110,7 +103,7 @@ export class Users extends BasePage {
 
 			for (const key in param) {
 				if (param.hasOwnProperty(key)) {
-					url += `&${key}=${param[key]}`
+					url += `&${key}=${param[key]}`;
 				}
 			}
 
@@ -121,7 +114,7 @@ export class Users extends BasePage {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'accessToken': this.token
+				'accessToken': this.props.users.token
 			},
 			signal: this.abortController.signal
 		}).then(res => {
@@ -136,15 +129,16 @@ export class Users extends BasePage {
 						phone: item.phone,
 						googleId: item.googleId,
 						createdAt: item.createdAt,
-						avatar: item.avatar
-					}
+						avatar: item.avatar,
+						role: item.role
+					};
 				});
 
 			this.setState({
 				users,
-				totalItems: users.length > 0 ? json.data.totalItems : 0 
+				totalItems: users.length > 0 ? json.data.totalItems : 0
 			});
-		})
+		});
 	}
 
 	render() {
@@ -156,7 +150,7 @@ export class Users extends BasePage {
 				render: (text, record) => {
 					return (
 						<ButtonStandForUser user={record}/>
-					)
+					);
 				}
 			},
 			{
@@ -168,10 +162,10 @@ export class Users extends BasePage {
 					return (
 						<div>
 							<img className="user-avatar" alt=""
-								src={record.avatar || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} />
+									 src={record.avatar || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}/>
 							<span className="user-name">{text}</span>
 						</div>
-					)
+					);
 				}
 			},
 			{
@@ -197,7 +191,7 @@ export class Users extends BasePage {
 				render: text => {
 					return (
 						<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
-					)
+					);
 				}
 			},
 		];
@@ -215,14 +209,19 @@ export class Users extends BasePage {
 				<Row>
 					<Col span={24}>
 						<Table pagination={paginationConfig}
-							dataSource={this.state.users}
-							columns={userColumns}
-							rowKey={(record) => record.id}
-							className="users-table" />
+									 dataSource={this.state.users}
+									 columns={userColumns}
+									 rowKey={(record) => record.id}
+									 className="users-table"/>
 					</Col>
 				</Row>
 			</div>
-		)
+		);
 	}
 }
-export default withCookies(Users);
+
+const mapStateToProps = (state) => ({
+	users: state.users
+});
+
+export default connect(mapStateToProps, actions)(Users);

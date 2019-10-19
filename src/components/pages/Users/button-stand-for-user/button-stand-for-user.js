@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import * as actions from '../../../../actions';
 import secret from '../../../../config/secret';
 import { COOKIE_NAMES } from '../../../../constants/cookie-names';
+import { UserRoles } from '../../../../constants/user-role';
 
 class ButtonStandForUser extends React.Component {
 
@@ -29,27 +30,32 @@ class ButtonStandForUser extends React.Component {
 
 		// console.log('value: ', this.secret);
 		setTimeout(() => {
-			window.open(this.secret.FRONT_END_DOMAIN, '_blank');
+			// window.open(this.secret.FRONT_END_DOMAIN, '_blank');
 			this.props.setAppLoading(false);
 		}, 1000);
 	}
 
 	render() {
-		return (
-			<Tooltip title='Thay quyền'>
-				<Button size='small'
-								onClick={this.onClick}>
-					<Icon type="login"/>
-				</Button>
-			</Tooltip>
-		);
+		if (this.props.user.role === UserRoles.endUser) {
+			return (
+				<Tooltip title='Thay quyền'>
+					<Button size='small'
+									onClick={this.onClick}>
+						<Icon type="login"/>
+					</Button>
+				</Tooltip>
+			);
+		}
+
+		return <></>;
 	}
 }
 
 ButtonStandForUser.propTypes = {
 	users: PropTypes.object,
 	user: PropTypes.shape({
-		id: PropTypes.string.isRequired
+		id: PropTypes.string.isRequired,
+		role: PropTypes.number.isRequired
 	}),
 	setAppLoading: PropTypes.func
 };
