@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Row, Col, Table, Input, Button, Icon } from 'antd';
 import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
@@ -64,7 +64,7 @@ export class AdwordAccounts extends BasePage {
 			</div>
 		),
 		filterIcon: filtered => (
-			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }}/>
+			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }} />
 		)
 	});
 
@@ -164,7 +164,7 @@ export class AdwordAccounts extends BasePage {
 				title: (filter, sortOrder) => {
 					return (
 						<div>
-							<img src={googleAdLogoUrl} alt="" className="ggAds-icon"/>
+							<img src={googleAdLogoUrl} alt="" className="ggAds-icon" />
 							<span>Google Ads ID</span>
 						</div>
 					)
@@ -189,14 +189,14 @@ export class AdwordAccounts extends BasePage {
 					if (text === true) {
 						return (
 							<div style={{ color: '#44b543' }}>
-								<Icon type="check"/>
+								<Icon type="check" />
 							</div>
 						);
 					}
 
 					return (
 						<div style={{ color: 'crimson' }}>
-							<Icon type="close"/>
+							<Icon type="close" />
 						</div>
 					);
 				}
@@ -238,15 +238,15 @@ export class AdwordAccounts extends BasePage {
 							current: this.state.page,
 							onChange: (currentPage) => this.onChangePage(currentPage)
 						}}
-									 dataSource={this.state.accounts}
-									 columns={accountColumns}
-									 rowKey={record => record.adsId}
-									 className="accounts-table"
-									 rowClassName={(record) => {
-										 if (record.isConnected === true)
-											 return 'isConnected';
-										 return 'isNotConnected';
-									 }}/>
+							dataSource={this.state.accounts}
+							columns={accountColumns}
+							rowKey={record => record.adsId}
+							className="accounts-table"
+							rowClassName={(record) => {
+								if (record.isConnected === true)
+									return 'isConnected';
+								return 'isNotConnected';
+							}} />
 					</Col>
 				</Row>
 			</div>

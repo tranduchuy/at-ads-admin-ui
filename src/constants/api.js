@@ -11,5 +11,6 @@ export const API = {
 	getGoogleAdsErrorsStatistic: `${secret.API}/api/google-ad-errors/statistic`,
 	statisticGoogleApiAndError: `${secret.API}/api/admin/users/report/google-statistic`,
 	getWebsites: `${secret.API}/api/admin/websites`,
-	checkScriptWebsite: `${secret.API}/api/admin/websites/{code}/recheck-tracking-code`
+	checkScriptWebsite: `${secret.API}/api/admin/websites/{code}/recheck-tracking-code`,
+	updateUserLicence: `${secret.API}/api/admin/user-licences`,
 };

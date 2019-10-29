@@ -227,22 +227,22 @@ export class WebsitePages extends BasePage {
 				key: 'email',
 				...this.getColumnSearchProps('email'),
 			},
-			{
-				title: 'Ngày hết hạn',
-				dataIndex: 'expiredAt',
-				key: 'expiredAt',
-				render: text => {
-					if (text) {
-						return (
-							<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
-						);
-					}
+			// {
+			// 	title: 'Ngày hết hạn',
+			// 	dataIndex: 'expiredAt',
+			// 	key: 'expiredAt',
+			// 	render: text => {
+			// 		if (text) {
+			// 			return (
+			// 				<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
+			// 			);
+			// 		}
 
-					return (
-						<span></span>
-					);
-				}
-			},
+			// 		return (
+			// 			<span></span>
+			// 		);
+			// 	}
+			// },
 			{
 				title: 'Ngày thêm',
 				dataIndex: 'createdAt',
@@ -253,19 +253,19 @@ export class WebsitePages extends BasePage {
 					)
 				}
 			},
-			{
-				title: '',
-				dataIndex: 'code',
-				key: 'code',
-				render: text => {
-					const host = `/dashboard/update-expiration?code=${text}`;
-					return (
-						<Link to={host}>
-							<Button type="primary">Nâng cấp domain</Button>
-						</Link>
-					)
-				}
-			},
+			// {
+			// 	title: '',
+			// 	dataIndex: 'code',
+			// 	key: 'code',
+			// 	render: text => {
+			// 		const host = `/dashboard/update-expiration?code=${text}`;
+			// 		return (
+			// 			<Link to={host}>
+			// 				<Button type="primary">Nâng cấp domain</Button>
+			// 			</Link>
+			// 		)
+			// 	}
+			// },
 		];
 
 		return (

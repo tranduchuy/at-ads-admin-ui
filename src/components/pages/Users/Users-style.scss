@@ -12,6 +12,7 @@
   }
 
   .users-table {
+    overflow: auto;
 
     .ant-table-thead {
       th {
@@ -32,6 +33,26 @@
         padding-top: 7px;
         padding-bottom: 7px;
       }
+    }
+
+    .free-licence-type {
+      color: #44b543;
+      font-weight: bold;
+    }
+
+    .vip-licence-type {
+      color: orange;
+      font-weight: bold;
+    }
+
+    .custom-licence-type {
+      color: #039be5;
+      font-weight: bold;
+    }
+
+    .base-licence-type {
+      display: flex;
+      flex-direction: row;
     }
   }
 }
