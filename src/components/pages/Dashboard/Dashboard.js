@@ -9,6 +9,8 @@ import {
 	LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
 import { BasePage } from "../base-page";
+import { COOKIE_NAMES } from '../../../constants/cookie-names';
+import { withCookies } from 'react-cookie';
 
 class Dashboard extends BasePage {
 	constructor(props) {
@@ -27,14 +29,14 @@ class Dashboard extends BasePage {
 
 	fetchData() {
 		this.props.setAppLoading(true);
-
+		const { cookies } = this.props;
 		axios.get(API.statisticGoogleApiAndError, {
 			params : {
 				from: this.state.from,
 				to  : this.state.to
 			},
 			headers: {
-				"accesstoken": this.props.users.token
+				"accesstoken": cookies.get(COOKIE_NAMES.token)
 			},
 			signal: this.abortController.signal
 		}).then(res => {
@@ -42,6 +44,8 @@ class Dashboard extends BasePage {
 			setTimeout(() => {
 				this.props.setAppLoading(false);
 			}, 500);
+		}).catch(err => {
+			this.props.setAppLoading(false);
 		});
 	}
 
@@ -72,7 +76,6 @@ class Dashboard extends BasePage {
 	}
 
 	render() {
-
 		const seriesError = {
 			name: 'Error',
 			stroke: 'red',
@@ -128,4 +131,4 @@ const mapStateToProps = state => ({
 	users: state.users
 });
 
-export default connect(mapStateToProps, actions)(Dashboard);
+export default connect(mapStateToProps, actions)(withCookies(Dashboard));

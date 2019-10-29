@@ -1,5 +1,4 @@
 import React from "react";
-import { Component } from "react";
 import { Select } from 'antd';
 import { API } from "../../../constants/api";
 import { withCookies } from 'react-cookie';

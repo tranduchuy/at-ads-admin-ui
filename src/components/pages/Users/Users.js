@@ -7,8 +7,12 @@ import { BasePage } from '../base-page';
 import ButtonStandForUser from './button-stand-for-user/button-stand-for-user';
 import * as actions from '../../../actions';
 import { connect } from 'react-redux';
+import { COOKIE_NAMES } from '../../../constants/cookie-names';
+import { withCookies } from 'react-cookie';
 
 export class Users extends BasePage {
+	currentPage = 1;
+
 	constructor(props) {
 		super(props);
 
@@ -75,7 +79,7 @@ export class Users extends BasePage {
 	};
 
 	onChangePage(currentPage) {
-
+		console.log(currentPage);
 		if (this.state.totalItems > this.state.limit) {
 			this.getUsers({
 				page: currentPage,
@@ -109,15 +113,19 @@ export class Users extends BasePage {
 
 		}
 
+		const { cookies } = this.props;
+		this.props.setAppLoading(true);
+
 		fetch(url, {
 			method: 'GET',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'accessToken': this.props.users.token
+				'accessToken': cookies.get(COOKIE_NAMES.token)
 			},
 			signal: this.abortController.signal
 		}).then(res => {
+			this.props.setAppLoading(false);
 			return res.json();
 		}).then(json => {
 			let users = (json.data.entries || [])
@@ -224,4 +232,4 @@ const mapStateToProps = (state) => ({
 	users: state.users
 });
 
-export default connect(mapStateToProps, actions)(Users);
+export default connect(mapStateToProps, actions)(withCookies(Users));

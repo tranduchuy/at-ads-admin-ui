@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Row, Col, Table, Input, Button, Icon } from 'antd';
 import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
