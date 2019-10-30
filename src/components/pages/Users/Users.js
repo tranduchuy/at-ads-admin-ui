@@ -296,7 +296,7 @@ export class Users extends BasePage {
 					if (record.role === UserRoles.master || record.role == UserRoles.admin)
 						return <span></span>
 
-					if (record.licenceType === 'VIP1' || record.licence === 'CUSTOM')
+					if (record.licenceType === 'VIP1' || record.licenceType === 'CUSTOM')
 						return (
 							<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
 						);
