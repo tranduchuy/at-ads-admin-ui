@@ -1,147 +1,152 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Form, Icon, Input, Button, Col, Row } from 'antd';
 import { withCookies } from 'react-cookie';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import { API } from '../../../constants/api';
 import './Login-style.scss';
 import * as actions from '../../../actions';
-import { COOKIE_NAMES } from "../../../constants/cookie-names";
-import { BasePage } from "../base-page";
+import { COOKIE_NAMES } from '../../../constants/cookie-names';
+import { BasePage } from '../base-page';
 
 class Login extends BasePage {
+  constructor(props) {
+    super(props);
 
-	constructor(props) {
-		super(props);
+    this.state = {
+      loginMessage: ''
+    };
+  }
 
-		this.state = {
-			loginMessage: ''
-		};
-	}
+  componentWillMount() {}
 
-	componentWillMount() {
-		const { cookies } = this.props;
-		const token = cookies.get(COOKIE_NAMES.token);
-		if (token) {
-			setTimeout(() => {
-				this.props.history.push("/dashboard");
-			}, 1000);
-		}
-	}
+  componentDidMount() {
+    this.props.setAppLoading(false);
+    const { cookies } = this.props;
+    const token = cookies.get(COOKIE_NAMES.token);
+    const user = cookies.get(COOKIE_NAMES.user);
 
-	handleSubmit = e => {
-		e.preventDefault();
-		this.props.form.validateFields((err, values) => {
-			if (!err) {
-				//console.log('Received values of form: ', values);
-				const params = {
-					email: values.email,
-					password: values.password
-				};
+    setTimeout(() => {
+      if (user && token) {
+        this.props.history.push('/dashboard');
+      }
+    }, 1000);
+  }
 
-				fetch(API.login, {
-					method: 'POST',
-					body: JSON.stringify(params),
-					headers: {
-						"Content-type": "application/json; charset=UTF-8"
-					},
-					signal: this.abortController.signal
-				})
-					.then(res => {
-						if (res.status === 200)
-							return Promise.resolve(res.json());
-						return Promise.reject(res.json());
-					})
-					.then(
-						resolve => {
-							const { cookies } = this.props;
-							const token = resolve.data.meta.token;
-							const user = resolve.data.user;
-							this.props.login(user, token);
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        //console.log('Received values of form: ', values);
+        const params = {
+          email: values.email,
+          password: values.password
+        };
 
-							cookies.set(COOKIE_NAMES.token, token, { path: '/' });
-							cookies.set(COOKIE_NAMES.user, user, { path: '/' });
+        fetch(API.login, {
+          method: 'POST',
+          body: JSON.stringify(params),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8'
+          },
+          signal: this.abortController.signal
+        })
+          .then(res => {
+            if (res.status === 200) return Promise.resolve(res.json());
+            return Promise.reject(res.json());
+          })
+          .then(
+            resolve => {
+              const { cookies } = this.props;
+              const token = resolve.data.meta.token;
+              const user = resolve.data.user;
+              this.props.login(user, token);
 
-							setTimeout(() => {
-								this.props.history.push("/dashboard");
-							}, 1000);
-						},
-						reject => reject.then(
-							res => {
-								this.setState({
-									loginMessage: res.messages[0]
-								});
-							})
-					)
-			}
-		});
-	};
+              cookies.set(COOKIE_NAMES.token, token, { path: '/' });
+              cookies.set(COOKIE_NAMES.user, user, { path: '/' });
 
-	render() {
-		const { getFieldDecorator } = this.props.form;
+              setTimeout(() => {
+                this.props.history.push('/dashboard');
+              }, 1000);
+            },
+            reject =>
+              reject.then(res => {
+                this.setState({
+                  loginMessage: res.messages[0]
+                });
+              })
+          );
+      }
+    });
+  };
 
-		return (
-			<div>
-				<Row>
-					<Col span={9}></Col>
-					<Col span={6}>
-						<Form onSubmit={this.handleSubmit}
-							className="login-form">
+  render() {
+    const { getFieldDecorator } = this.props.form;
 
-							<div className="form-title">Click CPanel</div>
+    return (
+      <div>
+        <Row>
+          <Col span={9}></Col>
+          <Col span={6}>
+            <Form onSubmit={this.handleSubmit} className='login-form'>
+              <div className='form-title'>Click CPanel</div>
 
-							<div className="logo">
-								<img src={require('../../../assets/images/app-logo.png')} alt="..." />
-							</div>
+              <div className='logo'>
+                <img
+                  src={require('../../../assets/images/app-logo.png')}
+                  alt='...'
+                />
+              </div>
 
-							<Form.Item>
-								{getFieldDecorator('email', {
-									rules: [{ required: true, message: 'Vui lòng nhập email' }],
-								})(
-									<Input
-										prefix={<Icon type="user" />}
-										placeholder="Email"
-									/>,
-								)}
-							</Form.Item>
+              <Form.Item>
+                {getFieldDecorator('email', {
+                  rules: [{ required: true, message: 'Vui lòng nhập email' }]
+                })(<Input prefix={<Icon type='user' />} placeholder='Email' />)}
+              </Form.Item>
 
-							<Form.Item>
-								{getFieldDecorator('password', {
-									rules: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
-								})(
-									<Input
-										prefix={<Icon type="lock" />}
-										type="password"
-										placeholder="Mật khẩu"
-									/>,
-								)}
-							</Form.Item>
+              <Form.Item>
+                {getFieldDecorator('password', {
+                  rules: [{ required: true, message: 'Vui lòng nhập mật khẩu' }]
+                })(
+                  <Input
+                    prefix={<Icon type='lock' />}
+                    type='password'
+                    placeholder='Mật khẩu'
+                  />
+                )}
+              </Form.Item>
 
-							<p style={{ color: 'red', textAlign: 'center' }}>{this.state.loginMessage}</p>
+              <p style={{ color: 'red', textAlign: 'center' }}>
+                {this.state.loginMessage}
+              </p>
 
-							<Form.Item>
-								<div style={{ textAlign: 'center' }}>
-									<Button
-										type="danger"
-										htmlType="submit"
-										className="login-form-button">
-										ĐĂNG NHẬP
-									</Button>
-								</div>
-							</Form.Item>
-
-						</Form>
-					</Col>
-					<Col span={9}></Col>
-				</Row>
-			</div>
-		);
-	}
+              <Form.Item>
+                <div style={{ textAlign: 'center' }}>
+                  <Button
+                    type='danger'
+                    htmlType='submit'
+                    className='login-form-button'
+                  >
+                    ĐĂNG NHẬP
+                  </Button>
+                </div>
+              </Form.Item>
+            </Form>
+          </Col>
+          <Col span={9}></Col>
+        </Row>
+      </div>
+    );
+  }
 }
 
 const WrappedNormalLoginForm = Form.create({ name: 'normal_login' })(Login);
 const mapStateToProps = state => ({
-	user: state.user
+  users: state.users
 });
 
-export default withCookies(connect(mapStateToProps, actions)(WrappedNormalLoginForm));
-
+export default withCookies(
+  connect(
+    mapStateToProps,
+    actions
+  )(WrappedNormalLoginForm)
+);

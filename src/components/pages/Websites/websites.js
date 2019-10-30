@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Row, Col, Table, Input, Button, Icon } from 'antd';
 import { Link } from "react-router-dom";
 import { withCookies } from 'react-cookie';

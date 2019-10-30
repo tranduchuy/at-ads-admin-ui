@@ -5,10 +5,6 @@ import * as action from '../../actions';
 import { connect } from 'react-redux';
 
 class AppLoading extends React.Component {
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		if (this.props.app.isLoading) {
 			return <div className={'app-loading'}>

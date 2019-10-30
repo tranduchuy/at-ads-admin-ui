@@ -2,6 +2,7 @@ import secret from '../config/secret';
 
 export const API = {
 	login: `${secret.API}/api/admin/users/login`,
+	info: `${secret.API}/api/users/info`,
 	getPackages: `${secret.API}/api/packages`,
 	checkWebsiteCode: `${secret.API}/api/websites/{code}`,
 	updateVipDomain: `${secret.API}/api/users/website`,
