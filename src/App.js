@@ -8,7 +8,6 @@ import Login from './components/pages/Login/Login';
 import store from './store';
 import { Provider } from 'react-redux';
 import NetworkService from './services/network-service';
-import CheckExpiredToken from './components/check-expired-token/check-expired-token';
 import AppLoading from './components/app-loading/app-loading';
 import { getLoggedInInfo } from './services/user.service';
 import { COOKIE_NAMES } from './constants/cookie-names';
