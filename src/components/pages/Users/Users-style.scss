@@ -46,13 +46,15 @@
     }
 
     .custom-licence-type {
-      color: #039be5;
+      color: crimson;
       font-weight: bold;
     }
 
     .base-licence-type {
       display: flex;
       flex-direction: row;
+      justify-content: center;
+      text-align: center;
     }
   }
 }
