@@ -1,9 +1,7 @@
 import React from 'react';
-import { withCookies } from 'react-cookie';
 import { API } from "../../../../constants/api";
 import * as actions from '../../../../actions';
 import { connect } from 'react-redux';
-import { COOKIE_NAMES } from "../../../../constants/cookie-names";
 import { Form, Button, Col, Row, Modal, Select, message } from 'antd';
 import { BasePage } from '../../base-page';
 import axios from "axios";
@@ -11,16 +9,12 @@ import axios from "axios";
 const { Option } = Select;
 
 class LicenceUpdatingModal extends BasePage {
-  cookies;
-  token;
   packages = [];
   key = 'updatable';
 
   constructor(props) {
     super(props);
 
-    this.cookies = this.props.cookies;
-    this.token = this.cookies.get(COOKIE_NAMES.token);
     this.packages = props.packages;
 
     this.state = {
@@ -68,7 +62,7 @@ class LicenceUpdatingModal extends BasePage {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'accessToken': this.token
+        'accessToken': this.props.accessToken
       },
       data: params,
       signal: this.abortController.signal
@@ -135,4 +129,4 @@ class LicenceUpdatingModal extends BasePage {
   }
 }
 
-export default connect(null, actions)(withCookies(LicenceUpdatingModal));
+export default connect(null, actions)(LicenceUpdatingModal);

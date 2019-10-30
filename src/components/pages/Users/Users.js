@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Table, Input, Button, Icon } from 'antd';
+import { Row, Col, Table, Input, Button, Icon, Popover } from 'antd';
 import { API } from '../../../constants/api';
 import moment from 'moment';
 import './Users-style.scss';
@@ -10,12 +10,18 @@ import { connect } from 'react-redux';
 import LicenceUpdatingModal from './licence-updating-modal/licence-updating-modal';
 import { COOKIE_NAMES } from '../../../constants/cookie-names';
 import { withCookies } from 'react-cookie';
+import { UserRoles } from '../../../constants/user-role';
 
 export class Users extends BasePage {
+	cookies;
+	token;
 	currentPage = 1;
 	packages = [];
 	constructor(props) {
 		super(props);
+
+		this.cookies = this.props.cookies;
+		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		this.state = {
 			searchText: '',
@@ -40,7 +46,7 @@ export class Users extends BasePage {
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'accessToken': this.props.users.token
+				'accessToken': this.token
 			},
 			signal: this.abortController.signal
 		}).then(res => {
@@ -161,7 +167,8 @@ export class Users extends BasePage {
 						role: item.role,
 						licenceName: item.licence.packageId ? item.licence.packageId.name : null,
 						licenceType: item.licence.packageId ? item.licence.packageId.type : null,
-						licenceExpiration: item.licence.packageId ? item.licence.packageId.expiredAt : null
+						licenceExpiration: item.licence.expiredAt,
+						licenceHistories: item.licence.histories
 					};
 				});
 
@@ -172,7 +179,7 @@ export class Users extends BasePage {
 		});
 	}
 
-	reloadUsers = () => {
+	refreshUsers = () => {
 		this.getUsers({
 			page: this.state.page,
 			limit: this.state.limit
@@ -199,7 +206,7 @@ export class Users extends BasePage {
 				...this.getColumnSearchProps('name'),
 				render: (text, record) => {
 					return (
-						<div style={{ display: 'flex', flexDirection: 'row' }}>
+						<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
 							<img className="user-avatar" alt=""
 								src={record.avatar || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} />
 							<span className="user-name">{text}</span>
@@ -238,6 +245,9 @@ export class Users extends BasePage {
 				dataIndex: 'licenceName',
 				key: 'licenceName',
 				render: (text, record) => {
+					if (record.role === UserRoles.master || record.role == UserRoles.admin)
+						return <span></span>
+
 					let licenceStyle = 'free-licence-type';
 					const licenceBaseStyle = 'base-licence-type'
 					const { licenceType } = record;
@@ -249,8 +259,33 @@ export class Users extends BasePage {
 							licenceStyle = 'custom-licence-type';
 					}
 
+					let histories = (record.licenceHistories || []).map(item => {
+						return (
+							<p style={{ fontSize: '12px' }}>
+								Vào lúc {moment(item.createdAt).format('HH:mm DD/MM/YYYY')} <br />
+								Licence: {item.name}
+							</p>
+						)
+					}).reverse();
+
+					if(histories.length > 0)
+						histories = (<div style={{maxHeight: '300px', overflow: 'auto'}}>{histories}</div>);
+					else histories = (<span style={{fontSize: '12px'}}>Chưa có ghi nhận nào.</span>);
+
 					return (
-						<span className={`${licenceBaseStyle} ${licenceStyle}`}>{text}</span>
+						<div className="user-licence-wrapper">
+							<span className={`${licenceBaseStyle} ${licenceStyle}`}>{text}</span>
+							<Popover 
+												placement="bottom" 
+												title="Lịch sử  cập nhật licence" 
+												content={histories} 
+												trigger="click"
+												overlayStyle={{
+													width: '200px'
+												}}>
+								<Button type="link" style={{ fontSize: '12px' }}>Lịch sử</Button>
+							</Popover>
+						</div>
 					);
 				}
 			},
@@ -259,6 +294,9 @@ export class Users extends BasePage {
 				dataIndex: 'licenceExpiration',
 				key: 'licenceExpiration',
 				render: (text, record) => {
+					if (record.role === UserRoles.master || record.role == UserRoles.admin)
+						return <span></span>
+
 					if (record.licenceType === 'VIP1' || record.licence === 'CUSTOM')
 						return (
 							<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
@@ -270,12 +308,16 @@ export class Users extends BasePage {
 				dataIndex: 'licenceUpdating',
 				key: 'licenceUpdating',
 				render: (text, record) => {
+					if (record.role === UserRoles.master || record.role == UserRoles.admin)
+						return <span></span>
+
 					return (
 						<LicenceUpdatingModal
+							accessToken={this.token}
 							userFullname={record.name}
 							userId={record.id}
 							packages={this.packages}
-							onUserLicenceUpdated={this.reloadUsers}
+							onUserLicenceUpdated={this.refreshUsers}
 						/>
 					);
 				}

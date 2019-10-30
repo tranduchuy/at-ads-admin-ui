@@ -3,12 +3,13 @@
     height: 32px;
     width: 32px;
     border-radius: 50%;
-    margin-right: 15px;
   }
 
   .user-name {
     color: rgba(0, 0, 0, 0.6);
     font-weight: bold;
+    margin-left: 10px;
+    font-size: 12px;
   }
 
   .users-table {
@@ -35,26 +36,32 @@
       }
     }
 
-    .free-licence-type {
-      color: #44b543;
-      font-weight: bold;
-    }
-
-    .vip-licence-type {
-      color: orange;
-      font-weight: bold;
-    }
-
-    .custom-licence-type {
-      color: crimson;
-      font-weight: bold;
-    }
-
-    .base-licence-type {
+    .user-licence-wrapper {
       display: flex;
       flex-direction: row;
-      justify-content: center;
-      text-align: center;
+      align-items: center;
+
+      .free-licence-type {
+        color: #44b543;
+        font-weight: bold;
+      }
+
+      .vip-licence-type {
+        color: goldenrod;
+        font-weight: bold;
+      }
+
+      .custom-licence-type {
+        color: crimson;
+        font-weight: bold;
+      }
+
+      .base-licence-type {
+        display: flex;
+        flex-direction: row;
+        font-size: 12px;
+        width: 80px;
+      }
     }
   }
 }
