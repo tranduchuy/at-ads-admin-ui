@@ -14,4 +14,5 @@ export const API = {
 	getWebsites: `${secret.API}/api/admin/websites`,
 	checkScriptWebsite: `${secret.API}/api/admin/websites/{code}/recheck-tracking-code`,
 	updateUserLicence: `${secret.API}/api/admin/user-licences`,
+	updateAccountLimitWebsite: `${secret.API}/api/admin/account-ads/limit-website`,
 };

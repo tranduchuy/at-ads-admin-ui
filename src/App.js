@@ -25,7 +25,6 @@ function Root() {
 
   const [checkToken, setCheckToken] = React.useState(false);
   const [cookies, setCookie, removeCookie] = useCookies();
-  console.log('APP', cookies.token);
 
   if (checkToken === false) {
     getLoggedInInfo(cookies.token).then(res => {

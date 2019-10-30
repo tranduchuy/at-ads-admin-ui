@@ -26,7 +26,6 @@ class LicenceUpdatingModal extends BasePage {
         message: '',
         isSucceed: true
       },
-      isLoading: false
     }
   }
 

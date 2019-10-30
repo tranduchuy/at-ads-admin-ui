@@ -8,6 +8,7 @@ import * as actions from '../../../actions';
 import { connect } from 'react-redux';
 import { COOKIE_NAMES } from "../../../constants/cookie-names";
 import { BasePage } from "../base-page";
+import LimitWebsiteEditingModal from './limit-website-editing-modal';
 
 export class AdwordAccounts extends BasePage {
 
@@ -102,7 +103,14 @@ export class AdwordAccounts extends BasePage {
 
 	isEmptyObj = obj => Object.keys(obj).length === 0;
 
-	getAccounts(param) {
+	refreshAccounts = () => {
+		this.getAccounts({
+			page: this.state.page,
+			limit: this.state.limit
+		});
+	}
+
+	getAccounts = (param) => {
 		let url = API.getAccounts;
 
 		if (!this.isEmptyObj(param)) {
@@ -131,11 +139,13 @@ export class AdwordAccounts extends BasePage {
 			let accounts = (json.data.entries || [])
 				.map(item => {
 					return {
+						id: item._id,
 						adsId: this.formatAdsId(item.adsId),
 						isConnected: item.isConnected,
 						email: item.userInfo.email,
 						domain: item.websiteInfo ? item.websiteInfo.map(website => website.domain) : [],
 						createdAt: item.createdAt,
+						limitWebsite: item.setting.limitWebsite
 					}
 				});
 
@@ -175,7 +185,6 @@ export class AdwordAccounts extends BasePage {
 					return (
 						<span style={{
 							color: record.isConnected ? '#44b543' : 'crimson',
-							fontFamily: 'tahoma',
 							fontWeight: 'bold'
 						}}>{text}</span>
 					)
@@ -216,7 +225,25 @@ export class AdwordAccounts extends BasePage {
 				}
 			},
 			{
-				title: 'Ngày tạo',
+				title: 'Limit webiste',
+				dataIndex: 'limitWebsite',
+				key: 'limitWebsite',
+				render: (text, record) => {
+					return (
+						<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+							<div style={{ width: '100px' }}>{text}</div>
+							<LimitWebsiteEditingModal
+								accessToken={this.token}
+								accountId={record.id}
+								adsId={record.adsId}
+								currentLimitWebsite={record.limitWebsite}
+								onAccountLimitWebsiteEdited={this.refreshAccounts} />
+						</div>
+					);
+				}
+			},
+			{
+				title: 'Ngày kết nối',
 				dataIndex: 'createdAt',
 				key: 'createdAt',
 				render: text => {

@@ -106,8 +106,6 @@ class Dashboard extends BasePage {
 			seriesRequest
 		];
 
-		console.log('chartWrap', this.chartWrap);
-
 		return (
 			<div ref={this.chartWrap}>
 				<h2>Request Google Ads & Error Statistic</h2>

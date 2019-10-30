@@ -105,7 +105,6 @@ export class Users extends BasePage {
 	};
 
 	onChangePage(currentPage) {
-		console.log(currentPage);
 		if (this.state.totalItems > this.state.limit) {
 			this.getUsers({
 				page: currentPage,
@@ -125,7 +124,6 @@ export class Users extends BasePage {
 	isEmptyObj = obj => Object.keys(obj).length === 0;
 
 	getUsers = (param) => {
-		console.trace(param);
 		let url = API.getUsers;
 
 		if (!this.isEmptyObj(param)) {
@@ -192,6 +190,7 @@ export class Users extends BasePage {
 		const userColumns = [
 			{
 				title: 'Hành động',
+				dataIndex: 'id',
 				key: 'id',
 				render: (text, record) => {
 					return (
@@ -259,30 +258,30 @@ export class Users extends BasePage {
 							licenceStyle = 'custom-licence-type';
 					}
 
-					let histories = (record.licenceHistories || []).map(item => {
+					let histories = (record.licenceHistories || []).map((item, index) => {
 						return (
-							<p style={{ fontSize: '12px' }}>
+							<p style={{ fontSize: '12px' }} key={index}>
 								Vào lúc {moment(item.createdAt).format('HH:mm DD/MM/YYYY')} <br />
 								Licence: {item.name}
 							</p>
 						)
 					}).reverse();
 
-					if(histories.length > 0)
-						histories = (<div style={{maxHeight: '300px', overflow: 'auto'}}>{histories}</div>);
-					else histories = (<span style={{fontSize: '12px'}}>Chưa có ghi nhận nào.</span>);
+					if (histories.length > 0)
+						histories = (<div style={{ maxHeight: '300px', overflow: 'auto' }}>{histories}</div>);
+					else histories = (<span style={{ fontSize: '12px' }}>Chưa có ghi nhận nào.</span>);
 
 					return (
 						<div className="user-licence-wrapper">
 							<span className={`${licenceBaseStyle} ${licenceStyle}`}>{text}</span>
-							<Popover 
-												placement="bottom" 
-												title="Lịch sử  cập nhật licence" 
-												content={histories} 
-												trigger="click"
-												overlayStyle={{
-													width: '200px'
-												}}>
+							<Popover
+								placement="bottom"
+								title="Lịch sử  cập nhật licence"
+								content={histories}
+								trigger="click"
+								overlayStyle={{
+									width: '200px'
+								}}>
 								<Button type="link" style={{ fontSize: '12px' }}>Lịch sử</Button>
 							</Popover>
 						</div>
@@ -336,7 +335,8 @@ export class Users extends BasePage {
 			<div className="container">
 				<Row>
 					<Col span={24}>
-						<Table pagination={paginationConfig}
+						<Table
+							pagination={paginationConfig}
 							dataSource={this.state.users}
 							columns={userColumns}
 							rowKey={(record) => record.id}

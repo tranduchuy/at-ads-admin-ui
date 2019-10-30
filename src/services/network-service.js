@@ -1,4 +1,4 @@
-import axios        from 'axios';
+import axios from 'axios';
 import { UNAUTH_USER } from '../actions/types';
 
 export default {
@@ -8,7 +8,7 @@ export default {
         return response;
     }, function (error) {
         //catches if the session ended!
-        if ( error.response.status === 401 && store.users.isLogout == false) {
+        if ( error.response.status === 401 && store.users.isLogout === false) {
             store.dispatch({ type: UNAUTH_USER });
         }
         
