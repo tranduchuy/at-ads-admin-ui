@@ -2,11 +2,14 @@ import React from 'react';
 import { API } from "../../../../constants/api";
 import * as actions from '../../../../actions';
 import { connect } from 'react-redux';
-import { Form, Button, Col, Row, Modal, Select, message } from 'antd';
+import { Button, Col, Row, Modal, Select, message, DatePicker } from 'antd';
 import { BasePage } from '../../base-page';
 import axios from "axios";
+import moment from 'moment';
+import * as _ from 'lodash';
 
 const { Option } = Select;
+const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY'];
 
 class LicenceUpdatingModal extends BasePage {
   packages = [];
@@ -20,12 +23,15 @@ class LicenceUpdatingModal extends BasePage {
     this.state = {
       visible: false,
       selectedPackage: {
-        _id: this.packages[0]._id
+        _id: this.props.currentPackage._id,
+        type: this.props.currentPackage.type
       },
+      selectedExpiration: moment(new Date()).add(1, 'months'),
       updatingMessage: {
         message: '',
         isSucceed: true
       },
+      isDatePickerDisplayed: this.props.currentPackage.type !== 'FREE'
     }
   }
 
@@ -33,7 +39,8 @@ class LicenceUpdatingModal extends BasePage {
     this.setState({
       selectedPackage: {
         _id: value
-      }
+      },
+      isDatePickerDisplayed: _.find(this.props.packages, item => item._id === value).type !== 'FREE'
     });
   }
 
@@ -52,8 +59,12 @@ class LicenceUpdatingModal extends BasePage {
   updateLicence = () => {
     const params = {
       userId: this.props.userId,
-      packageId: this.state.selectedPackage._id
+      packageId: this.state.selectedPackage._id,
+      expiredAt: this.state.selectedExpiration.format('DD-MM-YYYY')
     };
+
+    if (this.state.selectedPackage.type === 'FREE')
+      delete params.expiredAt;
 
     axios({
       method: 'PUT',
@@ -82,9 +93,23 @@ class LicenceUpdatingModal extends BasePage {
     });
   };
 
-  render() {
-    const selectedPackage = this.state.selectedPackage._id || (this.state.packages.length > 0 ? this.state.packages[0]._id : '');
+  handleChangeDatePicker = (date) => {
+    if (date) {
+      this.setState({
+        selectedExpiration: date
+      })
+    }
+  }
 
+  disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current < moment();
+  }
+
+  render() {
+    const selectedPackageId = this.state.selectedPackage._id;
+    const selectedExpiration = this.state.selectedExpiration;
+    const isDatePickerDisplayed = this.state.isDatePickerDisplayed;
     return (
       <div className="modal-container">
         <Button onClick={this.showModal} type="primary">
@@ -101,24 +126,37 @@ class LicenceUpdatingModal extends BasePage {
           <Row>
             <Col span={6}></Col>
             <Col span={12}>
-              <Form>
-                <Form.Item>
-                  <label>
-                    Chọn gói licence:
-									<Select
-                      value={selectedPackage}
-                      style={{ width: '100%' }}
-                      placeholder="Chọn gói"
-                      onChange={this.handleChangePackage}>
-                      {
-                        this.props.packages.map((item, index) => {
-                          return <Option value={item._id} key={index}>{item.name} - {item.numOfDays} ngày</Option>
-                        })
-                      }
-                    </Select>
-                  </label>
-                </Form.Item>
-              </Form>
+              <div>
+                Chọn gói licence:
+								<Select
+                  value={selectedPackageId}
+                  style={{ width: '100%' }}
+                  placeholder="Chọn gói"
+                  onChange={this.handleChangePackage}
+                >
+                  {
+                    this.props.packages.map((item, index) => {
+                      return <Option value={item._id} key={index}>{item.name}</Option>
+                    })
+                  }
+                </Select>
+              </div>
+              <br />
+              {(() => {
+                if (isDatePickerDisplayed === true) {
+                  return (
+                    <div>
+                      Hạn dùng đến:
+                    <DatePicker
+                        style={{ width: '100%' }}
+                        defaultValue={moment(selectedExpiration, dateFormatList[0])}
+                        format={dateFormatList} onChange={this.handleChangeDatePicker}
+                        disabledDate={this.disabledDate}
+                      />
+                    </div>
+                  )
+                }
+              })()}
             </Col>
             <Col span={4}></Col>
           </Row>

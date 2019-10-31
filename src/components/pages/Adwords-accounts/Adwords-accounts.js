@@ -145,7 +145,8 @@ export class AdwordAccounts extends BasePage {
 						email: item.userInfo.email,
 						domain: item.websiteInfo ? item.websiteInfo.map(website => website.domain) : [],
 						createdAt: item.createdAt,
-						limitWebsite: item.setting.limitWebsite
+						limitWebsite: item.setting.limitWebsite,
+						licenceType: item.licence.packageId.type
 					}
 				});
 
@@ -229,9 +230,11 @@ export class AdwordAccounts extends BasePage {
 				dataIndex: 'limitWebsite',
 				key: 'limitWebsite',
 				render: (text, record) => {
+					if (record.licenceType === 'FREE')
+						return (<span>{text}</span>);
 					return (
 						<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-							<div style={{ width: '100px' }}>{text}</div>
+							<div style={{ width: '50px' }}>{text}</div>
 							<LimitWebsiteEditingModal
 								accessToken={this.token}
 								accountId={record.id}

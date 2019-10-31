@@ -163,6 +163,7 @@ export class Users extends BasePage {
 						createdAt: item.createdAt,
 						avatar: item.avatar,
 						role: item.role,
+						licencePackageId: item.licence.packageId._id,
 						licenceName: item.licence.packageId ? item.licence.packageId.name : null,
 						licenceType: item.licence.packageId ? item.licence.packageId.type : null,
 						licenceExpiration: item.licence.expiredAt,
@@ -244,7 +245,7 @@ export class Users extends BasePage {
 				dataIndex: 'licenceName',
 				key: 'licenceName',
 				render: (text, record) => {
-					if (record.role === UserRoles.master || record.role == UserRoles.admin)
+					if (record.role === UserRoles.master || record.role === UserRoles.admin)
 						return <span></span>
 
 					let licenceStyle = 'free-licence-type';
@@ -293,7 +294,7 @@ export class Users extends BasePage {
 				dataIndex: 'licenceExpiration',
 				key: 'licenceExpiration',
 				render: (text, record) => {
-					if (record.role === UserRoles.master || record.role == UserRoles.admin)
+					if (record.role === UserRoles.master || record.role === UserRoles.admin)
 						return <span></span>
 
 					if (record.licenceType === 'VIP1' || record.licenceType === 'CUSTOM')
@@ -307,7 +308,7 @@ export class Users extends BasePage {
 				dataIndex: 'licenceUpdating',
 				key: 'licenceUpdating',
 				render: (text, record) => {
-					if (record.role === UserRoles.master || record.role == UserRoles.admin)
+					if (record.role === UserRoles.master || record.role === UserRoles.admin)
 						return <span></span>
 
 					return (
@@ -317,6 +318,7 @@ export class Users extends BasePage {
 							userId={record.id}
 							packages={this.packages}
 							onUserLicenceUpdated={this.refreshUsers}
+							currentPackage={{ _id: record.licencePackageId, type: record.licenceType }}
 						/>
 					);
 				}
