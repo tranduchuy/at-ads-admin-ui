@@ -116,13 +116,11 @@ export class WebsitePages extends BasePage {
 		let url = API.getWebsites;
 
 		if (!this.isEmptyObj(param)) {
-			url += '?';
-
-			for (const key in param) {
-				if (param.hasOwnProperty(key)) {
-					url += `&${key}=${param[key]}`;
-				}
-			}
+			url += '?' + Object.keys(param)
+        .map(key => {
+          return `${key}=${param[key]}`;
+        })
+        .join('&');
 		}
 
 		this.props.setAppLoading(true);
