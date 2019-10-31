@@ -60,7 +60,7 @@ class LicenceUpdatingModal extends BasePage {
     const params = {
       userId: this.props.userId,
       packageId: this.state.selectedPackage._id,
-      expiredAt: this.state.selectedExpiration.format('DD-MM-YYYY')
+      expiredAt: new Date(this.state.selectedExpiration).getTime()
     };
 
     if (this.state.selectedPackage.type === 'FREE')
