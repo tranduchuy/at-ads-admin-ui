@@ -127,14 +127,11 @@ export class Users extends BasePage {
 		let url = API.getUsers;
 
 		if (!this.isEmptyObj(param)) {
-			url += '?';
-
-			for (const key in param) {
-				if (param.hasOwnProperty(key)) {
-					url += `&${key}=${param[key]}`;
-				}
-			}
-
+			url += '?' + Object.keys(param)
+        .map(key => {
+          return `${key}=${param[key]}`;
+        })
+        .join('&');
 		}
 
 		const { cookies } = this.props;
