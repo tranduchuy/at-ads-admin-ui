@@ -11,12 +11,6 @@ export default [
 		icon: 'home',
 		component: Dashboard
 	},
-	// {
-	// 	title: 'Cập nhật thời hạn sử dụng',
-	// 	path: 'update-expiration',
-	// 	icon: 'history',
-	// 	component: ExpirationUpdating
-	// },
 	{
 		title: 'Quản lý người dùng',
 		path: 'users',

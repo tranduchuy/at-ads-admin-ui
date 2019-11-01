@@ -1,4 +1,4 @@
-import React  from 'react';
+import React from 'react';
 import './Dashboard-style.scss';
 import * as actions from '../../../actions';
 import { connect } from 'react-redux';
@@ -11,32 +11,61 @@ import {
 import { BasePage } from "../base-page";
 import { COOKIE_NAMES } from '../../../constants/cookie-names';
 import { withCookies } from 'react-cookie';
+import { Icon } from 'antd';
 
 class Dashboard extends BasePage {
+	cookies;
+	token;
 	constructor(props) {
 		super(props);
+
+		this.cookies = this.props.cookies;
+		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		const prevMonth = moment().subtract(1, 'month').format('DD-MM-YYYY');
 		const now = moment().format('DD-MM-YYYY');
 		this.state = {
 			data: [],
 			from: prevMonth,
-			to: now
+			to: now,
+			overviewStatisticData: {
+				numberOfUser: 0,
+				numberOfAdswords: 0,
+				numberOfWebsite: 0
+			}
 		};
 
 		this.chartWrap = React.createRef();
 	}
 
+	statisticOverview() {
+		this.props.setAppLoading(true);
+		axios.get(API.statisticOverview, {
+			headers: {
+				"accesstoken": this.token
+			},
+			signal: this.abortController.signal
+		}).then(res => {
+			this.setState({
+				overviewStatisticData: res.data.data
+			})
+			setTimeout(() => {
+				this.props.setAppLoading(false);
+			}, 500);
+		}).catch(err => {
+			this.props.setAppLoading(false);
+		});
+	}
+
 	fetchData() {
 		this.props.setAppLoading(true);
-		const { cookies } = this.props;
 		axios.get(API.statisticGoogleApiAndError, {
-			params : {
+			params: {
 				from: this.state.from,
-				to  : this.state.to
+				to: this.state.to
 			},
 			headers: {
-				"accesstoken": cookies.get(COOKIE_NAMES.token)
+				"accesstoken": this.token
 			},
 			signal: this.abortController.signal
 		}).then(res => {
@@ -73,9 +102,11 @@ class Dashboard extends BasePage {
 
 	componentDidMount() {
 		this.fetchData();
+		this.statisticOverview();
 	}
 
 	render() {
+		const googleAdLogoUrl = 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/logo_Google_Ads_192px.max-200x200.png';
 		const seriesError = {
 			name: 'Error',
 			stroke: 'red',
@@ -100,26 +131,46 @@ class Dashboard extends BasePage {
 			});
 		});
 
-
 		const series = [
 			seriesError,
 			seriesRequest
 		];
 
+		const { overviewStatisticData } = this.state;
+
 		return (
-			<div ref={this.chartWrap}>
-				<h2>Request Google Ads & Error Statistic</h2>
-				<h4>From <strong>{this.state.from}</strong> To <strong>{this.state.to}</strong></h4>
-				<LineChart width={this.chartWrap.current ? this.chartWrap.current.offsetWidth : 800} height={300}>
-					<CartesianGrid strokeDasharray="3 3"/>
-					<XAxis dataKey="date" type="category" allowDuplicatedCategory={false}/>
-					<YAxis dataKey="value"/>
-					<Tooltip/>
-					<Legend/>
-					{series.map(s => (
-						<Line dataKey="value" data={s.data} stroke={s.stroke} name={s.name} key={s.name}/>
-					))}
-				</LineChart>
+			<div className="dashboard">
+				<div ref={this.chartWrap}>
+					<h2>Request Google Ads & Error Statistic</h2>
+					<h4>From <strong>{this.state.from}</strong> To <strong>{this.state.to}</strong></h4>
+					<LineChart width={this.chartWrap.current ? this.chartWrap.current.offsetWidth : 800} height={300}>
+						<CartesianGrid strokeDasharray="3 3" />
+						<XAxis dataKey="date" type="category" allowDuplicatedCategory={false} />
+						<YAxis dataKey="value" />
+						<Tooltip />
+						<Legend />
+						{series.map(s => (
+							<Line dataKey="value" data={s.data} stroke={s.stroke} name={s.name} key={s.name} />
+						))}
+					</LineChart>
+				</div>
+
+				<div className="overview">
+					<ul>
+						<li>
+							<Icon type="user" /> Users: 
+							<span className="data-value">{overviewStatisticData.numberOfUser}</span>
+						</li>
+						<li>
+							<img src={googleAdLogoUrl} alt="" className="ggAds-icon" /> Google Ads accounts: 
+							<span className="data-value">{overviewStatisticData.numberOfAdswords}</span>
+						</li>
+						<li>
+							<Icon type="layout" /> Websites: 
+							<span className="data-value">{overviewStatisticData.numberOfWebsite}</span>
+						</li>
+					</ul>
+				</div>
 			</div>
 		)
 	}

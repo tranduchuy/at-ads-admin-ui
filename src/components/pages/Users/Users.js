@@ -236,7 +236,7 @@ export class Users extends BasePage {
 				key: 'createdAt',
 				render: text => {
 					return (
-						<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
+						<div style={{ width: '120px' }}>{moment(text).format('HH:mm DD/MM/YYYY')}</div>
 					);
 				}
 			},
@@ -299,7 +299,7 @@ export class Users extends BasePage {
 
 					if (record.licenceType === 'VIP1' || record.licenceType === 'CUSTOM')
 						return (
-							<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
+							<div style={{ width: '120px' }}>{moment(text).format('HH:mm DD/MM/YYYY')}</div>
 						);
 				}
 			},
