@@ -15,5 +15,6 @@ export const API = {
 	checkScriptWebsite: `${secret.API}/api/admin/websites/{code}/recheck-tracking-code`,
 	updateUserLicence: `${secret.API}/api/admin/user-licences`,
 	updateAccountLimitWebsite: `${secret.API}/api/admin/account-ads/limit-website`,
-	statisticOverview: `${secret.API}/api/admin/statistic`
+	statisticOverview: `${secret.API}/api/admin/statistic`,
+	getOrders: `${secret.API}/api/admin/order`,
 };
