@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Table, Input, Button, Icon } from 'antd';
+import { Row, Col, Table, Input, Button, Icon, Popover } from 'antd';
 import { API } from '../../../constants/api';
 import moment from 'moment';
 import './Users-style.scss';
@@ -7,17 +7,28 @@ import { BasePage } from '../base-page';
 import ButtonStandForUser from './button-stand-for-user/button-stand-for-user';
 import * as actions from '../../../actions';
 import { connect } from 'react-redux';
+import LicenceUpdatingModal from './licence-updating-modal/licence-updating-modal';
+import { COOKIE_NAMES } from '../../../constants/cookie-names';
+import { withCookies } from 'react-cookie';
+import { UserRoles } from '../../../constants/user-role';
 
 export class Users extends BasePage {
+	cookies;
+	token;
+	currentPage = 1;
+	packages = [];
 	constructor(props) {
 		super(props);
+
+		this.cookies = this.props.cookies;
+		this.token = this.cookies.get(COOKIE_NAMES.token);
 
 		this.state = {
 			searchText: '',
 			users: [],
 			totalItems: 0,
 			page: 1,
-			limit: 10
+			limit: 10,
 		};
 	}
 
@@ -26,6 +37,25 @@ export class Users extends BasePage {
 			page: this.state.page,
 			limit: this.state.limit
 		});
+		this.getPackages();
+	}
+
+	getPackages() {
+		fetch(API.getPackages, {
+			method: 'GET',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+				'accessToken': this.token
+			},
+			signal: this.abortController.signal
+		}).then(res => {
+			return res.json();
+		}).then(json => {
+			this.packages = json.data.packages.sort((a, b) => {
+				return a.numOfDays - b.numOfDays;
+			});
+		})
 	}
 
 	getColumnSearchProps = dataIndex => ({
@@ -56,7 +86,7 @@ export class Users extends BasePage {
 			</div>
 		),
 		filterIcon: filtered => (
-			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }}/>
+			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }} />
 		)
 	});
 
@@ -75,7 +105,6 @@ export class Users extends BasePage {
 	};
 
 	onChangePage(currentPage) {
-
 		if (this.state.totalItems > this.state.limit) {
 			this.getUsers({
 				page: currentPage,
@@ -94,30 +123,30 @@ export class Users extends BasePage {
 
 	isEmptyObj = obj => Object.keys(obj).length === 0;
 
-	getUsers(param) {
-		console.trace(param);
+	getUsers = (param) => {
 		let url = API.getUsers;
 
 		if (!this.isEmptyObj(param)) {
-			url += '?';
-
-			for (const key in param) {
-				if (param.hasOwnProperty(key)) {
-					url += `&${key}=${param[key]}`;
-				}
-			}
-
+			url += '?' + Object.keys(param)
+        .map(key => {
+          return `${key}=${param[key]}`;
+        })
+        .join('&');
 		}
+
+		const { cookies } = this.props;
+		this.props.setAppLoading(true);
 
 		fetch(url, {
 			method: 'GET',
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'accessToken': this.props.users.token
+				'accessToken': cookies.get(COOKIE_NAMES.token)
 			},
 			signal: this.abortController.signal
 		}).then(res => {
+			this.props.setAppLoading(false);
 			return res.json();
 		}).then(json => {
 			let users = (json.data.entries || [])
@@ -130,7 +159,12 @@ export class Users extends BasePage {
 						googleId: item.googleId,
 						createdAt: item.createdAt,
 						avatar: item.avatar,
-						role: item.role
+						role: item.role,
+						licencePackageId: item.licence.packageId._id,
+						licenceName: item.licence.packageId ? item.licence.packageId.name : null,
+						licenceType: item.licence.packageId ? item.licence.packageId.type : null,
+						licenceExpiration: item.licence.expiredAt,
+						licenceHistories: item.licence.histories
 					};
 				});
 
@@ -141,15 +175,24 @@ export class Users extends BasePage {
 		});
 	}
 
+	refreshUsers = () => {
+		this.getUsers({
+			page: this.state.page,
+			limit: this.state.limit
+		});
+
+	}
+
 	render() {
 
 		const userColumns = [
 			{
 				title: 'Hành động',
+				dataIndex: 'id',
 				key: 'id',
 				render: (text, record) => {
 					return (
-						<ButtonStandForUser user={record}/>
+						<ButtonStandForUser user={record} />
 					);
 				}
 			},
@@ -160,9 +203,9 @@ export class Users extends BasePage {
 				...this.getColumnSearchProps('name'),
 				render: (text, record) => {
 					return (
-						<div>
+						<div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
 							<img className="user-avatar" alt=""
-									 src={record.avatar || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'}/>
+								src={record.avatar || 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png'} />
 							<span className="user-name">{text}</span>
 						</div>
 					);
@@ -190,10 +233,93 @@ export class Users extends BasePage {
 				key: 'createdAt',
 				render: text => {
 					return (
-						<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
+						<div style={{ width: '120px' }}>{moment(text).format('HH:mm DD/MM/YYYY')}</div>
 					);
 				}
 			},
+			{
+				title: 'Licence',
+				dataIndex: 'licenceName',
+				key: 'licenceName',
+				render: (text, record) => {
+					if (record.role === UserRoles.master || record.role === UserRoles.admin)
+						return <span></span>
+
+					let licenceStyle = 'free-licence-type';
+					const licenceBaseStyle = 'base-licence-type'
+					const { licenceType } = record;
+
+					if (licenceType !== 'FREE') {
+						if (licenceType === 'VIP1')
+							licenceStyle = 'vip-licence-type';
+						if (licenceType === 'CUSTOM')
+							licenceStyle = 'custom-licence-type';
+					}
+
+					let histories = (record.licenceHistories || []).map((item, index) => {
+						return (
+							<p style={{ fontSize: '12px' }} key={index}>
+								Vào lúc {moment(item.createdAt).format('HH:mm DD/MM/YYYY')} <br />
+								Licence: {item.name}
+							</p>
+						)
+					}).reverse();
+
+					if (histories.length > 0)
+						histories = (<div style={{ maxHeight: '300px', overflow: 'auto' }}>{histories}</div>);
+					else histories = (<span style={{ fontSize: '12px' }}>Chưa có ghi nhận nào.</span>);
+
+					return (
+						<div className="user-licence-wrapper">
+							<span className={`${licenceBaseStyle} ${licenceStyle}`}>{text}</span>
+							<Popover
+								placement="bottom"
+								title="Lịch sử  cập nhật licence"
+								content={histories}
+								trigger="click"
+								overlayStyle={{
+									width: '200px'
+								}}>
+								<Button type="link" style={{ fontSize: '12px' }}>Lịch sử</Button>
+							</Popover>
+						</div>
+					);
+				}
+			},
+			{
+				title: 'Hạn dùng licence',
+				dataIndex: 'licenceExpiration',
+				key: 'licenceExpiration',
+				render: (text, record) => {
+					if (record.role === UserRoles.master || record.role === UserRoles.admin)
+						return <span></span>
+
+					if (record.licenceType === 'VIP1' || record.licenceType === 'CUSTOM')
+						return (
+							<div style={{ width: '120px' }}>{moment(text).format('HH:mm DD/MM/YYYY')}</div>
+						);
+				}
+			},
+			{
+				title: '',
+				dataIndex: 'licenceUpdating',
+				key: 'licenceUpdating',
+				render: (text, record) => {
+					if (record.role === UserRoles.master || record.role === UserRoles.admin)
+						return <span></span>
+
+					return (
+						<LicenceUpdatingModal
+							accessToken={this.token}
+							userFullname={record.name}
+							userId={record.id}
+							packages={this.packages}
+							onUserLicenceUpdated={this.refreshUsers}
+							currentPackage={{ _id: record.licencePackageId, type: record.licenceType }}
+						/>
+					);
+				}
+			}
 		];
 
 		const paginationConfig = {
@@ -208,11 +334,12 @@ export class Users extends BasePage {
 			<div className="container">
 				<Row>
 					<Col span={24}>
-						<Table pagination={paginationConfig}
-									 dataSource={this.state.users}
-									 columns={userColumns}
-									 rowKey={(record) => record.id}
-									 className="users-table"/>
+						<Table
+							pagination={paginationConfig}
+							dataSource={this.state.users}
+							columns={userColumns}
+							rowKey={(record) => record.id}
+							className="users-table" />
 					</Col>
 				</Row>
 			</div>
@@ -224,4 +351,4 @@ const mapStateToProps = (state) => ({
 	users: state.users
 });
 
-export default connect(mapStateToProps, actions)(Users);
+export default connect(mapStateToProps, actions)(withCookies(Users));

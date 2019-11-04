@@ -1,0 +1,22 @@
+.dashboard {
+  .overview {
+    padding-top: 20px;
+    text-align: left;
+    ul {
+      list-style: none;
+      padding-left: 0;
+
+      li {
+        margin-top: 10px;
+        .data-value {
+          font-weight: bold;
+          margin-left: 5px;
+        }
+        .ggAds-icon {
+          height: 14px;
+          width: 14px;
+        }
+      }
+    }
+  }
+}

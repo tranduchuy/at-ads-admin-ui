@@ -1,10 +1,12 @@
+const frontEndPrefix = '__ata__';
+
 export const COOKIE_NAMES = {
 	FRONT_END: {
-		token: '__ata__' + '_token',
-		user: '__ata__' + '_user',
-		activeAccountId: '__ata__' + '_active_account_id',
-		activeAdsAccountId:  '__ata__' + '_active_ads_account_id',
-		standBy: '__ata__' + '_stand_by'
+		token: `${frontEndPrefix}_token`,
+		user: `${frontEndPrefix}_user`,
+		activeAccountId: `${frontEndPrefix}_active_account_id`,
+		activeAdsAccountId:  `${frontEndPrefix}_active_ads_account_id`,
+		standBy: `${frontEndPrefix}_stand_by`
 	},
 	token: 'token',
 	user: 'user'

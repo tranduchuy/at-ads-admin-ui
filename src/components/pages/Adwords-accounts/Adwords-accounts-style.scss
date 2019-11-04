@@ -1,19 +1,10 @@
 .container {
-
   .isNotConnected {
     background: rgba(255, 35, 35, 0.1);
-
-    &:hover {
-      background: rgba(255, 35, 35, 0.2);
-    }
   }
 
   .isConnected {
-    // background: rgba(68, 181, 67, 0.1);
 
-    &:hover {
-      background: rgba(68, 181, 67, 0.2);
-    }
   }
 
   .ggAds-icon {
@@ -22,29 +13,23 @@
   }
 
   .accounts-table {
-
     .ant-table-thead {
       th {
         background: #44b543;
         color: white;
-        padding-top: 15px;
-        padding-bottom: 15px;
         border-radius: 0;
+        &:nth-child(2) {
+          text-align: center;
+        }
       }
     }
 
     .ant-table-row {
       td {
-        padding-top: 12px;
-        padding-bottom: 12px;
-      }
-
-      &:hover {
-        td {
-          background: rgba(0, 0, 0, 0) !important;
+        &:nth-child(2) {
+          text-align: center;
         }
       }
     }
-
   }
 }

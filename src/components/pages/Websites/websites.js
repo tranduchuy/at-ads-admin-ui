@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Row, Col, Table, Input, Button, Icon } from 'antd';
-import { Link } from "react-router-dom";
 import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
@@ -117,13 +116,11 @@ export class WebsitePages extends BasePage {
 		let url = API.getWebsites;
 
 		if (!this.isEmptyObj(param)) {
-			url += '?';
-
-			for (const key in param) {
-				if (param.hasOwnProperty(key)) {
-					url += `&${key}=${param[key]}`;
-				}
-			}
+			url += '?' + Object.keys(param)
+        .map(key => {
+          return `${key}=${param[key]}`;
+        })
+        .join('&');
 		}
 
 		this.props.setAppLoading(true);
@@ -227,22 +224,22 @@ export class WebsitePages extends BasePage {
 				key: 'email',
 				...this.getColumnSearchProps('email'),
 			},
-			{
-				title: 'Ngày hết hạn',
-				dataIndex: 'expiredAt',
-				key: 'expiredAt',
-				render: text => {
-					if (text) {
-						return (
-							<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
-						);
-					}
+			// {
+			// 	title: 'Ngày hết hạn',
+			// 	dataIndex: 'expiredAt',
+			// 	key: 'expiredAt',
+			// 	render: text => {
+			// 		if (text) {
+			// 			return (
+			// 				<span>{moment(text).format('HH:mm DD/MM/YYYY')}</span>
+			// 			);
+			// 		}
 
-					return (
-						<span></span>
-					);
-				}
-			},
+			// 		return (
+			// 			<span></span>
+			// 		);
+			// 	}
+			// },
 			{
 				title: 'Ngày thêm',
 				dataIndex: 'createdAt',
@@ -253,19 +250,19 @@ export class WebsitePages extends BasePage {
 					)
 				}
 			},
-			{
-				title: '',
-				dataIndex: 'code',
-				key: 'code',
-				render: text => {
-					const host = `/dashboard/update-expiration?code=${text}`;
-					return (
-						<Link to={host}>
-							<Button type="primary">Nâng cấp domain</Button>
-						</Link>
-					)
-				}
-			},
+			// {
+			// 	title: '',
+			// 	dataIndex: 'code',
+			// 	key: 'code',
+			// 	render: text => {
+			// 		const host = `/dashboard/update-expiration?code=${text}`;
+			// 		return (
+			// 			<Link to={host}>
+			// 				<Button type="primary">Nâng cấp domain</Button>
+			// 			</Link>
+			// 		)
+			// 	}
+			// },
 		];
 
 		return (

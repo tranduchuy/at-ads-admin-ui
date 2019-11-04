@@ -5,6 +5,7 @@ import React from "react";
 import * as actions from '../../../actions';
 import { connect } from 'react-redux';
 import { API } from "../../../constants/api";
+import { COOKIE_NAMES } from "../../../constants/cookie-names";
 
 class ButtonCheckTrackingScript extends React.Component {
 
@@ -33,14 +34,14 @@ class ButtonCheckTrackingScript extends React.Component {
 		this.setState({
 			isLoading: true
 		});
-
+		const { cookies } = this.props;
 		axios({
 			method: 'PUT',
 			url: API.checkScriptWebsite.replace('{code}', this.props.record.code),
 			headers: {
 				'Accept': 'application/json',
 				'Content-Type': 'application/json',
-				'accessToken': this.props.users.token
+				'accessToken': cookies.getC(COOKIE_NAMES.token)
 			},
 			signal: this.abortController.signal
 		}).then(res => {

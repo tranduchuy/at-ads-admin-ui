@@ -1,24 +1,24 @@
 .container {
   .user-avatar {
     height: 32px;
-    width: 32px;
+    min-width: 32px;
     border-radius: 50%;
-    margin-right: 15px;
   }
 
   .user-name {
     color: rgba(0, 0, 0, 0.6);
     font-weight: bold;
+    margin-left: 10px;
+    font-size: 12px;
   }
 
   .users-table {
+    overflow: auto;
 
     .ant-table-thead {
       th {
         background: rgba(3, 155, 229, 1);
         color: white;
-        padding-top: 15px;
-        padding-bottom: 15px;
         border-radius: 0;
       }
     }
@@ -31,6 +31,34 @@
       td {
         padding-top: 7px;
         padding-bottom: 7px;
+      }
+    }
+
+    .user-licence-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .free-licence-type {
+        color: #44b543;
+        font-weight: bold;
+      }
+
+      .vip-licence-type {
+        color: goldenrod;
+        font-weight: bold;
+      }
+
+      .custom-licence-type {
+        color: crimson;
+        font-weight: bold;
+      }
+
+      .base-licence-type {
+        display: flex;
+        flex-direction: row;
+        font-size: 12px;
+        width: 80px;
       }
     }
   }
