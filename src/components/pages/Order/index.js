@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Table, Input, Button, Icon } from 'antd';
+import { Row, Col, Table, Input, Button, Icon, message } from 'antd';
 import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
@@ -168,8 +168,9 @@ export class Orders extends BasePage {
             status: order.status
           }
         });
+
         this.setState({
-          orders,
+          orders: _.orderBy(orders, ['createdAt'], ['desc']),
           totalItems: json.data.totalItems
         })
 
@@ -178,6 +179,36 @@ export class Orders extends BasePage {
         }, 500);
       });
   };
+
+  confirmOrder = (code) => {
+    const url = API.confirmOrder.replace('{code}', code);
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "accessToken": this.token
+      }
+    })
+      .then(res => {
+        if (res.status === 200)
+          return Promise.resolve(res.json());
+        return Promise.reject(res.json());
+      })
+      .then(
+        resolve => {
+          this.getOrders({
+            page: this.state.page,
+            limit: this.state.limit
+          });
+          setTimeout(() => {
+            message.success(resolve.messages[0]);
+          }, 500);
+        },
+        reject => reject.then(res => {
+          message.error(res.messages[0]);
+        })
+      );
+  }
 
   render() {
     const paginationConfig = {
@@ -216,11 +247,11 @@ export class Orders extends BasePage {
         render: (text, record) => {
           const type = record.packageType;
           if (type === 'FREE')
-            return (<span className="package-type free">{text}</span>);
+            return (<span className="package-type free-type">{text}</span>);
           if (type === 'VIP1')
-            return (<span className="package-type vip">{text}</span>);
+            return (<span className="package-type vip-type">{text}</span>);
           if (type === 'CUSTOM')
-            return (<span className="package-type custom">{text}</span>);
+            return (<span className="package-type custom-type">{text}</span>);
         }
       },
       {
@@ -251,6 +282,17 @@ export class Orders extends BasePage {
             return <span className="order-status order-success">{OrderStatus[statusIndex]}</span>
         }
       },
+      {
+        title: '',
+        dataIndex: 'actions',
+        key: 'actions',
+        render: (text, record) => {
+          if (record.status)
+            return (
+              <Button type="primary" onClick={() => this.confirmOrder(record.code)}>Chấp nhận</Button>
+            )
+        }
+      }
     ];
 
     return (

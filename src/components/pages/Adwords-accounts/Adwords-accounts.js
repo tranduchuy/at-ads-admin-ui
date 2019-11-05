@@ -43,40 +43,40 @@ export class AdwordAccounts extends BasePage {
       confirm,
       clearFilters
     }) => (
-      <div style={{ padding: 8 }}>
-        <Input
-          ref={node => {
-            this.searchInput = node;
-          }}
-          placeholder={`Search ${dataIndex}`}
-          value={selectedKeys[0]}
-          onChange={e =>
-            setSelectedKeys(e.target.value ? [e.target.value] : [])
-          }
-          onPressEnter={() =>
-            this.handleSearch(selectedKeys, dataIndex, confirm)
-          }
-          style={{ width: 188, marginBottom: 8, display: 'block' }}
-          autoFocus
-        />
-        <Button
-          type='primary'
-          onClick={() => this.handleSearch(selectedKeys, dataIndex, confirm)}
-          icon='search'
-          size='small'
-          style={{ width: 90, marginRight: 8 }}
-        >
-          Search
+        <div style={{ padding: 8 }}>
+          <Input
+            ref={node => {
+              this.searchInput = node;
+            }}
+            placeholder={`Search ${dataIndex}`}
+            value={selectedKeys[0]}
+            onChange={e =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() =>
+              this.handleSearch(selectedKeys, dataIndex, confirm)
+            }
+            style={{ width: 188, marginBottom: 8, display: 'block' }}
+            autoFocus
+          />
+          <Button
+            type='primary'
+            onClick={() => this.handleSearch(selectedKeys, dataIndex, confirm)}
+            icon='search'
+            size='small'
+            style={{ width: 90, marginRight: 8 }}
+          >
+            Search
         </Button>
-        <Button
-          onClick={() => this.handleReset(clearFilters)}
-          size='small'
-          style={{ width: 90 }}
-        >
-          Reset
+          <Button
+            onClick={() => this.handleReset(clearFilters)}
+            size='small'
+            style={{ width: 90 }}
+          >
+            Reset
         </Button>
-      </div>
-    ),
+        </div>
+      ),
     filterIcon: filtered => (
       <Icon type='search' style={{ color: filtered ? '#f2f2f2' : undefined }} />
     )
@@ -257,7 +257,8 @@ export class AdwordAccounts extends BasePage {
         dataIndex: 'limitWebsite',
         key: 'limitWebsite',
         render: (text, record) => {
-          if (record.licenceType === 'FREE') return <span>{text}</span>;
+          if (record.licenceType === 'FREE')
+            return <span>{text}</span>;
           return (
             <div
               style={{
