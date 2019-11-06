@@ -287,7 +287,7 @@ export class Orders extends BasePage {
         dataIndex: 'actions',
         key: 'actions',
         render: (text, record) => {
-          if (record.status)
+          if (record.status !== 4)
             return (
               <Button type="primary" onClick={() => this.confirmOrder(record.code)}>Chấp nhận</Button>
             )
