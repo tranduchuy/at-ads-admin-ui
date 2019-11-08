@@ -35,24 +35,31 @@ class LimitWebsiteEditingModal extends BasePage {
           limitWebsite: values.limitWebsite
         };
 
-        axios({
+        fetch(API.updateAccountLimitWebsite, {
           method: 'PUT',
-          url: API.updateAccountLimitWebsite,
+          body: JSON.stringify(params),
           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'accessToken': this.props.accessToken
-          },
-          data: params,
-          signal: this.abortController.signal
-        }).then(res => {
-          const message = res.data.messages[0];
-          this.openMessage(message);
-          this.hideModal();
-          this.props.onAccountLimitWebsiteEdited();
-        }).catch(err => {
-          console.log(err);
-        });
+            "Content-type": "application/json; charset=UTF-8",
+            "accessToken": this.props.accessToken
+          }
+        })
+          .then(res => {
+            if (res.status === 200)
+              return Promise.resolve(res.json());
+            return Promise.reject(res.json());
+          })
+          .then(
+            resolve => {
+              this.props.onAccountLimitWebsiteEdited();
+              this.hideModal();
+              setTimeout(() => {
+                message.success(resolve.messages[0]);
+              }, 500);
+            },
+            reject => reject.then(res => {
+              message.error(res.messages[0]);
+            })
+          );
       }
     });
   }

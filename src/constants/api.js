@@ -17,4 +17,5 @@ export const API = {
 	updateAccountLimitWebsite: `${secret.API}/api/admin/account-ads/limit-website`,
 	statisticOverview: `${secret.API}/api/admin/statistic`,
 	getOrders: `${secret.API}/api/admin/order`,
+	confirmOrder: `${secret.API}/api/admin/order/{code}`
 };
