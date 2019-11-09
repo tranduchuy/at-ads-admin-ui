@@ -17,7 +17,8 @@ const fieldsOfTargetUser = [
   'name',
   'phone',
   'role',
-  'googleId'
+  'googleId',
+  'licence'
 ];
 
 class ButtonStandForUser extends React.Component {
@@ -29,17 +30,29 @@ class ButtonStandForUser extends React.Component {
     this.onClick = this.onClick.bind(this);
   }
 
-  onClick() {
-    this.props.setAppLoading(true);
-    const token = CookieService.get(COOKIE_NAMES.token);
-    const loggedInUser = CookieService.get(COOKIE_NAMES.user);
+  getTargetUserInfo() {
     const targetUser = JSON.parse(JSON.stringify(this.props.user));
     targetUser._id = targetUser.id;
 
     const userInfoToBeSaved = {};
-    fieldsOfTargetUser.forEach(f => userInfoToBeSaved[f] = targetUser[f]);
+    fieldsOfTargetUser.forEach(f => (userInfoToBeSaved[f] = targetUser[f]));
 
-    CookieService.set(COOKIE_NAMES.FRONT_END.user, JSON.stringify(userInfoToBeSaved), {
+    userInfoToBeSaved.licence = {
+      type: userInfoToBeSaved.licence.packageId.type,
+      name: userInfoToBeSaved.licence.packageId.name,
+      expiredAt: userInfoToBeSaved.expiredAt
+    };
+
+    return userInfoToBeSaved;
+  }
+
+  onClick() {
+    this.props.setAppLoading(true);
+    const token = CookieService.get(COOKIE_NAMES.token);
+    const loggedInUser = CookieService.get(COOKIE_NAMES.user);
+    const targetUser = this.getTargetUserInfo();
+
+    CookieService.set(COOKIE_NAMES.FRONT_END.user, JSON.stringify(targetUser), {
       path: '/',
       domain: secret.MAIN_DOMAIN
     }); // target user info

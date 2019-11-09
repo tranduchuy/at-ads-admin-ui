@@ -160,6 +160,7 @@ export class Users extends BasePage {
 						createdAt: item.createdAt,
 						avatar: item.avatar,
 						role: item.role,
+						licence: item.licence,
 						licencePackageId: item.licence.packageId._id,
 						licenceName: item.licence.packageId ? item.licence.packageId.name : null,
 						licenceType: item.licence.packageId ? item.licence.packageId.type : null,
