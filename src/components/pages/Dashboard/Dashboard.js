@@ -22,8 +22,8 @@ class Dashboard extends BasePage {
 		this.cookies = this.props.cookies;
 		this.token = this.cookies.get(COOKIE_NAMES.token);
 
-		const prevMonth = moment().subtract(1, 'month').format('DD-MM-YYYY');
-		const now = moment().format('DD-MM-YYYY');
+		const prevMonth = new Date(moment().subtract(1, 'month')).getTime().toString();
+		const now = new Date(moment()).getTime().toString();
 		this.state = {
 			data: [],
 			from: prevMonth,
@@ -137,12 +137,16 @@ class Dashboard extends BasePage {
 		];
 
 		const { overviewStatisticData } = this.state;
+		const startDate = this.state.data.length > 0 ? this.state.data[0].date : '';
+		const endDate = this.state.data.length > 0 ? this.state.data[this.state.data.length-1].date : '';
 
 		return (
 			<div className="dashboard">
 				<div ref={this.chartWrap}>
 					<h2>Request Google Ads & Error Statistic</h2>
-					<h4>From <strong>{this.state.from}</strong> To <strong>{this.state.to}</strong></h4>
+					<h4>
+						From <strong>{startDate}</strong> To <strong>{endDate}</strong>
+					</h4>
 					<LineChart width={this.chartWrap.current ? this.chartWrap.current.offsetWidth : 800} height={300}>
 						<CartesianGrid strokeDasharray="3 3" />
 						<XAxis dataKey="date" type="category" allowDuplicatedCategory={false} />
@@ -158,15 +162,15 @@ class Dashboard extends BasePage {
 				<div className="overview">
 					<ul>
 						<li>
-							<Icon type="user" /> Users: 
+							<Icon type="user" /> Users:
 							<span className="data-value">{overviewStatisticData.numberOfUser}</span>
 						</li>
 						<li>
-							<img src={googleAdLogoUrl} alt="" className="ggAds-icon" /> Google Ads accounts: 
+							<img src={googleAdLogoUrl} alt="" className="ggAds-icon" /> Google Ads accounts:
 							<span className="data-value">{overviewStatisticData.numberOfAdswords}</span>
 						</li>
 						<li>
-							<Icon type="layout" /> Websites: 
+							<Icon type="layout" /> Websites:
 							<span className="data-value">{overviewStatisticData.numberOfWebsite}</span>
 						</li>
 					</ul>
