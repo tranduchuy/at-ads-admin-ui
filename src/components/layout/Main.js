@@ -85,16 +85,16 @@ class Main extends Component {
     let page = '0';
 
     switch (currentPosition) {
-      case 'update-expiration':
+      case 'users':
         page = '1';
         break;
-      case 'users':
+      case 'orders':
         page = '2';
         break;
-      case 'accounts':
+      case 'websites':
         page = '3';
         break;
-      case 'websites':
+      case 'accounts':
         page = '4';
         break;
       case 'google-ads-errors':
