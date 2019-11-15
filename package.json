@@ -77,7 +77,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
-    "serve-build": "serve -s build -l 5000"
+    "serve-build": "serve -s build -l 1010"
   },
   "eslintConfig": {
     "extends": "react-app"
