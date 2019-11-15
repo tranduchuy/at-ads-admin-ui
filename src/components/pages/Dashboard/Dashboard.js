@@ -115,18 +115,18 @@ class Dashboard extends BasePage {
 			}
 		});
 
-		items.sort((a, b) => {
-			if (a._date.getTime() < b._date.getTime()) {
-				return -1;
-			} else if (a._date.getTime() === b._date.getTime()) {
-				return 0;
-			} else {
-				return 1;
-			}
-		});
+		// items.sort((a, b) => {
+		// 	if (a._date.getTime() < b._date.getTime()) {
+		// 		return -1;
+		// 	} else if (a._date.getTime() === b._date.getTime()) {
+		// 		return 0;
+		// 	} else {
+		// 		return 1;
+		// 	}
+		// });
 
 		this.setState({
-			data: items
+			data: _.sortBy(items, '_date')
 		});
 	}
 
@@ -167,8 +167,8 @@ class Dashboard extends BasePage {
 		];
 
 		const { overviewStatisticData } = this.state;
-		const startDate = this.state.data.length > 0 ? this.state.data[0].date : '';
-		const endDate = this.state.data.length > 0 ? this.state.data[this.state.data.length - 1].date : '';
+		const startDate = moment(this.from).format('DD-MM-YYYY');
+		const endDate = moment(this.to).format('DD-MM-YYYY');
 		const dateDistance = (this.to.diff(this.from, 'days')) + 1 || 0;
 		const dateDistanceView = dateDistance > 1 ? dateDistance.toString() + ' days' : dateDistance.toString() + ' day';
 
