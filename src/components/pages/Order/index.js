@@ -172,7 +172,7 @@ export class Orders extends BasePage {
         this.setState({
           orders: _.orderBy(orders, ['createdAt'], ['desc']),
           totalItems: json.data.totalItems
-        })
+        });
 
         setTimeout(() => {
           this.props.setAppLoading(false);

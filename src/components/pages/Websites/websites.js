@@ -13,7 +13,6 @@ import * as actions from '../../../actions';
 export class WebsitePages extends BasePage {
 	cookies;
 	token;
-	paginationConfig = {};
 
 	constructor(props) {
 		super(props);
@@ -27,14 +26,6 @@ export class WebsitePages extends BasePage {
 			totalItems: 0,
 			page: 1,
 			limit: 10
-		};
-
-		this.paginationConfig = {
-			position: 'bottom',
-			total: this.state.totalItems,
-			pageSize: this.state.limit,
-			current: this.state.page,
-			onChange: (currentPage) => this.onChangePage(currentPage)
 		};
 
 		this.onClickRecheckWebsite = this.onClickRecheckWebsite.bind(this);
@@ -75,7 +66,7 @@ export class WebsitePages extends BasePage {
 			</div>
 		),
 		filterIcon: filtered => (
-			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }}/>
+			<Icon type="search" style={{ color: filtered ? '#f2f2f2' : undefined }} />
 		)
 	});
 
@@ -117,10 +108,10 @@ export class WebsitePages extends BasePage {
 
 		if (!this.isEmptyObj(param)) {
 			url += '?' + Object.keys(param)
-        .map(key => {
-          return `${key}=${param[key]}`;
-        })
-        .join('&');
+				.map(key => {
+					return `${key}=${param[key]}`;
+				})
+				.join('&');
 		}
 
 		this.props.setAppLoading(true);
@@ -166,22 +157,23 @@ export class WebsitePages extends BasePage {
 	}
 
 	render() {
+		const paginationConfig = {
+			position: 'bottom',
+			total: this.state.totalItems,
+			pageSize: this.state.limit,
+			current: this.state.page,
+			onChange: (currentPage) => this.onChangePage(currentPage)
+		};
+
 		const accountColumns = [
 			{
-				title: (filter, sortOrder) => {
-					return (
-						<div>
-							<Icon type="chrome" className="ggAds-icon"/>
-							<span>Domain</span>
-						</div>
-					)
-				},
+				title: 'Website',
 				dataIndex: 'domain',
 				key: 'domain',
 				render: (text, record) => {
 					return <ButtonCheckTrackingScript text={text}
-																						onClick={this.onClickRecheckWebsite}
-																						record={record}/>
+						onClick={this.onClickRecheckWebsite} accessToken={this.token}
+						record={record} />
 				},
 			},
 			{
@@ -201,13 +193,13 @@ export class WebsitePages extends BasePage {
 				render: text => {
 					if (text === true)
 						return (
-							<span style={{ color: '#44b543' }}>
-								<Icon type="check"/> Đã gắn
+							<span className="tracking--active">
+								Đã gắn
 							</span>
 						);
 					return (
-						<span style={{ color: 'crimson' }}>
-							<Icon type="close"/> Chưa gắn
+						<span className="tracking--unactive">
+							Chưa gắn
 						</span>
 					);
 				}
@@ -269,11 +261,11 @@ export class WebsitePages extends BasePage {
 			<div className="container">
 				<Row>
 					<Col span={24}>
-						<Table pagination={this.paginationConfig}
-									 dataSource={this.state.websites}
-									 columns={accountColumns}
-									 rowKey={(record, index) => record.code}
-									 className="accounts-table"/>
+						<Table pagination={paginationConfig}
+							dataSource={this.state.websites}
+							columns={accountColumns}
+							rowKey={(record, index) => record.code}
+							className="accounts-table" />
 					</Col>
 				</Row>
 			</div>

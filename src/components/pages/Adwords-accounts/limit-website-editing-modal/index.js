@@ -2,7 +2,6 @@ import React from 'react';
 import { API } from "../../../../constants/api";
 import { Form, Button, Col, Row, Modal, message, Tooltip, InputNumber, Icon } from 'antd';
 import { BasePage } from '../../base-page';
-import axios from "axios";
 
 class LimitWebsiteEditingModal extends BasePage {
   key = 'updatable';
@@ -80,7 +79,7 @@ class LimitWebsiteEditingModal extends BasePage {
           <Button onClick={this.showModal} icon="edit" style={{ border: 0, background: 'rgba(0,0,0,0)' }} />
         </Tooltip>
         <Modal
-          title={"CHỈNH SỬA LIMIT WEBSITE - TÀI KHOẢN: " + this.props.adsId}
+          title={'TÀI KHOẢN: ' + this.props.adsId + ' | CHỈNH SỬA LIMIT WEBSITE'}
           visible={this.state.visible}
           onOk={this.updateAccountLimitWebsite}
           onCancel={this.hideModal}

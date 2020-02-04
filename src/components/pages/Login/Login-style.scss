@@ -1,51 +1,183 @@
 body {
-  background: url("../../../assets/images/dark-material-bg.jpg");
-  background-size: 100% 100%;
-  background-attachment: fixed;
-
-  .login-form {
-    background: white;
-    filter: drop-shadow(0px 1px 4px black);
-    padding: 80px 40px 0 40px;
-    min-width: 26vw;
+  .login__container {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -webkit-animation: formAnimation 0.4s linear;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #7fcec5;
+    background-image: linear-gradient(315deg, #7fcec5 0%, #14557b 74%);
 
-    .form-title {
-      font-size: 26px;
-      text-align: center;
-    }
+    .inner {
+      min-width: 400px;
+      display: table;
+      margin: 0 auto;
 
-    @keyframes formAnimation {
-      from {
-        top: 0;
+      .login-form {
+        background: snow;
+        box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+        padding: 60px 40px 15px 40px;
+        width: 100%;
+        -webkit-animation-duration: 0.5s;
+        animation-duration: 0.5s;
+        -webkit-animation-name: bounceIn;
+        animation-name: bounceIn;
+
+        @keyframes bounceIn {
+          from,
+          20%,
+          40%,
+          60%,
+          80%,
+          to {
+            -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+          }
+
+          0% {
+            opacity: 0;
+            -webkit-transform: scale3d(0.3, 0.3, 0.3);
+            transform: scale3d(0.3, 0.3, 0.3);
+          }
+
+          20% {
+            -webkit-transform: scale3d(1.1, 1.1, 1.1);
+            transform: scale3d(1.1, 1.1, 1.1);
+          }
+
+          40% {
+            -webkit-transform: scale3d(0.9, 0.9, 0.9);
+            transform: scale3d(0.9, 0.9, 0.9);
+          }
+
+          60% {
+            opacity: 1;
+            -webkit-transform: scale3d(1.03, 1.03, 1.03);
+            transform: scale3d(1.03, 1.03, 1.03);
+          }
+
+          80% {
+            -webkit-transform: scale3d(0.97, 0.97, 0.97);
+            transform: scale3d(0.97, 0.97, 0.97);
+          }
+
+          to {
+            opacity: 1;
+            -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+          }
+        }
+        @-webkit-keyframes bounceIn {
+          from,
+          20%,
+          40%,
+          60%,
+          80%,
+          to {
+            -webkit-animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+          }
+
+          0% {
+            opacity: 0;
+            -webkit-transform: scale3d(0.3, 0.3, 0.3);
+            transform: scale3d(0.3, 0.3, 0.3);
+          }
+
+          20% {
+            -webkit-transform: scale3d(1.1, 1.1, 1.1);
+            transform: scale3d(1.1, 1.1, 1.1);
+          }
+
+          40% {
+            -webkit-transform: scale3d(0.9, 0.9, 0.9);
+            transform: scale3d(0.9, 0.9, 0.9);
+          }
+
+          60% {
+            opacity: 1;
+            -webkit-transform: scale3d(1.03, 1.03, 1.03);
+            transform: scale3d(1.03, 1.03, 1.03);
+          }
+
+          80% {
+            -webkit-transform: scale3d(0.97, 0.97, 0.97);
+            transform: scale3d(0.97, 0.97, 0.97);
+          }
+
+          to {
+            opacity: 1;
+            -webkit-transform: scale3d(1, 1, 1);
+            transform: scale3d(1, 1, 1);
+          }
+        }
+
+        .ant-form-explain {
+          font-size: 10px;
+          padding: 5px 0;
+        }
+
+        .form-title {
+          font-size: 20px;
+          text-align: center;
+          color: rgba(0, 0, 0, 0.7);
+        }
+
+        .logo {
+          padding: 20px 0 5px 0;
+          img {
+            width: 90px;
+            height: 90px;
+            display: table;
+            margin: 0 auto;
+            filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.7));
+          }
+        }
+
+        .role {
+          text-align: center;
+          padding-bottom: 35px;
+          color: #039be5;
+          font-size: 13px;
+          font-weight: bold;
+          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .ant-input {
+          min-height: 50px;
+        }
+
+        .login-form-button {
+          min-height: 38px;
+          margin-top: 10px;
+          background: none;
+          border-color: #039be5;
+          color: #039be5;
+          padding: 0 20px;
+          padding-top: 3px;
+          font-size: 12px;
+          transition: 0.2s;
+
+          &:hover {
+            background: #039be5;
+            color: white;
+          }
+        }
+
+        .form__footer {
+          color: gray;
+          text-align: center;
+          font-size: 9px;
+          padding-top: 40px;
+
+          img {
+            width: 12px;
+            height: 9px;
+            margin-right: 3px;
+          }
+        }
       }
-      to {
-        top: 50%;
-      }
-    }
-
-    .logo {
-      padding: 20px;
-      padding-bottom: 35px;
-      img {
-        width: 120px;
-        display: table;
-        margin: 0 auto;
-        filter: drop-shadow(0px 1px 1px black);
-      }
-    }
-
-    .ant-input {
-      min-height: 50px;
-    }
-
-    .login-form-button {
-      min-height: 38px;
-      margin-top: 10px;
     }
   }
 }

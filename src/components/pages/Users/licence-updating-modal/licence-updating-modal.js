@@ -2,9 +2,8 @@ import React from 'react';
 import { API } from "../../../../constants/api";
 import * as actions from '../../../../actions';
 import { connect } from 'react-redux';
-import { Button, Col, Row, Modal, Select, message, DatePicker } from 'antd';
+import { Button, Col, Row, Modal, Select, message, DatePicker, Icon } from 'antd';
 import { BasePage } from '../../base-page';
-import axios from "axios";
 import moment from 'moment';
 import * as _ from 'lodash';
 
@@ -120,10 +119,11 @@ class LicenceUpdatingModal extends BasePage {
     return (
       <div className="modal-container">
         <Button onClick={this.showModal} type="primary">
-          Cập nhật licence
+          <Icon type="arrow-up" />
+          Nâng cấp gói
         </Button>
         <Modal
-          title={"CẬP NHẬT LICENCE - USER: " + this.props.userFullname}
+          title={this.props.userFullname + " | CẬP NHẬT GÓI SỬ DỤNG"}
           visible={this.state.visible}
           onOk={this.updateLicence}
           onCancel={this.hideModal}
@@ -134,7 +134,7 @@ class LicenceUpdatingModal extends BasePage {
             <Col span={6}></Col>
             <Col span={12}>
               <div>
-                Chọn gói licence:
+                Chọn gói sử dụng:
 								<Select
                   value={selectedPackageId}
                   style={{ width: '100%' }}

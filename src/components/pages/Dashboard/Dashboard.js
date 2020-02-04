@@ -11,7 +11,7 @@ import {
 import { BasePage } from "../base-page";
 import { COOKIE_NAMES } from '../../../constants/cookie-names';
 import { withCookies } from 'react-cookie';
-import { Icon } from 'antd';
+import { Icon, Row, Col } from 'antd';
 import * as _ from 'lodash';
 
 class Dashboard extends BasePage {
@@ -136,9 +136,8 @@ class Dashboard extends BasePage {
 	}
 
 	render() {
-		const googleAdLogoUrl = 'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/logo_Google_Ads_192px.max-200x200.png';
 		const seriesError = {
-			name: 'Error',
+			name: 'Lỗi',
 			stroke: 'red',
 			data: []
 		};
@@ -170,20 +169,57 @@ class Dashboard extends BasePage {
 		const startDate = moment(this.from).format('DD-MM-YYYY');
 		const endDate = moment(this.to).format('DD-MM-YYYY');
 		const dateDistance = (this.to.diff(this.from, 'days')) + 1 || 0;
-		const dateDistanceView = dateDistance > 1 ? dateDistance.toString() + ' days' : dateDistance.toString() + ' day';
+		const dateDistanceView = dateDistance > 1 ? dateDistance.toString() + ' ngày' : dateDistance.toString() + ' ngày';
 
 		return (
 			<div className="dashboard">
-				<div ref={this.chartWrap}>
-					<h2>Google Ads Request & Error Statistic</h2>
-					<h4>
-						From <strong>{startDate}</strong> To <strong>{endDate} ({dateDistanceView})</strong>
-					</h4>
+				<div className="statistic">
+					<Row gutter={15}>
+						<Col span={8}>
+							<Row className={`statistic__item users`}>
+								<Col span={8}>
+									<Icon type="user" className="statistic__item__icon users" />
+								</Col>
+								<Col span={16} style={{ textAlign: 'left' }}>
+									<div className="statistic__item__number">{overviewStatisticData.numberOfUser}</div>
+									<div className="statistic__item__title">Người dùng</div>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={8}>
+							<Row className={`statistic__item gg-ads-account`}>
+								<Col span={8}>
+									<img src={require('../../../assets/images/gg-ads-icon.png')} alt="" className="statistic__item__icon--img" />
+								</Col>
+								<Col span={16} style={{ textAlign: 'left' }}>
+									<div className="statistic__item__number">{overviewStatisticData.numberOfAdswords}</div>
+									<div className="statistic__item__title">Tài khoản Google Ads</div>
+								</Col>
+							</Row>
+						</Col>
+						<Col span={8}>
+							<Row className={`statistic__item websites`}>
+								<Col span={8}>
+									<Icon type="credit-card" className="statistic__item__icon websites"></Icon>
+								</Col>
+								<Col span={16} style={{ textAlign: 'left' }}>
+									<div className="statistic__item__number">{overviewStatisticData.numberOfWebsite}</div>
+									<div className="statistic__item__title">Website</div>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
+				</div>
+				<div ref={this.chartWrap} className="statistic-chart">
+					<h3>Thống kê lưu lượng Request & Lỗi Google Ads</h3>
+					<h5>
+						Từ <strong>{startDate}</strong> đến <strong>{endDate} ({dateDistanceView})</strong>
+					</h5>
 					<div className="chart-warpper">
-						<LineChart width={this.chartWrap.current ? this.chartWrap.current.offsetWidth : 800} height={300}>
+						<LineChart width={1200} height={300}>
 							<CartesianGrid strokeDasharray="3 3" />
-							<XAxis dataKey="date" type="category" allowDuplicatedCategory={false} style={{fontSize: '12px'}} />
-							<YAxis dataKey="value" style={{fontSize: '12px'}} />
+							<XAxis dataKey="date" type="category" allowDuplicatedCategory={false} style={{ fontSize: '10px' }} />
+							<YAxis dataKey="value" style={{ fontSize: '10px' }} />
 							<Tooltip />
 							<Legend />
 							{series.map(s => (
@@ -191,23 +227,6 @@ class Dashboard extends BasePage {
 							))}
 						</LineChart>
 					</div>
-				</div>
-
-				<div className="overview">
-					<ul>
-						<li>
-							<Icon type="user" /> Users:
-							<span className="data-value">{overviewStatisticData.numberOfUser}</span>
-						</li>
-						<li>
-							<img src={googleAdLogoUrl} alt="" className="ggAds-icon" /> Google Ads accounts:
-							<span className="data-value">{overviewStatisticData.numberOfAdswords}</span>
-						</li>
-						<li>
-							<Icon type="layout" /> Websites:
-							<span className="data-value">{overviewStatisticData.numberOfWebsite}</span>
-						</li>
-					</ul>
 				</div>
 			</div>
 		)

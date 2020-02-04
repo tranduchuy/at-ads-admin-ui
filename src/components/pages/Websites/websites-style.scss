@@ -1,19 +1,21 @@
 .container {
-  
   .ggAds-icon {
     width: 20px;
     margin-right: 5px;
   }
 
   .accounts-table {
-
+    background: snow;
     .ant-table-thead {
       th {
-        background: #44b543;
         color: white;
         padding-top: 15px;
         padding-bottom: 15px;
         border-radius: 0;
+
+        &:nth-child(3) {
+          text-align: center;
+        }
       }
     }
 
@@ -21,15 +23,38 @@
       td {
         padding-top: 12px;
         padding-bottom: 12px;
+
+        &:nth-child(1) {
+          font-weight: bold;
+          font-size: 12px;
+          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        &:nth-child(3) {
+          text-align: center;
+          font-size: 10px;
+        }
+
+        .tracking--active,
+        .tracking--unactive {
+          font-weight: bold;
+        }
+
+        .tracking--active {
+          color: green;
+        }
+
+        .tracking--unactive {
+          color: gray;
+        }
       }
 
       &:hover {
         td {
-          background:rgba(3, 155, 229, 0.1) !important;
+          background: rgba(3, 155, 229, 0.1) !important;
         }
       }
     }
-
   }
 }
 

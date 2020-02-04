@@ -1,10 +1,9 @@
 .container {
   .isNotConnected {
-    background: rgba(255, 35, 35, 0.1);
+    // background: rgba(255, 35, 35, 0.1);
   }
 
   .isConnected {
-
   }
 
   .ggAds-icon {
@@ -13,11 +12,16 @@
   }
 
   .accounts-table {
+    background: snow;
+
     .ant-table-thead {
       th {
-        background: #44b543;
-        color: white;
+        background: whitesmoke !important;
+        color: rgba(0, 0, 0, 0.7) !important;
         border-radius: 0;
+        font-size: 10px;
+        font-weight: bold;
+
         &:nth-child(2) {
           text-align: center;
         }
@@ -25,9 +29,42 @@
     }
 
     .ant-table-row {
+      
+      &:nth-child(even) {
+        background: whitesmoke;
+      }
       td {
+        font-size: 12px;
+
+        &:nth-child(1) {
+          font-size: 12.5px !important;
+          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
         &:nth-child(2) {
           text-align: center;
+        }
+
+        &:nth-child(5) {
+          font-size: 10px;
+        }
+
+        .account-status--success,
+        .account-status--danger,
+        .account-status--unactive {
+          font-weight: bold;
+          font-size: 10px;
+        }
+        .account-status--success {
+          color: green;
+        }
+
+        .account-status--danger {
+          color: crimson;
+        }
+
+        .account-status--unactive {
+          color: gray;
         }
       }
     }

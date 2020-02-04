@@ -1,5 +1,4 @@
 import React from 'react';
-import { withCookies } from 'react-cookie';
 import * as PropTypes from 'prop-types';
 import { Icon, Tooltip, Button } from 'antd';
 import { connect } from 'react-redux';
@@ -8,6 +7,8 @@ import secret from '../../../../config/secret';
 import { COOKIE_NAMES } from '../../../../constants/cookie-names';
 import { UserRoles } from '../../../../constants/user-role';
 import CookieService from '../../../../services/cookie.service';
+import './button-stand-for-user.style.scss';
+
 
 const fieldsOfTargetUser = [
   '_id',
@@ -81,6 +82,14 @@ class ButtonStandForUser extends React.Component {
           </Button>
         </Tooltip>
       );
+    }
+
+    if(this.props.user.role === UserRoles.admin) {
+      return <span className="admin-label">Admin</span>
+    }
+
+    if(this.props.user.role === UserRoles.master) {
+      return <span className="master-label">Master</span>
     }
 
     return <></>;

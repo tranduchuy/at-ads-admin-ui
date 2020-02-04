@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Icon, Input, Button, Col, Row } from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 import { withCookies } from 'react-cookie';
 import { connect } from 'react-redux';
 import { API } from '../../../constants/api';
@@ -17,7 +17,7 @@ class Login extends BasePage {
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() { }
 
   componentDidMount() {
     this.props.setAppLoading(false);
@@ -83,57 +83,60 @@ class Login extends BasePage {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <div>
-        <Row>
-          <Col span={9}></Col>
-          <Col span={6}>
-            <Form onSubmit={this.handleSubmit} className='login-form'>
-              <div className='form-title'>Click CPanel</div>
+      <div className="login__container">
+        <div className="inner">
+          <Form onSubmit={this.handleSubmit} className='login-form'>
+            <div className='form-title'>Chống Click Tặc</div>
 
-              <div className='logo'>
-                <img
-                  src={require('../../../assets/images/app-logo.png')}
-                  alt='...'
+            <div className='logo'>
+              <img
+                src={require('../../../assets/images/app-logo.png')}
+                alt='...'
+              />
+            </div>
+
+            <div className="role">Administration</div>
+
+            <Form.Item>
+              {getFieldDecorator('email', {
+                rules: [{ required: true, message: 'Vui lòng nhập email' }]
+              })(<Input prefix={<Icon type='user' />} placeholder='Email' />)}
+            </Form.Item>
+
+            <Form.Item>
+              {getFieldDecorator('password', {
+                rules: [{ required: true, message: 'Vui lòng nhập mật khẩu' }]
+              })(
+                <Input
+                  prefix={<Icon type='lock' />}
+                  type='password'
+                  placeholder='Mật khẩu'
                 />
-              </div>
+              )}
+            </Form.Item>
 
-              <Form.Item>
-                {getFieldDecorator('email', {
-                  rules: [{ required: true, message: 'Vui lòng nhập email' }]
-                })(<Input prefix={<Icon type='user' />} placeholder='Email' />)}
-              </Form.Item>
+            <p style={{ color: 'red', textAlign: 'center' }}>
+              {this.state.loginMessage}
+            </p>
 
-              <Form.Item>
-                {getFieldDecorator('password', {
-                  rules: [{ required: true, message: 'Vui lòng nhập mật khẩu' }]
-                })(
-                  <Input
-                    prefix={<Icon type='lock' />}
-                    type='password'
-                    placeholder='Mật khẩu'
-                  />
-                )}
-              </Form.Item>
-
-              <p style={{ color: 'red', textAlign: 'center' }}>
-                {this.state.loginMessage}
-              </p>
-
-              <Form.Item>
-                <div style={{ textAlign: 'center' }}>
-                  <Button
-                    type='danger'
-                    htmlType='submit'
-                    className='login-form-button'
-                  >
-                    ĐĂNG NHẬP
+            <Form.Item>
+              <div style={{ textAlign: 'center' }}>
+                <Button
+                  type='danger'
+                  htmlType='submit'
+                  className='login-form-button'
+                >
+                  ĐĂNG NHẬP
                   </Button>
-                </div>
-              </Form.Item>
-            </Form>
-          </Col>
-          <Col span={9}></Col>
-        </Row>
+              </div>
+            </Form.Item>
+
+            <div className="form__footer">
+              <img src={'https://image.flaticon.com/icons/png/128/222/222506.png'} alt="" />
+              Powered by Appnet Technology
+              </div>
+          </Form>
+        </div>
       </div>
     );
   }

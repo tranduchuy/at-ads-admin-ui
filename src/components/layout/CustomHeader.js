@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import { Layout, Menu, Icon, Badge, Card, Avatar, Divider } from 'antd';
+import { Layout, Menu, Icon, Badge, Card, Avatar } from 'antd';
 
 const { Header } = Layout;
 const { SubMenu } = Menu;

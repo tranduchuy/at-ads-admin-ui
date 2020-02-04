@@ -18,7 +18,7 @@ const pieChartConfig = {
     type: 'pie'
   },
   title: {
-    text: 'Statistic type of Google Ads Error'
+    text: 'Báo cáo & Thống kê lỗi Google Ads'
   },
   tooltip: {
     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -153,7 +153,7 @@ export class GoogleAdsErrors extends BasePage {
           key,
           render: text => {
             const content = (
-              <JSONPretty style={{ fontSize: '12px' }} data={text}></JSONPretty>
+              <JSONPretty style={{ fontSize: '10px' }} data={text}></JSONPretty>
             );
 
             return (

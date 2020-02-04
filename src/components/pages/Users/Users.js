@@ -288,7 +288,7 @@ export class Users extends BasePage {
 				}
 			},
 			{
-				title: 'Hạn dùng licence',
+				title: 'Hạn dùng gói',
 				dataIndex: 'licenceExpiration',
 				key: 'licenceExpiration',
 				render: (text, record) => {

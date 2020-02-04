@@ -1,0 +1,90 @@
+$primaryFontSize: 12px;
+
+.packages__container {
+
+  .ant-tabs-tabpane {
+    padding: 20px
+  }
+
+  .package__type {
+    text-align: left;
+    font-weight: bold;
+
+    &.package__type--free {
+      color: green;
+    }
+
+    &.package__type--vip1 {
+      color: darkgoldenrod;
+    }
+
+    &.package__type--custom {
+      color: darkred;
+    }
+  }
+
+  .form {
+    .ant-input-number {
+      width: 100%;
+    }
+
+    .form__interest-input {
+      button {
+        margin-top: 9.5px;
+        border: 1px solid #dcdcdc;
+        font-size: 12px;
+      }
+    }
+
+    .ant-col {
+      line-height: 50px;
+    }
+
+    .ant-col-8 {
+      text-align: left;
+    }
+
+    .form__field-label {
+      font-size: $primaryFontSize;
+    }
+
+    .form__currency-label {
+      color: rgba(0, 0, 0, 0.7);
+      font-weight: bold;
+      font-size: $primaryFontSize;
+    }
+
+    .list-interests__wrapper {
+      max-height: 300px;
+      overflow-y: scroll;
+      background: RGBA(68, 181, 67, 0.05);
+      border-radius: 5px;
+      padding: 10px;
+
+      .ant-list-item {
+        .ant-list-item-meta {
+          .ant-list-item-meta-title {
+            text-align: left;
+            padding-left: 20px;
+            font-size: 12px;
+          }
+        }
+
+        .list-interests__order-label {
+          font-size: 9px;
+          font-weight: bold;
+          background: #44b543;
+          color: white;
+          border-radius: 50%;
+          width: 16px;
+          height: 16px;
+          padding: 2px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: -5px;
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 .container {
   .gg-ads-errors-table {
     overflow: auto;
+    background: snow;
 
     .field-content {
       color: red;
@@ -9,22 +10,35 @@
 
     .ant-table-thead {
       th {
-        background: #d9534f;
-        color: white;
+        background: whitesmoke;
+        color: rgba(0, 0, 0, 0.7);
         padding-top: 15px;
         padding-bottom: 15px;
         border-radius: 0;
+        font-size: 10px;
+        font-weight: bold;
       }
     }
 
     .ant-table-row {
-      &:nth-child(odd) {
-        background: rgba(125, 125, 125, 0.04);
+      &:nth-child(even) {
+        background: whitesmoke;
       }
 
       td {
         padding-top: 5px;
         padding-bottom: 5px;
+        font-size: 12px;
+
+        button {
+          font-size: 10px;
+        }
+
+        &:nth-child(2) {
+          font-weight: bold;
+          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+          font-size: 10px;
+        }
       }
 
       &:hover {
