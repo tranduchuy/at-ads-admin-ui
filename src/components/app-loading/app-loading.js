@@ -1,17 +1,17 @@
 import React from 'react';
 import './app-loading.scss';
-// import { Spin } from 'antd';
+import { Spin } from 'antd';
 import * as action from '../../actions';
 import { connect } from 'react-redux';
 
 class AppLoading extends React.Component {
 	render() {
-		// if (this.props.app.isLoading) {
-		// 	return <div className={'app-loading'}>
-		// 		<Spin tip={'Vui lòng chờ'}
-		// 					size='large'/>
-		// 	</div>;
-		// }
+		if (this.props.app.isLoading) {
+			return <div className={'app-loading'}>
+				<Spin tip={'Vui lòng chờ'}
+							size='large'/>
+			</div>;
+		}
 
 		return (
 			<></>

@@ -9,6 +9,8 @@ import axios from 'axios';
 import ReactHighChart from 'react-highcharts';
 import { COOKIE_NAMES } from '../../../constants/cookie-names';
 import { BasePage } from '../base-page';
+import { connect } from 'react-redux';
+import * as actions from '../../../actions';
 
 const pieChartConfig = {
   chart: {
@@ -109,6 +111,7 @@ export class GoogleAdsErrors extends BasePage {
           ggAdsErrors: data,
           totalItems: data.length > 0 ? json.data.totalItems : 0
         });
+        this.props.setAppLoading(false);
       });
   }
 
@@ -218,4 +221,7 @@ export class GoogleAdsErrors extends BasePage {
   }
 }
 
-export default withCookies(GoogleAdsErrors);
+export default connect(
+  null,
+  actions
+)(withCookies(GoogleAdsErrors));

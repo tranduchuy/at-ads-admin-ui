@@ -1,38 +1,68 @@
 $primaryFontSize: 12px;
 
 .packages__container {
-
   .ant-tabs-tabpane {
-    padding: 20px
+    padding: 30px 20px 20px 40px;
+  }
+
+  .ant-tabs-tab {
+    font-size: 12px;
   }
 
   .package__type {
     text-align: left;
     font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 
-    &.package__type--free {
+    &.package__type--FREE {
       color: green;
     }
 
-    &.package__type--vip1 {
+    &.package__type--VIP1 {
       color: darkgoldenrod;
     }
 
-    &.package__type--custom {
-      color: darkred;
+    &.package__type--CUSTOM {
+      color: crimson;
     }
   }
 
   .form {
+    padding-top: 10px;
+    text-align: left;
+
+    .form__btn-update-package {
+      $color: #039be5;
+
+      margin-top: 20px;
+      font-size: 12px;
+      border-color: $color;
+      background: $color;
+      color: white;
+
+      &:hover {
+        background: $color - #111111;
+      }
+    }
+
+    .ant-form-explain {
+      font-size: 10px;
+      padding: 5px 0;
+    }
+
     .ant-input-number {
       width: 100%;
     }
 
     .form__interest-input {
       button {
-        margin-top: 9.5px;
         border: 1px solid #dcdcdc;
         font-size: 12px;
+        color: dodgerblue;
+
+        &:disabled {
+          color: rgba(0, 0, 0, 0.2);
+        }
       }
     }
 
@@ -55,19 +85,53 @@ $primaryFontSize: 12px;
     }
 
     .list-interests__wrapper {
-      max-height: 300px;
+      margin-top: -10px;
+      max-height: 250px;
       overflow-y: scroll;
-      background: RGBA(68, 181, 67, 0.05);
+      background: rgba(68, 181, 67, 0.05);
       border-radius: 5px;
       padding: 10px;
 
       .ant-list-item {
+        padding-left: 10px;
+        transition: 0.2s;
+
         .ant-list-item-meta {
           .ant-list-item-meta-title {
             text-align: left;
             padding-left: 20px;
-            font-size: 12px;
+            font-size: 10px;
+            font-weight: bold;
           }
+        }
+
+        -webkit-animation: 0.2s fadeIn ease-in;
+        -moz-animation: 0.2s fadeIn ease-in;
+        animation: 0.2s fadeIn ease-in;
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @-webkit-keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        &:hover {
+          background: rgba(68, 181, 67, 0.06);
+        }
+
+        button {
+          color: rgba(0, 0, 0, 0.2);
+          font-size: 12px;
         }
 
         .list-interests__order-label {

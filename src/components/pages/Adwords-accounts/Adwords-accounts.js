@@ -194,11 +194,7 @@ export class AdwordAccounts extends BasePage {
         render: (text, record) => {
           return (
             <span
-              style={{
-                color: record.isConnected ? 'green' : 'crimson',
-                fontWeight: 'bold'
-              }}
-            >
+              className={`gg-ads-id ${record.isConnected ? 'account-status--success' : 'account-status--unactive'}`}>
               {text}
             </span>
           );
@@ -227,7 +223,7 @@ export class AdwordAccounts extends BasePage {
         render: isDeleted => {
           if (isDeleted === false) {
             return (
-              <span className="account-status--success">Đang hoạt động</span>
+              <span className="account-status--active">Đang hoạt động</span>
             );
           }
 
