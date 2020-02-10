@@ -3,7 +3,7 @@ import { Row, Col, Table, Input, Button, Icon } from 'antd';
 import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
-import './websites-style.scss';
+import './Websites-style.scss';
 import { COOKIE_NAMES } from "../../../constants/cookie-names";
 import { BasePage } from "../base-page";
 import ButtonCheckTrackingScript from './button-check-tracking-script';

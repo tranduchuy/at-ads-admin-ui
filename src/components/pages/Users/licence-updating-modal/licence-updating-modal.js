@@ -119,8 +119,8 @@ class LicenceUpdatingModal extends BasePage {
     return (
       <div className="modal-container">
         <Button onClick={this.showModal} type="primary">
-          <Icon type="arrow-up" />
-          Nâng cấp gói
+          <Icon type="idcard" />
+          Cập nhật licence
         </Button>
         <Modal
           title={this.props.userFullname + " | CẬP NHẬT GÓI SỬ DỤNG"}

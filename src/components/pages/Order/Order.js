@@ -3,7 +3,7 @@ import { Row, Col, Table, Input, Button, Icon, message } from 'antd';
 import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import moment from 'moment';
-import './order.style.scss';
+import './Order.style.scss';
 import * as actions from '../../../actions';
 import { connect } from 'react-redux';
 import { COOKIE_NAMES } from '../../../constants/cookie-names';

@@ -96,6 +96,21 @@
         &:nth-child(6) {
           text-align: center;
         }
+
+        &:nth-child(7) {
+          button {
+            font-size: 12px;
+            background: white;
+            border: 0.5px solid dodgerblue;
+            color: dodgerblue;
+            transition: 0.2s;
+
+            &:hover {
+              background: dodgerblue;
+              color: white;
+            }
+          }
+        }
       }
     }
 

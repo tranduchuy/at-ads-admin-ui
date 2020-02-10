@@ -2,8 +2,8 @@ import Users from "../components/pages/Users/Users";
 import AdwordsAccounts from "../components/pages/Adwords-accounts/Adwords-accounts";
 import GoogleAdsErrors from "../components/pages/Google-ads-errors/Google-ads-errors";
 import Dashboard from "../components/pages/Dashboard/Dashboard";
-import Websites from "../components/pages/Websites/websites";
-import Orders from "../components/pages/Order";
+import Websites from "../components/pages/Websites/Websites";
+import Orders from "../components/pages/Order/Order";
 import Packages from "../components/pages/Packages/Packages";
 
 export default [

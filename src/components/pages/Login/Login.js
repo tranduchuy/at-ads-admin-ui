@@ -85,7 +85,7 @@ class Login extends BasePage {
     return (
       <div className="login__container">
         <div className="inner">
-          <Form onSubmit={this.handleSubmit} className='login-form'>
+          <Form onSubmit={this.handleSubmit} className={`login-form bounceIn bounceInDown`}>
             <div className='form-title'>Chống Click Tặc</div>
 
             <div className='logo'>
@@ -95,7 +95,7 @@ class Login extends BasePage {
               />
             </div>
 
-            <div className="role">Administration</div>
+            <div className="role">Administrator</div>
 
             <Form.Item>
               {getFieldDecorator('email', {
