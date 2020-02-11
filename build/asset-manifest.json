@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/static/css/main.24b6fa3b.chunk.css",
+    "main.js": "/static/js/main.73d6181a.chunk.js",
+    "main.js.map": "/static/js/main.73d6181a.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.03e32079.js",
+    "runtime~main.js.map": "/static/js/runtime~main.03e32079.js.map",
+    "static/css/2.65d0fb34.chunk.css": "/static/css/2.65d0fb34.chunk.css",
+    "static/js/2.53d0772e.chunk.js": "/static/js/2.53d0772e.chunk.js",
+    "static/js/2.53d0772e.chunk.js.map": "/static/js/2.53d0772e.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.313eb84625b98c7fd8174700f8085aa4.js": "/precache-manifest.313eb84625b98c7fd8174700f8085aa4.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.65d0fb34.chunk.css.map": "/static/css/2.65d0fb34.chunk.css.map",
+    "static/css/main.24b6fa3b.chunk.css.map": "/static/css/main.24b6fa3b.chunk.css.map",
+    "static/media/app-logo.png": "/static/media/app-logo.ee547009.png",
+    "static/media/Login-style.scss": "/static/media/dark-material-bg.d914334b.jpg"
+  }
+}
