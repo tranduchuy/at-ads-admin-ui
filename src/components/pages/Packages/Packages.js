@@ -8,7 +8,6 @@ import { withCookies } from 'react-cookie';
 import { API } from '../../../constants/api';
 import { PACKAGE_TYPE } from '../../../constants/package-type';
 import { COOKIE_NAMES } from '../../../constants/cookie-names';
-import * as _ from 'lodash';
 import NumberFormat from 'react-number-format';
 
 const { TabPane } = Tabs;
@@ -26,7 +25,8 @@ class Packages extends BasePage {
 
     this.state = {
       packages: [],
-      defaultPackageNames: [],
+      displayedPackageNames: [],
+      name: '',
       interestInputValue: '',
       contactInfo: '',
       price: null,
@@ -74,34 +74,40 @@ class Packages extends BasePage {
     }).then(res => {
       return res.json();
     }).then(json => {
-      const list = json.data.packages.reverse();
-      const priceOption = list[0].isContactPrice ? 2 : 1;
+      const listPackages = json.data.packages;
+      let listNames = (listPackages || []).map(p => ({
+        _id: p._id,
+        name: p.name
+      }));
 
       this.setState({
-        packages: list,
-        price: list[0].price,
-        interests: list[0].interests,
-        priceOption,
-        contactInfo: list[0].contact
+        packages: listPackages,
+        displayedPackageNames: listNames
       });
 
-      this.setState({
-        defaultPackageNames: (list || []).map(p => p.name)
-      });
-
-      this.mapStateDiscountMonths(list[0].discountMonths);
+      this.mapPackageStates(listPackages[0]);
     });
   }
 
-  mapStateDiscountMonths(discountMonths) {
+  mapPackageStates(packageData) {
+    this.setState({
+      name: packageData.name,
+      price: packageData.price,
+      interests: packageData.interests,
+      priceOption: packageData.isContactPrice ? 2 : 1,
+      contactInfo: packageData.contact,
+      discountOption: packageData.isDiscount ? 2 : 1
+    });
+
+    let discountMonths = packageData.discountMonth;
     if (!discountMonths)
       discountMonths = [];
 
-    const list = this.state.discountMonths;
+    const listMonths = this.state.discountMonths;
     for (let i = 0; i < discountMonths.length; i++)
-      list[i].discount = discountMonths[i] * 100;
+      listMonths[i].discount = discountMonths[i] * 100;
 
-    this.setState({ discountMonths: list });
+    this.setState({ discountMonths: listMonths });
   }
 
   onChangePriceOption(e) {
@@ -129,20 +135,25 @@ class Packages extends BasePage {
     this.setState({ packages: list, interestInputValue: '' });
   }
 
-  removeInterest(packageIndex, interestIndex) {
-    const list = this.state.packages;
-    list[packageIndex].interests = list[packageIndex].interests.filter((item, index) => index !== interestIndex);
-    this.setState({ packages: list });
+  removeInterest(interestIndex) {
+    const newInterests = this.state.interests.filter((item, index) => index !== interestIndex);
+    this.setState({ interests: newInterests });
   }
 
   onChangeInterestInput(e) {
     this.setState({ interestInputValue: e.target.value });
   }
 
-  onChangePackageNameInput(e, packageIndex) {
-    const newPackageNames = this.state.defaultPackageNames;
-    newPackageNames[packageIndex] = e.target.value;
-    this.setState({ defaultPackageNames: newPackageNames });
+  onChangePackageNameInput(e, packageId) {
+    const listNames = this.state.displayedPackageNames.map(p => {
+      if (p._id === packageId) {
+        p.name = e.target.value;
+      }
+
+      return p;
+    });
+
+    this.setState({ displayedPackageNames: listNames, name: e.target.value });
   }
 
   onChangeContactInfoTextArea(e) {
@@ -163,20 +174,26 @@ class Packages extends BasePage {
     });
   }
 
-  generateUpdatePackageParams(id, type, packages, packageIndex) {
-    const { price, priceOption, discountOption, discountMonths, contactInfo, defaultPackageNames } = this.state;
-    const interests = _.find(packages, item => item.type === type).interests;
+  generateUpdatePackageParams(packageId, type) {
+    const {
+      price,
+      priceOption,
+      discountOption,
+      discountMonths,
+      contactInfo, displayedPackageNames,
+      interests
+    } = this.state;
 
     if (type === PACKAGE_TYPE.FREE)
       return {
-        packageId: id,
+        packageId,
         interests,
-        name: defaultPackageNames[packageIndex]
+        name: displayedPackageNames.find(p => p._id === packageId).name
       };
 
     return {
-      packageId: id,
-      name: defaultPackageNames[packageIndex],
+      packageId,
+      name: displayedPackageNames.find(p => p._id === packageId).name,
       price,
       interests,
       isContactPrice: priceOption === 1 ? false : true,
@@ -186,8 +203,8 @@ class Packages extends BasePage {
     };
   }
 
-  updatePackage(id, type, packages, packageIndex) {
-    const params = this.generateUpdatePackageParams(id, type, packages, packageIndex);
+  updatePackage(id, type, packages) {
+    const params = this.generateUpdatePackageParams(id, type, packages);
 
     if (!params.name) {
       this.openNotificationWithIcon('error', 'Đã có lỗi xảy ra', 'Vui lòng đặt tên cho gói.');
@@ -215,7 +232,20 @@ class Packages extends BasePage {
         return Promise.reject(res.json());
       })
       .then(
-        () => {
+        res => {
+          const newPackage = JSON.parse(JSON.stringify(res.data.package));
+          this.mapPackageStates(newPackage);
+
+          // update list of packages
+          const listPackages = this.state.packages.map(p => {
+            if (p._id === newPackage._id)
+              Object.assign(p, newPackage);
+
+            return p;
+          });
+
+          this.setState({ packages: listPackages });
+
           this.props.setAppLoading(false);
           this.openNotificationWithIcon('success', 'Cập nhật gói thành công');
         },
@@ -226,21 +256,17 @@ class Packages extends BasePage {
       );
   }
 
-  onChangePackageTabs(tabIndex) {
-    const { price, interests, isContactPrice, discountMonths, isDiscount, contact, name } = this.state.packages[tabIndex];
-    this.setState({
-      price,
-      interests,
-      priceOption: isContactPrice ? 2 : 1,
-      discountOption: isDiscount ? 2 : 1,
-      contactInfo: contact,
-      packageName: name
-    });
-    this.mapStateDiscountMonths(discountMonths);
+  onChangePackageTab(packageId) {
+    const tabPackage = this.state.packages.find(p => p._id === packageId);
+    this.mapPackageStates(tabPackage);
+  }
+
+  mapDisplayedPackageName(packageId) {
+    return this.state.displayedPackageNames.find(p => p._id === packageId).name;
   }
 
   render() {
-    const { packages, price, interestInputValue, contactInfo, defaultPackageNames } = this.state;
+    const { packages, price, interestInputValue, contactInfo, name, interests } = this.state;
     const isBtnAddInterestDisabled = this.state.interestInputValue ? false : true;
     const isPriceInputShown = this.state.priceOption === 1 ? true : false;
     const isDiscountOptionShown = this.state.discountOption === 1 ? false : true;
@@ -251,15 +277,13 @@ class Packages extends BasePage {
           defaultActiveKey="0"
           tabPosition="left"
           style={{ minHeight: 500 }}
-          onChange={tabIndex => this.onChangePackageTabs(tabIndex)}>
+          onChange={tabKey => this.onChangePackageTab(tabKey)}>
           {
             packages.map((item, packageIndex) => (
               <TabPane
-                tab={<span>{defaultPackageNames[packageIndex]}</span>}
-                key={packageIndex}
+                tab={<span>{item.name}</span>}
+                key={item._id}
               >
-
-                {/* <h1 className={`package__type --${item.type}`}>{item.name}</h1> */}
 
                 <Form className="form">
                   <div className="form__section">
@@ -274,8 +298,8 @@ class Packages extends BasePage {
                             <div className="form__package-name-input">
                               <Input
                                 placeholder='Nhập tên gói'
-                                value={defaultPackageNames[packageIndex]}
-                                onChange={e => this.onChangePackageNameInput(e, packageIndex)} />
+                                value={name}
+                                onChange={e => this.onChangePackageNameInput(e, item._id)} />
                             </div>
                           </Col>
                         </Row>
@@ -365,7 +389,7 @@ class Packages extends BasePage {
                                                               <span className={`form__label form__label--extra`}>Giá ưu đãi</span>
                                                               <span className={`form__label form__label--discount-price`}>
                                                                 <NumberFormat
-                                                                  value={(price - (price * m.discount / 100)) * m.numOfMonths}
+                                                                  value={(price * m.numOfMonths) - ((price * m.numOfMonths) * (m.discount / 100))}
                                                                   displayType={'text'}
                                                                   thousandSeparator={true}
                                                                   renderText={value => <span>{value} VNĐ</span>} />
@@ -484,7 +508,7 @@ class Packages extends BasePage {
                                 ) : (
                                     <List
                                       itemLayout="horizontal"
-                                      dataSource={item.interests}
+                                      dataSource={interests}
                                       renderItem={(interest, interestIndex) => (
                                         <List.Item>
                                           <Icon style={{ color: '#44b543', marginTop: -5 }} type="check-circle" />
@@ -494,7 +518,7 @@ class Packages extends BasePage {
                                           <Button
                                             icon="close-circle"
                                             type="link"
-                                            onClick={() => this.removeInterest(packageIndex, interestIndex)} />
+                                            onClick={() => this.removeInterest(interestIndex)} />
                                         </List.Item>
                                       )}
                                     />
@@ -511,7 +535,7 @@ class Packages extends BasePage {
                       <Col span={24} style={{ textAlign: 'center' }}>
                         <Button
                           className="form__btn-update-package"
-                          onClick={() => this.updatePackage(item._id, item.type, packages, packageIndex)}>Cập nhật gói</Button>
+                          onClick={() => this.updatePackage(item._id, item.type)}>Cập nhật gói</Button>
                       </Col>
                     </Row>
                   </div>

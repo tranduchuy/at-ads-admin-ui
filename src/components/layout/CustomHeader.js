@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
-import { Layout, Menu, Icon, Badge, Card, Avatar } from 'antd';
+import { Layout } from 'antd';
 
 const { Header } = Layout;
-const { SubMenu } = Menu;
-const { Meta } = Card;
+// const { SubMenu } = Menu;
+// const { Meta } = Card;
 
 class CustomHeader extends Component {
 	render() {
 		return (
 			<Header style={{ background: '#fff', padding: 0 }}>
-				<Menu theme="light"
+				{/* <Menu theme="light"
 					mode="horizontal"
 					//defaultSelectedKeys={['2']}
 					style={{ lineHeight: '64px' }}>
@@ -56,13 +56,11 @@ class CustomHeader extends Component {
 						</Menu.ItemGroup>
 					</SubMenu>
 
-					{/* <Menu.Item key="2">nav 2</Menu.Item>
-					<Menu.Item key="3">nav 3</Menu.Item> */}
-				</Menu>
+				</Menu> */}
 
-				<div className="logo">
+				{/* <div className="logo">
 					{this.props.users.user ? this.props.users.user.email : ''}
-				</div>
+				</div> */}
 			</Header>
 		)
 	}
