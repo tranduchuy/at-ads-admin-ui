@@ -99,7 +99,7 @@ class Packages extends BasePage {
       discountOption: packageData.isDiscount ? 2 : 1
     });
 
-    let discountMonths = packageData.discountMonth;
+    let discountMonths = packageData.discountMonths;
     if (!discountMonths)
       discountMonths = [];
 
@@ -208,6 +208,11 @@ class Packages extends BasePage {
 
     if (!params.name) {
       this.openNotificationWithIcon('error', 'Đã có lỗi xảy ra', 'Vui lòng đặt tên cho gói.');
+      return;
+    }
+
+    if (!params.contact && params.isContactPrice) {
+      this.openNotificationWithIcon('error', 'Đã có lỗi xảy ra', 'Vui lòng cung cấp thông tin liên hệ.');
       return;
     }
 
