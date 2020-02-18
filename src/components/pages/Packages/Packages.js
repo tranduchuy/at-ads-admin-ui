@@ -482,7 +482,7 @@ class Packages extends BasePage {
                                   <Button
                                     icon="plus-circle"
                                     disabled={isBtnAddInterestDisabled}
-                                    onClick={() => this.addInterest(packageIndex, this.state.interestInputValue)}>
+                                    onClick={() => this.addInterest(this.state.interestInputValue)}>
                                     Thêm
                           </Button>
                                 </Col>
