@@ -86,7 +86,7 @@ class Login extends BasePage {
       <div className="login__container">
         <div className="inner">
           <Form onSubmit={this.handleSubmit} className={`login-form bounceIn bounceInDown`}>
-            <div className='form-title'>Chống Click Tặc</div>
+            <div className='form-title'>CÔNG CỤ CHỐNG CLICK TẶC</div>
 
             <div className='logo'>
               <img
