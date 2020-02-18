@@ -119,7 +119,7 @@ class Main extends Component {
           }}
         >
           <div className='logo'>
-            <div className="app-name">Chống Click Tặc</div>
+            <div className="app-name">CÔNG CỤ CHỐNG CLICK TẶC</div>
             <img alt='' src={logoImg} />
             <p className="role">Administrator</p>
           </div>
