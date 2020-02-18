@@ -128,16 +128,15 @@ class Packages extends BasePage {
     });
   };
 
-  addInterest(packageIndex, interest) {
-    const list = this.state.packages;
-    list[packageIndex].interests.push(interest);
-
-    this.setState({ packages: list, interestInputValue: '' });
+  addInterest(interest) {
+    const list = this.state.interests;
+    list.push(interest);
+    this.setState({ interests: list, interestInputValue: '' });
   }
 
   removeInterest(interestIndex) {
-    const newInterests = this.state.interests.filter((item, index) => index !== interestIndex);
-    this.setState({ interests: newInterests });
+    const list = this.state.interests.filter((item, index) => index !== interestIndex);
+    this.setState({ interests: list });
   }
 
   onChangeInterestInput(e) {
@@ -475,7 +474,7 @@ class Packages extends BasePage {
                                     value={interestInputValue}
                                     onKeyUp={e => {
                                       if (e.keyCode === 13)
-                                        this.addInterest(packageIndex, this.state.interestInputValue);
+                                        this.addInterest(this.state.interestInputValue);
                                     }}
                                     onChange={e => this.onChangeInterestInput(e)} />
                                 </Col>
