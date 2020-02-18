@@ -9,6 +9,8 @@ import axios from 'axios';
 import ReactHighChart from 'react-highcharts';
 import { COOKIE_NAMES } from '../../../constants/cookie-names';
 import { BasePage } from '../base-page';
+import { connect } from 'react-redux';
+import * as actions from '../../../actions';
 
 const pieChartConfig = {
   chart: {
@@ -18,7 +20,7 @@ const pieChartConfig = {
     type: 'pie'
   },
   title: {
-    text: 'Statistic type of Google Ads Error'
+    text: 'Báo cáo & Thống kê lỗi Google Ads'
   },
   tooltip: {
     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -109,6 +111,7 @@ export class GoogleAdsErrors extends BasePage {
           ggAdsErrors: data,
           totalItems: data.length > 0 ? json.data.totalItems : 0
         });
+        this.props.setAppLoading(false);
       });
   }
 
@@ -153,7 +156,7 @@ export class GoogleAdsErrors extends BasePage {
           key,
           render: text => {
             const content = (
-              <JSONPretty style={{ fontSize: '12px' }} data={text}></JSONPretty>
+              <JSONPretty style={{ fontSize: '10px' }} data={text}></JSONPretty>
             );
 
             return (
@@ -218,4 +221,7 @@ export class GoogleAdsErrors extends BasePage {
   }
 }
 
-export default withCookies(GoogleAdsErrors);
+export default connect(
+  null,
+  actions
+)(withCookies(GoogleAdsErrors));

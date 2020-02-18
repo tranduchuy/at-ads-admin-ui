@@ -1,0 +1,70 @@
+.container {
+  .ggAds-icon {
+    width: 20px;
+    margin-right: 5px;
+  }
+
+  .accounts-table {
+    background: snow;
+    .ant-table-thead {
+      th {
+        color: white;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        border-radius: 0;
+
+        &:nth-child(3) {
+          text-align: center;
+        }
+      }
+    }
+
+    .ant-table-row {
+      td {
+        padding-top: 12px;
+        padding-bottom: 12px;
+
+        &:nth-child(1) {
+          font-weight: bold;
+          font-size: 12px;
+          text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        &:nth-child(3) {
+          text-align: center;
+          font-size: 10px;
+        }
+
+        .tracking--active,
+        .tracking--unactive {
+          font-weight: bold;
+        }
+
+        .tracking--active {
+          color: green;
+        }
+
+        .tracking--unactive {
+          color: rgba(0, 0, 0, 0.3);
+        }
+      }
+
+      &:hover {
+        td {
+          background: rgba(3, 155, 229, 0.1) !important;
+        }
+      }
+    }
+  }
+}
+
+.recheck-website-tracking {
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-right: 5px;
+
+  &:hover {
+    background-color: rgba(187, 187, 187, 0.749);
+  }
+}

@@ -30,11 +30,11 @@ function Root() {
     getLoggedInInfo(cookies.token).then(res => {
       setCheckToken(true);
       if (res.data.data.user) {
-        setCookie(COOKIE_NAMES.user, res.data.data.user, {domain: '/'});
+        setCookie(COOKIE_NAMES.user, res.data.data.user, { domain: '/' });
       }
     }).catch(err => {
-      removeCookie(COOKIE_NAMES.token, {domain: '/'});
-      removeCookie(COOKIE_NAMES.user, {domain: '/'})
+      removeCookie(COOKIE_NAMES.token, { domain: '/' });
+      removeCookie(COOKIE_NAMES.user, { domain: '/' })
       setCheckToken(true);
     });
   }

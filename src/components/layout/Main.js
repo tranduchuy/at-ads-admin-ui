@@ -50,13 +50,13 @@ class Main extends Component {
             this.isAuthenticated ? (
               <Component {...props} />
             ) : (
-              <Redirect
-                to={{
-                  pathname: '/login',
-                  state: { from: props.location }
-                }}
-              />
-            )
+                <Redirect
+                  to={{
+                    pathname: '/login',
+                    state: { from: props.location }
+                  }}
+                />
+              )
           }
         />
       );
@@ -88,17 +88,20 @@ class Main extends Component {
       case 'users':
         page = '1';
         break;
-      case 'orders':
+      case 'packages':
         page = '2';
         break;
-      case 'websites':
+      case 'orders':
         page = '3';
         break;
       case 'accounts':
         page = '4';
         break;
-      case 'google-ads-errors':
+      case 'websites':
         page = '5';
+        break;
+      case 'google-ads-errors':
+        page = '6';
         break;
       default:
         break;
@@ -111,16 +114,19 @@ class Main extends Component {
             overflow: 'auto',
             height: '100vh',
             position: 'fixed',
-            left: 0
+            left: 0,
+            backgroundColor: 'white'
           }}
         >
           <div className='logo'>
+            <div className="app-name">CÔNG CỤ CHỐNG CLICK TẶC</div>
             <img alt='' src={logoImg} />
+            <p className="role">Administrator</p>
           </div>
 
           <AsideUserInfo />
 
-          <Menu theme='dark' mode='inline' defaultSelectedKeys={[page]}>
+          <Menu theme='light' mode='inline' defaultSelectedKeys={[page]}>
             {links.map((link, index) => {
               return (
                 <Menu.Item key={index}>
@@ -134,7 +140,7 @@ class Main extends Component {
 
           <AsideBtnLogout />
         </Sider>
-        <Layout style={{ marginLeft: 250 }}>
+        <Layout style={{ marginLeft: 200 }}>
           <CustomHeader />
           <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
             <div
@@ -144,7 +150,7 @@ class Main extends Component {
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-            Click CPanel ©2019 Created by Appnet Technology
+            Chống Click Tặc - Admin ©2019 Powered by Appnet Technology
           </Footer>
         </Layout>
       </Layout>

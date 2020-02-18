@@ -25,7 +25,7 @@ class AsideBtnLogout extends React.Component {
 									cancelText="Hủy">
 				<Button type="link" style={{ width: '100%', 'textAlign': 'left', 'padding': '0 23px' }}>
 					<Icon type="logout"/>
-					<span style={{ marginLeft: '8.5px' }}>Đăng xuất</span>
+					<span style={{ marginLeft: '8.5px', fontSize: '12px' }}>Đăng xuất</span>
 				</Button>
 			</Popconfirm>
 		)

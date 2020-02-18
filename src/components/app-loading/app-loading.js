@@ -8,7 +8,7 @@ class AppLoading extends React.Component {
 	render() {
 		if (this.props.app.isLoading) {
 			return <div className={'app-loading'}>
-				<Spin tip={'Loading'}
+				<Spin tip={'Vui lòng chờ'}
 							size='large'/>
 			</div>;
 		}

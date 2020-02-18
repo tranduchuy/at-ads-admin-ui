@@ -1,0 +1,301 @@
+$primaryFontSize: 12px;
+
+.packages__container {
+  .ant-tabs-tabpane {
+    padding: 30px 20px 20px 30px;
+  }
+
+  .ant-tabs-tab {
+    font-size: 12px;
+  }
+
+  .package__tab-label {
+    padding: 6px;
+    font-weight: bold;
+    border-radius: 3px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    &.--FREE {
+      background-color: #63d471;
+      background-image: linear-gradient(315deg, #63d471 0%, #233329 74%);
+      color: white;
+    }
+
+    &.--VIP1 {
+      background: radial-gradient(
+          ellipse farthest-corner at right bottom,
+          #fedb37 0%,
+          #fdb931 8%,
+          #9f7928 30%,
+          #8a6e2f 40%,
+          transparent 80%
+        ),
+        radial-gradient(
+          ellipse farthest-corner at left top,
+          #ffffff 0%,
+          #ffffac 8%,
+          #d1b464 25%,
+          #5d4a1f 62.5%,
+          #5d4a1f 100%
+        );
+      color: white;
+    }
+
+    &.--CUSTOM {
+      background-color: #e0455f;
+      background-image: linear-gradient(147deg, #e0455f 0%, #44000b 74%);
+      color: gold;
+    }
+  }
+
+  .package__type {
+    text-align: left;
+    font-weight: bold;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+
+    &.--FREE {
+      color: green;
+    }
+
+    &.--VIP1 {
+      color: darkgoldenrod;
+    }
+
+    &.--CUSTOM {
+      color: crimson;
+    }
+  }
+
+  .form {
+    padding-top: 10px;
+    text-align: left;
+
+    .form__section {
+      padding: 30px;
+      padding-bottom: 15px;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    }
+
+    .form__contact-info-input {
+      .ant-input {
+        padding: 10px 5px 5px 10px;
+        font-size: $primaryFontSize - 2;
+      }
+    }
+
+    .form__package-discount {
+      .ant-input-number {
+        width: 100%;
+      }
+    }
+
+    .form__btn-update-package {
+      $color: #039be5;
+
+      font-size: 12px;
+      border-color: $color;
+      background: $color;
+      color: white;
+      margin-top: 30px;
+
+      min-width: 250px;
+
+      &:hover {
+        background: $color - #111111;
+      }
+    }
+
+    .ant-form-explain {
+      font-size: 10px;
+      padding: 5px 0;
+    }
+
+    .ant-input {
+      width: 100%;
+      font-size: $primaryFontSize;
+    }
+
+    .ant-input-number {
+      font-size: $primaryFontSize;
+    }
+
+    .form__price-input {
+      display: flex;
+      align-items: center;
+
+      .ant-input-number {
+        width: 57%;
+      }
+    }
+
+    .ant-radio-wrapper {
+      font-size: $primaryFontSize;
+    }
+
+    .form__interest-input {
+      button {
+        border: 1px solid #dcdcdc;
+        font-size: 12px;
+        color: dodgerblue;
+
+        &:disabled {
+          color: rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+
+    .ant-col {
+      line-height: 50px;
+    }
+
+    .ant-col-8 {
+      text-align: left;
+    }
+
+    .form__label {
+      color: rgba(0, 0, 0, 0.7);
+      font-size: $primaryFontSize;
+
+      &.form__label--field {
+        color: gray;
+        font-size: $primaryFontSize - 1;
+
+        img {
+          width: 16px;
+          margin-right: 3px;
+        }
+
+        .anticon {
+          font-size: 9px;
+          margin-left: 2px;
+          margin-top: -5px;
+          color: green;
+        }
+      }
+
+      &.form__label--field2 {
+        @extend .form__label--field;
+        font-size: $primaryFontSize - 2;
+      }
+
+      &.form__label--currency {
+        font-weight: bold;
+        margin-left: 10px;
+        font-size: $primaryFontSize - 2;
+      }
+
+      &.form__label--currency2 {
+        @extend .form__label--currency;
+        margin-left: 0;
+      }
+
+      &.form__label--discount-month {
+        background: #039be5;
+        color: white;
+        font-size: $primaryFontSize - 2;
+        padding: 4px;
+        font-weight: bold;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        border-radius: 3px;
+      }
+
+      &.form__label--extra {
+        font-size: $primaryFontSize - 2;
+        color: gray;
+      }
+
+      &.form__label--percentage {
+        margin-left: 10px;
+        font-weight: bold;
+      }
+
+      &.form__label--discount-price {
+        margin-left: 10px;
+        font-weight: bold;
+        font-size: $primaryFontSize - 2;
+      }
+    }
+
+    .form__discount-selection {
+      padding-top: 10px;
+    }
+
+    .form__discount-price {
+      padding-bottom: 18px;
+      .ant-col {
+        line-height: 5px;
+      }
+    }
+
+    .list-interests__wrapper {
+      margin-top: -10px;
+      height: 250px;
+      overflow-y: scroll;
+      background: rgba(68, 181, 67, 0.05);
+      border-radius: 5px;
+      padding: 10px;
+
+      .ant-list-item {
+        padding-left: 10px;
+        transition: 0.2s;
+
+        .ant-list-item-meta {
+          .ant-list-item-meta-title {
+            text-align: left;
+            padding-left: 20px;
+            font-size: 10px;
+            font-weight: bold;
+          }
+        }
+
+        -webkit-animation: 0.2s fadeIn ease-in;
+        -moz-animation: 0.2s fadeIn ease-in;
+        animation: 0.2s fadeIn ease-in;
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        @-webkit-keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        &:hover {
+          background: rgba(68, 181, 67, 0.06);
+        }
+
+        button {
+          color: rgba(0, 0, 0, 0.2);
+          font-size: 12px;
+        }
+
+        .list-interests__order-label {
+          font-size: 9px;
+          font-weight: bold;
+          background: #44b543;
+          color: white;
+          border-radius: 50%;
+          width: 16px;
+          height: 16px;
+          padding: 2px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: -5px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+      }
+    }
+  }
+}

@@ -152,6 +152,7 @@ export class AdwordAccounts extends BasePage {
             id: item._id,
             adsId: this.formatAdsId(item.adsId),
             isConnected: item.isConnected,
+            isDeleted: item.isDeleted,
             email: item.userInfo.email,
             domain: item.websiteInfo
               ? item.websiteInfo.map(website => website.domain)
@@ -185,28 +186,15 @@ export class AdwordAccounts extends BasePage {
   }
 
   render() {
-    const googleAdLogoUrl =
-      'https://storage.googleapis.com/gweb-uniblog-publish-prod/images/logo_Google_Ads_192px.max-200x200.png';
     const accountColumns = [
       {
-        title: (filter, sortOrder) => {
-          return (
-            <div>
-              <img src={googleAdLogoUrl} alt='' className='ggAds-icon' />
-              <span>Google Ads ID</span>
-            </div>
-          );
-        },
+        title: 'Google Ads ID',
         dataIndex: 'adsId',
         key: 'adsId',
         render: (text, record) => {
           return (
             <span
-              style={{
-                color: record.isConnected ? '#44b543' : 'crimson',
-                fontWeight: 'bold'
-              }}
-            >
+              className={`gg-ads-id ${record.isConnected ? 'account-status--success' : 'account-status--unactive'}`}>
               {text}
             </span>
           );
@@ -216,19 +204,31 @@ export class AdwordAccounts extends BasePage {
         title: 'Quyền quản lý',
         dataIndex: 'isConnected',
         key: 'isConnected',
-        render: text => {
-          if (text === true) {
+        render: isAccepted => {
+          if (isAccepted === true) {
             return (
-              <div style={{ color: '#44b543' }}>
-                <Icon type='check' />
-              </div>
+              <span className="account-status--success">Đã chấp nhận</span>
             );
           }
 
           return (
-            <div style={{ color: 'crimson' }}>
-              <Icon type='close' />
-            </div>
+            <span className="account-status--danger">Chưa chấp nhận</span>
+          );
+        }
+      },
+      {
+        title: 'Trạng thái',
+        dataIndex: 'isDeleted',
+        key: 'isDeleted',
+        render: isDeleted => {
+          if (isDeleted === false) {
+            return (
+              <span className="account-status--active">Đang hoạt động</span>
+            );
+          }
+
+          return (
+            <span className="account-status--unactive">Đã ngắt kết nối</span>
           );
         }
       },
@@ -280,7 +280,7 @@ export class AdwordAccounts extends BasePage {
         }
       },
       {
-        title: 'Ngày kết nối',
+        title: 'Ngày tạo',
         dataIndex: 'createdAt',
         key: 'createdAt',
         render: text => {
